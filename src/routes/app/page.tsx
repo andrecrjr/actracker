@@ -13,7 +13,7 @@ const PluginComponent = lazy(() => {
   )
     .then(module => ({ default: module.default }))
     .catch(() => {
-      return { default: () => <p>error plugin</p> };
+      return { default: () => <p>plugin offline</p> };
     });
 });
 

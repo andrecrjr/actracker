@@ -1,10 +1,9 @@
-import './index.css';
 import React from 'react';
 
 const Index = () => {
   return (
-    <div className="container-box">
-      <p>oi</p>
+    <div>
+      <p className="text-red-800">oi</p>
     </div>
   );
 };
