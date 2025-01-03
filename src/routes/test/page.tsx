@@ -1,8 +1,4 @@
 import { loadRemoteModule } from '@/utils';
-import {
-  createRemoteSSRComponent,
-  registerRemotes,
-} from '@modern-js/runtime/mf';
 import type React from 'react';
 
 import { Suspense, lazy } from 'react';
