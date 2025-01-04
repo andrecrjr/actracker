@@ -1,10 +1,13 @@
 import { createModuleFederationConfig } from '@module-federation/modern-js';
 
 export default createModuleFederationConfig({
-  name: 'actracker-main',
+  name: 'actracker_main',
   remotes: {},
   shared: {
     react: { singleton: true },
     'react-dom': { singleton: true },
+  },
+  exposes: {
+    './Button': './src/components/ui/button',
   },
 });
