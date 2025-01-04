@@ -24,7 +24,9 @@
     "pre-commit": "npx lint-staged"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^3.9.1",
     "@modern-js/plugin-tailwindcss": "2.63.5",
     "@modern-js/runtime": "2.63.5",

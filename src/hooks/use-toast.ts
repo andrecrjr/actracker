@@ -130,7 +130,6 @@ let memoryState: State = { toasts: [] };
 
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action);
-  // biome-ignore lint/complexity/noForEach: <explanation>
   listeners.forEach(listener => {
     listener(memoryState);
   });
