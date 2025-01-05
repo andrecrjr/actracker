@@ -96,7 +96,25 @@ class HabitPluginManager implements PluginManager {
 
 export const pluginManager = new HabitPluginManager();
 
-// normal way
+//
 // pluginManager.registerPlugin(reminderPlugin);
 //pluginManager.registerPlugin(notesPlugin);
 // pluginManager.registerPlugin(dateRangePlugin);
+
+(async () => {
+  //CORE PLUGINS
+
+  //dateRangePlugin
+  await pluginManager.registerRemotePlugin({
+    remoteUrl: 'http://localhost:3051/remoteEntry.js',
+    scope: 'corePlugin',
+    module: './DueDatePlugin',
+  });
+  await pluginManager.registerRemotePlugin({
+    remoteUrl: 'http://localhost:3051/remoteEntry.js',
+    scope: 'corePlugin',
+    module: './NotePlugin',
+  });
+
+  // TEST your own plugin
+})();
