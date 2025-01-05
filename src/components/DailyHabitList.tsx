@@ -1,12 +1,12 @@
 'use client';
 
-import type { Habit } from '@/app/types/habits';
 import { formatDate } from '@/lib/date-utils';
 import {
   getHabitOrderFromStorage,
   saveHabitOrderToStorage,
 } from '@/lib/habits';
 import { isHabitActiveForDate } from '@/lib/streak-utils';
+import type { Habit } from '@/types';
 import {
   DndContext,
   type DragEndEvent,

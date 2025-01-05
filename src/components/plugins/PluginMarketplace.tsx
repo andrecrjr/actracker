@@ -1,6 +1,5 @@
 'use client';
 
-import type { Habit } from '@/app/types/habits';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,6 +11,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useHabitStore } from '@/hooks/useHabitStore';
 import { pluginManager } from '@/lib/plugins';
+import type { Habit } from '@/types/habits';
 import { Store } from 'lucide-react';
 import { useState } from 'react';
 import { PluginCard } from './PluginCard';

@@ -38,7 +38,7 @@ class HabitPluginManager implements PluginManager {
     }
     // Filter plugins by the `enabled` key
     const enabledPlugins = habit.plugins?.filter(
-      (habit: Habit) => habit.enabled,
+      (habit: PluginHabit) => habit.enabled,
     ) as PluginHabit[];
     if (!enabledPlugins) return [];
     for (const plugin of enabledPlugins) {
@@ -101,7 +101,9 @@ export const pluginManager = new HabitPluginManager();
   });
   // await pluginManager.registerRemotePlugin({
   //   remoteUrl: 'http://localhost:8082/remoteEntry.js',
-  //   scope: 'notesPlugin',
+  //   scope: 'corePlugin',
   //   module: './NotesPlugin',
   // });
+
+  // TEST your own plugin
 })();

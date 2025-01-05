@@ -1,6 +1,5 @@
 'use client';
 
-import type { Habit, HabitFrequency } from '@/app/types/habits';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -18,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { generateHabitId } from '@/lib/habits';
+import type { Habit, HabitFrequency } from '@/types/habits';
 import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 
