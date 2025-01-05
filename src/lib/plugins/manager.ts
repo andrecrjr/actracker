@@ -6,6 +6,8 @@ import type { HabitPlugin, PluginManager, RemoteHabitPlugin } from './types';
 
 class HabitPluginManager implements PluginManager {
   private plugins: Map<string, HabitPlugin> = new Map();
+  private isReady = false;
+  private loadingPromises: Promise<void>[] = [];
 
   registerPlugin(plugin: HabitPlugin): void {
     if (this.plugins.has(plugin.id)) {
@@ -67,18 +69,29 @@ class HabitPluginManager implements PluginManager {
   }
   async registerRemotePlugin(plugin: RemoteHabitPlugin): Promise<void> {
     const { remoteUrl, scope, module } = plugin;
-    try {
-      const loadedPlugin = await loadRemoteModule(remoteUrl, scope, module);
-      if (!loadedPlugin.id || !loadedPlugin.name) {
-        throw new Error('Remote plugin must export an id and name.');
+    const loadingPromise = (async () => {
+      try {
+        const loadedPlugin = await loadRemoteModule(remoteUrl, scope, module);
+        if (!loadedPlugin.id || !loadedPlugin.name) {
+          throw new Error('Remote plugin must export an id and name.');
+        }
+        this.registerPlugin(loadedPlugin);
+        console.log(`Remote plugin ${loadedPlugin.id} registered successfully`);
+      } catch (error) {
+        console.error(
+          `Failed to register remote plugin from ${remoteUrl}:`,
+          error,
+        );
       }
-      this.registerPlugin({ ...loadedPlugin });
-      console.log(`Remote plugin ${loadedPlugin.id} registered successfully`);
-    } catch (error) {
-      console.error(
-        `Failed to register remote plugin from ${remoteUrl}:`,
-        error,
-      );
+    })();
+
+    this.loadingPromises.push(loadingPromise);
+  }
+
+  async ensureReady() {
+    if (!this.isReady) {
+      await Promise.all(this.loadingPromises);
+      this.isReady = true;
     }
   }
 }

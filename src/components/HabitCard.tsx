@@ -25,6 +25,7 @@ export function HabitCard({ habit, currentDate, onToggle }: HabitCardProps) {
 
   useEffect(() => {
     const fetchPluginContent = async () => {
+      await pluginManager.ensureReady();
       const content = (await pluginManager.executeHook(
         'RenderHabitCard',
         habit,
@@ -66,7 +67,7 @@ export function HabitCard({ habit, currentDate, onToggle }: HabitCardProps) {
           )}
           {pluginContent.length > 0 &&
             pluginContent.map((content, index) => (
-              <div key={content.key} className="w-full pt-2">
+              <div key={content?.key || index} className="w-full pt-2">
                 {content}
               </div>
             ))}
