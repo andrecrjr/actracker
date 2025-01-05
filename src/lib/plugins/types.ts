@@ -36,4 +36,5 @@ export interface PluginManager {
   getAllPlugins: () => HabitPlugin[];
   executeHook: <T>(hookName: keyof HabitPlugin, ...args: any[]) => Promise<T[]>;
   registerRemotePlugin: (plugin: RemoteHabitPlugin) => Promise<void>;
+  ensureReady: () => Promise<void>;
 }
