@@ -1,6 +1,2 @@
-export { Habit, PluginHabit } from './habits';
-export {
-  HabitPlugin,
-  PluginManager,
-  RemoteHabitPlugin,
-} from '../lib/plugins/types';
+export * from './habits';
+export * from '@/lib/plugins/types';
