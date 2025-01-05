@@ -1,6 +1,6 @@
-import type { Habit } from '@/app/types/habits';
 import { DateTimePickerForm } from '@/components/ui/date-time-picker-form';
 import { useHabitStore } from '@/hooks/useHabitStore';
+import type { Habit } from '@/types/habits';
 import React, { useState, useEffect } from 'react';
 import type { HabitPlugin } from '../types';
 

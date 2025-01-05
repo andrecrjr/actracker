@@ -1,8 +1,6 @@
-import type { Habit } from '@/app/types/habits';
 import { DateRangePicker } from '@/components/DateRangePicker';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
-import { useHabitStore } from '@/hooks/useHabitStore';
+import type { Habit } from '@/types/habits';
 import React, { useEffect, useState } from 'react';
 import type { HabitPlugin } from '../types';
 

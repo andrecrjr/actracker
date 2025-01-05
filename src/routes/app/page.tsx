@@ -1,4 +1,5 @@
 import Home from '@/components/Home';
+import Test from '@/components/PluginTest';
 import { loadRemoteModule } from '@/utils';
 import type React from 'react';
 

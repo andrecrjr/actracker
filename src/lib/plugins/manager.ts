@@ -1,7 +1,8 @@
-import type { Habit, PluginHabit } from '@/app/types/habits';
 import { notesPlugin, reminderPlugin } from '@/lib/plugins/core';
+import type { Habit, PluginHabit } from '@/types/habits';
+import { loadRemoteModule } from '@/utils';
 import { dateRangePlugin } from './core/dateRangePlugin';
-import type { HabitPlugin, PluginManager } from './types';
+import type { HabitPlugin, PluginManager, RemoteHabitPlugin } from './types';
 
 class HabitPluginManager implements PluginManager {
   private plugins: Map<string, HabitPlugin> = new Map();
@@ -64,10 +65,42 @@ class HabitPluginManager implements PluginManager {
 
     return results;
   }
+  async registerRemotePlugin(plugin: RemoteHabitPlugin): Promise<void> {
+    const { remoteUrl, scope, module } = plugin;
+    try {
+      const loadedPlugin = await loadRemoteModule(remoteUrl, scope, module);
+      if (!loadedPlugin.id || !loadedPlugin.name) {
+        throw new Error('Remote plugin must export an id and name.');
+      }
+      console.log(loadedPlugin);
+      this.registerPlugin({ ...loadedPlugin });
+      console.log(`Remote plugin ${loadedPlugin.id} registered successfully`);
+    } catch (error) {
+      console.error(
+        `Failed to register remote plugin from ${remoteUrl}:`,
+        error,
+      );
+    }
+  }
 }
 
 export const pluginManager = new HabitPluginManager();
 
-pluginManager.registerPlugin(reminderPlugin);
+// pluginManager.registerPlugin(reminderPlugin);
 pluginManager.registerPlugin(notesPlugin);
-pluginManager.registerPlugin(dateRangePlugin);
+// pluginManager.registerPlugin(dateRangePlugin);
+
+(async () => {
+  //dateRangePlugin
+  await pluginManager.registerRemotePlugin({
+    remoteUrl: 'http://localhost:3051/remoteEntry.js',
+    scope: 'reminderPlugin',
+    module: './ReminderPlugin',
+  });
+
+  // await pluginManager.registerRemotePlugin({
+  //   remoteUrl: 'http://localhost:8082/remoteEntry.js',
+  //   scope: 'notesPlugin',
+  //   module: './NotesPlugin',
+  // });
+})();

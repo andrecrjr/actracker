@@ -21,5 +21,5 @@ export async function loadRemoteModule(
   const factory = await container.get(module);
   const Module = factory();
   console.log(Module);
-  return Module;
+  return Module.default;
 }
