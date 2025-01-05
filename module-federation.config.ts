@@ -14,5 +14,6 @@ export default createModuleFederationConfig({
     './Button': './src/components/ui/button',
     './Components': './src/components/ui/',
     './types': './src/types/',
+    './hooks': './src/hooks',
   },
 });

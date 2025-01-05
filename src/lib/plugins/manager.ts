@@ -72,7 +72,6 @@ class HabitPluginManager implements PluginManager {
       if (!loadedPlugin.id || !loadedPlugin.name) {
         throw new Error('Remote plugin must export an id and name.');
       }
-      console.log(loadedPlugin);
       this.registerPlugin({ ...loadedPlugin });
       console.log(`Remote plugin ${loadedPlugin.id} registered successfully`);
     } catch (error) {
@@ -99,11 +98,11 @@ export const pluginManager = new HabitPluginManager();
     scope: 'corePlugin',
     module: './DueDatePlugin',
   });
-  // await pluginManager.registerRemotePlugin({
-  //   remoteUrl: 'http://localhost:8082/remoteEntry.js',
-  //   scope: 'corePlugin',
-  //   module: './NotesPlugin',
-  // });
+  await pluginManager.registerRemotePlugin({
+    remoteUrl: 'http://localhost:3051/remoteEntry.js',
+    scope: 'corePlugin',
+    module: './NotePlugin',
+  });
 
   // TEST your own plugin
 })();

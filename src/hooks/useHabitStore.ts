@@ -44,7 +44,8 @@ export const useHabitStore = () => {
 
   // New: Update specific fields or plugin data
   const handleHabitPartialUpdate = (habitId: string, updates: any) => {
-    const updatedHabits = habits.map(h =>
+    const allHabits = getHabitsFromStorage();
+    const updatedHabits = allHabits.map(h =>
       h.id === habitId
         ? {
             ...h,

@@ -1,8 +1,8 @@
 'use client';
 
-import type { Habit } from '@/app/types/habits';
 import { formatDate } from '@/lib/date-utils';
 import { isHabitActiveForDate } from '@/lib/streak-utils';
+import type { Habit } from '@/types/habits';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
