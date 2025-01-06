@@ -29,3 +29,5 @@ log/
 
 modern.config.local.*
 .output/
+
+.env

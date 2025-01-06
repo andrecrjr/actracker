@@ -103,15 +103,16 @@ export const pluginManager = new HabitPluginManager();
 
 (async () => {
   //CORE PLUGINS
+  const remoteCorePublicPlugins = process.env.CORE_PLUGINS_URL;
 
   //dateRangePlugin
   await pluginManager.registerRemotePlugin({
-    remoteUrl: 'http://localhost:3051/static/remoteEntry.js',
+    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
     scope: 'corePlugin',
     module: './DueDatePlugin',
   });
   await pluginManager.registerRemotePlugin({
-    remoteUrl: 'http://localhost:3051/static/remoteEntry.js',
+    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
     scope: 'corePlugin',
     module: './NotePlugin',
   });
