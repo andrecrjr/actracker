@@ -9,6 +9,12 @@ export default defineConfig({
   runtime: {
     router: true,
   },
+  source: {
+    globalVars: {
+      'process.env.REACT_APP_PLUGINS_STATIC_URL':
+        process.env.REACT_APP_PLUGINS_STATIC_URL,
+    },
+  },
   server: {
     ssr: {
       mode: 'stream',
