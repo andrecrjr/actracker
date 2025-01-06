@@ -1,6 +1,5 @@
-import { Habit, PluginHabit } from '@/types';
+import type { Habit, PluginHabit } from '@/types/habits';
 import { loadRemoteModule } from '@/utils';
-import { loadRemote } from '@module-federation/modern-js/runtime';
 import type { HabitPlugin, PluginManager, RemoteHabitPlugin } from './types';
 
 class HabitPluginManager implements PluginManager {
@@ -37,19 +36,20 @@ class HabitPluginManager implements PluginManager {
       console.log('No plugins enabled');
       return results;
     }
-
+    // Filter plugins by the `enabled` key
     const enabledPlugins = habit.plugins?.filter(
       (habit: PluginHabit) => habit.enabled,
     ) as PluginHabit[];
     if (!enabledPlugins) return [];
-
     for (const plugin of enabledPlugins) {
       const getPlugin = this.plugins.get(plugin?.id || '');
-      if (!getPlugin) continue;
-
+      if (!getPlugin) {
+        return results;
+      }
       const hook = getPlugin[hookName];
       if (typeof hook === 'function') {
         try {
+          //@ts-ignore
           const result = await hook.apply(plugin, [habit, ...args]);
           if (result !== undefined) {
             results.push(result);
@@ -62,9 +62,9 @@ class HabitPluginManager implements PluginManager {
         }
       }
     }
+
     return results;
   }
-
   async registerRemotePlugin(plugin: RemoteHabitPlugin): Promise<void> {
     const { remoteUrl, scope, module } = plugin;
     const loadingPromise = (async () => {
@@ -96,7 +96,15 @@ class HabitPluginManager implements PluginManager {
 
 export const pluginManager = new HabitPluginManager();
 
+//
+// pluginManager.registerPlugin(reminderPlugin);
+//pluginManager.registerPlugin(notesPlugin);
+// pluginManager.registerPlugin(dateRangePlugin);
+
 (async () => {
+  //CORE PLUGINS
+
+  //dateRangePlugin
   await pluginManager.registerRemotePlugin({
     remoteUrl: 'http://localhost:3051/static/remoteEntry.js',
     scope: 'corePlugin',
@@ -107,4 +115,6 @@ export const pluginManager = new HabitPluginManager();
     scope: 'corePlugin',
     module: './NotePlugin',
   });
+
+  // TEST your own plugin
 })();
