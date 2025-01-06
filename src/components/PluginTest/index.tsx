@@ -6,7 +6,7 @@ import { Suspense, lazy } from 'react';
 
 const PluginComponent = lazy(() => {
   return loadRemoteModule(
-    'http://localhost:3051/remoteEntry.js',
+    'http://localhost:3051/static/mf-manifest.json',
     'reminderPlugin',
     './ReminderPlugin',
   ).then(module => ({ default: module.default }));

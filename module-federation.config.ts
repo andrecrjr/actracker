@@ -4,7 +4,7 @@ const deps = require('./package.json').dependencies;
 
 export default createModuleFederationConfig({
   name: 'actracker',
-  filename: 'mainRemote.js',
+  filename: 'static/mainRemote.js',
   shared: {
     react: { singleton: true },
     'react-dom': { singleton: true },
@@ -15,5 +15,8 @@ export default createModuleFederationConfig({
     './Components': './src/components/ui/',
     './types': './src/types/',
     './hooks': './src/hooks',
+  },
+  manifest: {
+    filePath: 'static',
   },
 });
