@@ -77,7 +77,6 @@ export {
   Calendar,
   Card,
   Carousel,
-  Chart,
   Collapsible,
   Command,
   ContextMenu,
