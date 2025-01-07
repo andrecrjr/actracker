@@ -29,6 +29,8 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^3.9.1",
+    "@modern-js/plugin-bff": "2.63.5",
+    "@modern-js/plugin-express": "2.63.5",
     "@modern-js/plugin-tailwindcss": "2.63.5",
     "@modern-js/runtime": "2.63.5",
     "@module-federation/modern-js": "^0.8.7",
@@ -64,6 +66,7 @@
     "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.5.1",
+    "express": "^4.21.2",
     "input-otp": "^1.4.1",
     "lucide-react": "^0.469.0",
     "next-themes": "^0.4.4",
@@ -83,6 +86,7 @@
     "@biomejs/biome": "1.8.3",
     "@modern-js/app-tools": "2.63.5",
     "@modern-js/tsconfig": "2.63.5",
+    "@types/express": "~5.0.0",
     "@types/jest": "~29.2.6",
     "@types/node": "~18.11.19",
     "@types/react": "^18.3.18",
@@ -91,6 +95,8 @@
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.11.1",
     "tailwindcss": "~3.4.14",
+    "ts-node": "~10.8.1",
+    "tsconfig-paths": "~3.14.1",
     "typescript": "~5.0.4"
   }
 }

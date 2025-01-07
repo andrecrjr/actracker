@@ -1,11 +1,17 @@
-import Test from '@/components/PluginTest';
-import React, { Suspense } from 'react';
+import { get as hello } from '@api/hello';
+import { useEffect, useState } from 'react';
 
-const Index = () => {
-  return (
-    <div>
-      <p className="text-red-600 font-bold">oi</p>
-    </div>
-  );
+export default () => {
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    async function fetchMyApi() {
+      const data = await hello();
+      console.log(data);
+    }
+
+    fetchMyApi();
+  }, []);
+
+  return <p>{text}</p>;
 };
-export default Index;
