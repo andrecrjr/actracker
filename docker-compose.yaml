@@ -3,21 +3,24 @@ version: '3.8'
 services:
   app:
     build: .
+    restart: always
     env_file:
-      - ./.env # sua env
+      - ./.env
     ports:
       - '8080:8080'
-    environment:
-      MONGODB_URI: mongodb://mongo:27017/seu_banco_de_dados
     volumes:
       - .:/app
     depends_on:
       - mongo
 
   mongo:
-    image: mongo:latest
+    image: mongo
+    restart: always
     ports:
       - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
     volumes:
       - mongo-data:/data/db
 
