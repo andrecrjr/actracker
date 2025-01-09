@@ -9,6 +9,7 @@ export const get = async () => {
     console.log(data);
     return res.json({ error: 'Not found' }).status(404);
   } catch (error) {
+    console.log('No users');
     return res.json({ error: 'Not found' }).status(404);
   }
 };
