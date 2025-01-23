@@ -11,10 +11,10 @@ export default createModuleFederationConfig({
     ...deps,
   },
   exposes: {
-    './Button': './src/components/ui/button',
-    './Components': './src/components/ui/',
-    './types': './src/types/',
-    './hooks': './src/hooks',
+    './Button': './src/app/components/ui/button',
+    './Components': './src/app/components/ui/',
+    './types': './src/app/types/',
+    './hooks': './src/app/hooks',
   },
   manifest: {
     filePath: 'static',
