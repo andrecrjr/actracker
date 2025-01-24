@@ -3,8 +3,8 @@ import './index.css';
 
 export default function Layout() {
   return (
-    <div>
+    <main>
       <Outlet />
-    </div>
+    </main>
   );
 }
