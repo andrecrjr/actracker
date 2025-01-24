@@ -3,7 +3,7 @@ import {
   getActiveHabits,
   getHabitsFromStorage,
   saveHabitsToStorage,
-} from '@/app/lib/habits';
+} from '@/ac-components/lib/habits';
 import type { Habit } from '@/app/types/habits';
 
 import React, { useEffect, useState } from 'react';

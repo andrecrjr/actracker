@@ -15,7 +15,7 @@ import {
   TooltipTrigger,
 } from '@/ac-components/components/ui/tooltip';
 import { useIsMobile } from '@/ac-components/hooks/use-mobile';
-import { cn } from '@/app/lib/utils';
+import { cn } from '@/ac-components/lib/utils';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

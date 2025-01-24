@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/ac-components/components/ui/card';
 import { Switch } from '@/ac-components/components/ui/switch';
-import type { HabitPlugin } from '@/app/lib/plugins/types';
+import type { HabitPlugin } from '@/ac-components/lib/plugins/types';
 
 interface PluginCardProps {
   plugin: HabitPlugin;

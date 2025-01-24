@@ -1,11 +1,11 @@
 'use client';
 
-import { formatDate } from '@/app/lib/date-utils';
+import { formatDate } from '@/ac-components/lib/date-utils';
 import {
   getHabitOrderFromStorage,
   saveHabitOrderToStorage,
-} from '@/app/lib/habits';
-import { isHabitActiveForDate } from '@/app/lib/streak-utils';
+} from '@/ac-components/lib/habits';
+import { isHabitActiveForDate } from '@/ac-components/lib/streak-utils';
 import type { Habit } from '@/app/types';
 import {
   DndContext,

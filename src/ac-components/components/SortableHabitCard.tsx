@@ -1,7 +1,7 @@
 'use client';
 
-import { formatDate } from '@/app/lib/date-utils';
-import { isHabitActiveForDate } from '@/app/lib/streak-utils';
+import { formatDate } from '@/ac-components/lib/date-utils';
+import { isHabitActiveForDate } from '@/ac-components/lib/streak-utils';
 import type { Habit } from '@/app/types/habits';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';

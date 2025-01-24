@@ -8,7 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/ac-components/components/ui/card';
-import { getArchivedHabits, getHabitsFromStorage } from '@/app/lib/habits';
+import {
+  getArchivedHabits,
+  getHabitsFromStorage,
+} from '@/ac-components/lib/habits';
 import type { Habit } from '@/app/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
 import { ArrowLeft } from 'lucide-react';

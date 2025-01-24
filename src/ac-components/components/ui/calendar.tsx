@@ -3,7 +3,7 @@ import type * as React from 'react';
 import { DayPicker } from 'react-day-picker';
 
 import { buttonVariants } from '@/ac-components/components/ui/button';
-import { cn } from '@/app/lib/utils';
+import { cn } from '@/ac-components/lib/utils';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 

@@ -3,8 +3,8 @@
 import { Input } from '@/ac-components/components/ui/input';
 import { Label } from '@/ac-components/components/ui/label';
 import { Switch } from '@/ac-components/components/ui/switch';
-import { pluginManager } from '@/app/lib/plugins';
-import type { HabitPlugin } from '@/app/lib/plugins/types';
+import { pluginManager } from '@/ac-components/lib/plugins';
+import type { HabitPlugin } from '@/ac-components/lib/plugins/types';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 

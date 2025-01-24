@@ -23,7 +23,7 @@ import {
   getActiveHabits,
   getHabitsFromStorage,
   saveHabitsToStorage,
-} from '@/app/lib/habits';
+} from '@/ac-components/lib/habits';
 import type { Habit } from '@/app/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
 import { Archive, ArrowLeft, Box } from 'lucide-react';

@@ -21,9 +21,9 @@ import { Textarea } from '@/ac-components/components/ui/textarea';
 import { Edit3, PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { formatDate } from '@/app/lib/date-utils';
-import { generateHabitId } from '@/app/lib/habits';
-import { pluginManager } from '@/app/lib/plugins';
+import { formatDate } from '@/ac-components/lib/date-utils';
+import { generateHabitId } from '@/ac-components/lib/habits';
+import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit, HabitFrequency } from '@/app/types/habits';
 import { PluginMarketplace } from './plugins/PluginMarketplace';
 // import { pluginManager } from '@/lib/plugins';

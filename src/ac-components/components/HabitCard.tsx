@@ -1,9 +1,12 @@
 'use client';
 
-import { formatDate } from '@/app/lib/date-utils';
-import { pluginManager } from '@/app/lib/plugins';
-import { calculateStreak, isHabitActiveForDate } from '@/app/lib/streak-utils';
-import { cn } from '@/app/lib/utils';
+import { formatDate } from '@/ac-components/lib/date-utils';
+import { pluginManager } from '@/ac-components/lib/plugins';
+import {
+  calculateStreak,
+  isHabitActiveForDate,
+} from '@/ac-components/lib/streak-utils';
+import { cn } from '@/ac-components/lib/utils';
 import type { Habit } from '@/app/types/habits';
 import { CheckCircle2, Circle, Flame } from 'lucide-react';
 import { useEffect, useState } from 'react';

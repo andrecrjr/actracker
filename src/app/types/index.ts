@@ -1,2 +1,2 @@
 export * from './habits';
-export * from '../lib/plugins/types';
+export * from '../../ac-components/lib/plugins/types';

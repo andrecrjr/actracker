@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ac-components/components/ui/select';
-import { generateHabitId } from '@/app/lib/habits';
+import { generateHabitId } from '@/ac-components/lib/habits';
 import type { Habit, HabitFrequency } from '@/app/types/habits';
 import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';

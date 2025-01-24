@@ -1,6 +1,6 @@
 'use client';
 
-import { formatDisplayDate } from '@/app/lib/date-utils';
+import { formatDisplayDate } from '@/ac-components/lib/date-utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 
