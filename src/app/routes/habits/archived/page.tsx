@@ -12,7 +12,7 @@ import {
   getArchivedHabits,
   getHabitsFromStorage,
 } from '@/ac-components/lib/habits';
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
 import { ArrowLeft } from 'lucide-react';
 

@@ -12,7 +12,7 @@ export default createModuleFederationConfig({
   },
   exposes: {
     './Components': './src/ac-components/components/ui',
-    './types': './src/app/types',
+    './types': './src/ac-components/types',
     './hooks': './src/ac-components/hooks',
   },
   manifest: {

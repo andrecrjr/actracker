@@ -4,7 +4,7 @@ import {
   getHabitsFromStorage,
   saveHabitsToStorage,
 } from '@/ac-components/lib/habits';
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

@@ -16,7 +16,7 @@ import {
 } from '@/ac-components/components/ui/tabs';
 import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
 import { pluginManager } from '@/ac-components/lib/plugins';
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 import { Store } from 'lucide-react';
 import { useState } from 'react';
 import { PluginCard } from './PluginCard';

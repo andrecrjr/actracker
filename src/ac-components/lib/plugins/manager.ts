@@ -1,5 +1,5 @@
-import type { Habit, PluginHabit } from '@/app/types/habits';
-import { loadRemoteModule } from '@/app/utils';
+import type { Habit, PluginHabit } from '@/ac-components/types/habits';
+import { loadRemoteModule } from '@/ac-components/utils';
 import type { HabitPlugin, PluginManager, RemoteHabitPlugin } from './types';
 
 class HabitPluginManager implements PluginManager {

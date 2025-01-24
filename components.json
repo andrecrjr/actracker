@@ -12,9 +12,9 @@
   },
   "aliases": {
     "components": "@/ac-components/components",
-    "utils": "@/lib/utils",
+    "utils": "@/ac-components/lib/utils",
     "ui": "@/ac-components/components/ui",
-    "lib": "@/lib",
+    "lib": "@/ac-components/lib",
     "hooks": "@/ac-components/hooks"
   },
   "iconLibrary": "lucide"

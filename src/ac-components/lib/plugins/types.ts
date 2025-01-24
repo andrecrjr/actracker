@@ -1,4 +1,4 @@
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 
 export interface HabitPlugin {
   id: string;

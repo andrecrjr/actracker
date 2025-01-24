@@ -7,7 +7,7 @@ import {
   isHabitActiveForDate,
 } from '@/ac-components/lib/streak-utils';
 import { cn } from '@/ac-components/lib/utils';
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 import { CheckCircle2, Circle, Flame } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from './ui/badge';

@@ -1,6 +1,6 @@
 import { DateRangePicker } from '@/ac-components/components/DateRangePicker';
 import { Badge } from '@/ac-components/components/ui/badge';
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 import React, { useEffect, useState } from 'react';
 import type { HabitPlugin } from '../types';
 

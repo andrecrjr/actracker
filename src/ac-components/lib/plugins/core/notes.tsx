@@ -1,5 +1,5 @@
 import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import type { HabitPlugin } from '../types';

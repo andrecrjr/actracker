@@ -1,4 +1,4 @@
-import type { Habit } from '@/app/types/habits';
+import type { Habit } from '@/ac-components/types/habits';
 
 export function generateHabitId(): string {
   return Math.random().toString(36).substring(2) + Date.now().toString(36);

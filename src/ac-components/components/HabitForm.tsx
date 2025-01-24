@@ -24,7 +24,7 @@ import { useEffect, useState } from 'react';
 import { formatDate } from '@/ac-components/lib/date-utils';
 import { generateHabitId } from '@/ac-components/lib/habits';
 import { pluginManager } from '@/ac-components/lib/plugins';
-import type { Habit, HabitFrequency } from '@/app/types/habits';
+import type { Habit, HabitFrequency } from '@/ac-components/types/habits';
 import { PluginMarketplace } from './plugins/PluginMarketplace';
 // import { pluginManager } from '@/lib/plugins';
 // import { PluginMarketplace } from './plugins/PluginMarketplace';

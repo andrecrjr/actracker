@@ -6,7 +6,7 @@ import {
   saveHabitOrderToStorage,
 } from '@/ac-components/lib/habits';
 import { isHabitActiveForDate } from '@/ac-components/lib/streak-utils';
-import type { Habit } from '@/app/types';
+import type { Habit } from '@/ac-components/types';
 import {
   DndContext,
   type DragEndEvent,
