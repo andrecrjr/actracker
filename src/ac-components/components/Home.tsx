@@ -1,7 +1,7 @@
-import { DailyHabitList } from '@/app/components/DailyHabitList';
-import { DayNavigation } from '@/app/components/DayNavigation';
-import { HabitForm } from '@/app/components/HabitForm';
-import { Button } from '@/app/components/ui';
+import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
+import { DayNavigation } from '@/ac-components/components/DayNavigation';
+import { HabitForm } from '@/ac-components/components/HabitForm';
+import { Button } from '@/ac-components/components/ui';
 import { getHabitsFromStorage, saveHabitsToStorage } from '@/app/lib/habits';
 import { pluginManager } from '@/app/lib/plugins';
 import type { Habit } from '@/app/types/habits';

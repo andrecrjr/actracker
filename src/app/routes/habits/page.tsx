@@ -1,6 +1,6 @@
 'use client';
 
-import { HabitForm } from '@/app/components/HabitForm';
+import { HabitForm } from '@/ac-components/components/HabitForm';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,10 +10,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/app/components/ui/alert-dialog';
-import { Badge } from '@/app/components/ui/badge';
-import { Button } from '@/app/components/ui/button';
-import { Card, CardHeader, CardTitle } from '@/app/components/ui/card';
+} from '@/ac-components/components/ui/alert-dialog';
+import { Badge } from '@/ac-components/components/ui/badge';
+import { Button } from '@/ac-components/components/ui/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+} from '@/ac-components/components/ui/card';
 import {
   archiveHabit,
   getActiveHabits,

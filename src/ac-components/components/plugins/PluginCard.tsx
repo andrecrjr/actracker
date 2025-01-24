@@ -1,14 +1,14 @@
 'use client';
 
-import { Badge } from '@/app/components/ui/badge';
+import { Badge } from '@/ac-components/components/ui/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/app/components/ui/card';
-import { Switch } from '@/app/components/ui/switch';
+} from '@/ac-components/components/ui/card';
+import { Switch } from '@/ac-components/components/ui/switch';
 import type { HabitPlugin } from '@/app/lib/plugins/types';
 
 interface PluginCardProps {

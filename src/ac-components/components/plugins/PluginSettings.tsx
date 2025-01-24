@@ -1,8 +1,8 @@
 'use client';
 
-import { Input } from '@/app/components/ui/input';
-import { Label } from '@/app/components/ui/label';
-import { Switch } from '@/app/components/ui/switch';
+import { Input } from '@/ac-components/components/ui/input';
+import { Label } from '@/ac-components/components/ui/label';
+import { Switch } from '@/ac-components/components/ui/switch';
 import { pluginManager } from '@/app/lib/plugins';
 import type { HabitPlugin } from '@/app/lib/plugins/types';
 import type React from 'react';

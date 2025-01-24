@@ -1,23 +1,23 @@
 'use client';
 
-import { Button } from '@/app/components/ui/button';
-import { Checkbox } from '@/app/components/ui/checkbox';
+import { Button } from '@/ac-components/components/ui/button';
+import { Checkbox } from '@/ac-components/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/app/components/ui/dialog';
-import { Input } from '@/app/components/ui/input';
+} from '@/ac-components/components/ui/dialog';
+import { Input } from '@/ac-components/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/app/components/ui/select';
-import { Textarea } from '@/app/components/ui/textarea';
+} from '@/ac-components/components/ui/select';
+import { Textarea } from '@/ac-components/components/ui/textarea';
 import { Edit3, PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

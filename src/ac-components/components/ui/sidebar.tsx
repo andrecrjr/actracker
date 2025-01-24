@@ -3,17 +3,17 @@ import { type VariantProps, cva } from 'class-variance-authority';
 import { PanelLeft } from 'lucide-react';
 import * as React from 'react';
 
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
-import { Separator } from '@/app/components/ui/separator';
-import { Sheet, SheetContent } from '@/app/components/ui/sheet';
-import { Skeleton } from '@/app/components/ui/skeleton';
+import { Button } from '@/ac-components/components/ui/button';
+import { Input } from '@/ac-components/components/ui/input';
+import { Separator } from '@/ac-components/components/ui/separator';
+import { Sheet, SheetContent } from '@/ac-components/components/ui/sheet';
+import { Skeleton } from '@/ac-components/components/ui/skeleton';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/app/components/ui/tooltip';
+} from '@/ac-components/components/ui/tooltip';
 import { useIsMobile } from '@/app/hooks/use-mobile';
 import { cn } from '@/app/lib/utils';
 

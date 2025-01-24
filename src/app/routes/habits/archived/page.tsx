@@ -1,13 +1,13 @@
 'use client';
 
-import { Badge } from '@/app/components/ui/badge';
-import { Button } from '@/app/components/ui/button';
+import { Badge } from '@/ac-components/components/ui/badge';
+import { Button } from '@/ac-components/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/app/components/ui/card';
+} from '@/ac-components/components/ui/card';
 import { getArchivedHabits, getHabitsFromStorage } from '@/app/lib/habits';
 import type { Habit } from '@/app/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';

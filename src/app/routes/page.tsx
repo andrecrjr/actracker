@@ -1,6 +1,6 @@
-import Test from '@/app/components/PluginTest';
+import Test from '@/ac-components/components/PluginTest';
 import React, { Suspense } from 'react';
-import Home from '../components/Home';
+import Home from '../../ac-components/components/Home';
 
 const Index = () => {
   return (

@@ -1,4 +1,4 @@
-import Home from '@/app/components/Home';
+import Home from '@/ac-components/components/Home';
 import type React from 'react';
 
 const test: React.FC = () => {

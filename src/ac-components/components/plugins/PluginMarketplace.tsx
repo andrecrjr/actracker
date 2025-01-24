@@ -1,19 +1,19 @@
 'use client';
 
-import { Button } from '@/app/components/ui/button';
+import { Button } from '@/ac-components/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/app/components/ui/dialog';
+} from '@/ac-components/components/ui/dialog';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/app/components/ui/tabs';
+} from '@/ac-components/components/ui/tabs';
 import { useHabitStore } from '@/app/hooks/useHabitStore';
 import { pluginManager } from '@/app/lib/plugins';
 import type { Habit } from '@/app/types/habits';

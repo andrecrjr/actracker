@@ -1,21 +1,21 @@
 'use client';
 
-import { Button } from '@/app/components/ui/button';
+import { Button } from '@/ac-components/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/app/components/ui/dialog';
-import { Input } from '@/app/components/ui/input';
+} from '@/ac-components/components/ui/dialog';
+import { Input } from '@/ac-components/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/app/components/ui/select';
+} from '@/ac-components/components/ui/select';
 import { generateHabitId } from '@/app/lib/habits';
 import type { Habit, HabitFrequency } from '@/app/types/habits';
 import { PlusCircle } from 'lucide-react';
