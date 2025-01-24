@@ -5,7 +5,7 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*", "src/app/*"],
+      "@/*": ["./src/*"],
       "@shared/*": ["./shared/*"],
       "*": ["./@mf-types/*"]
     }

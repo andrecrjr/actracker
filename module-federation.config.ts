@@ -11,9 +11,8 @@ export default createModuleFederationConfig({
     ...deps,
   },
   exposes: {
-    './Button': './src/app/components/ui/button',
-    './Components': './src/app/components/ui/',
-    './types': './src/app/types/',
+    './Components': './src/app/components/ui',
+    './types': './src/app/types',
     './hooks': './src/app/hooks',
   },
   manifest: {

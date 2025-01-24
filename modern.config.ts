@@ -10,14 +10,6 @@ export default defineConfig({
     router: true,
   },
   source: {
-    disableEntryDirs: ['./src/ac-components/'],
-    enableCustomEntry: true,
-    entries: {
-      'ac-components': {
-        entry: './src/ac-components/',
-        disableMount: true,
-      },
-    },
     globalVars: {
       'process.env.REACT_APP_PLUGINS_STATIC_URL':
         process.env.REACT_APP_PLUGINS_STATIC_URL,

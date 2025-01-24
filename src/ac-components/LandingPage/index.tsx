@@ -1,4 +1,3 @@
-import { Link } from '@modern-js/runtime/router';
 import {
   Activity,
   CheckCircle2,

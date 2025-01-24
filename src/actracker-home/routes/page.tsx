@@ -4,6 +4,7 @@ import { Helmet } from '@modern-js/runtime/head';
 const Index = () => (
   <div className="container-box">
     <Helmet>
+      <title>ACTracker - Your Habits as a service</title>
       <link
         rel="icon"
         type="image/x-icon"
