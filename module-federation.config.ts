@@ -11,9 +11,9 @@ export default createModuleFederationConfig({
     ...deps,
   },
   exposes: {
-    './Components': './src/app/components/ui',
+    './Components': './src/ac-components/components/ui',
     './types': './src/app/types',
-    './hooks': './src/app/hooks',
+    './hooks': './src/ac-components/hooks',
   },
   manifest: {
     filePath: 'static',

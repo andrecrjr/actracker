@@ -1,4 +1,4 @@
-import { useHabitStore } from '@/app/hooks/useHabitStore';
+import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
 import type { Habit } from '@/app/types/habits';
 import type React from 'react';
 import { useEffect, useState } from 'react';

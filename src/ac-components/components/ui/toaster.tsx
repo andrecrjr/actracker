@@ -6,7 +6,7 @@ import {
   ToastTitle,
   ToastViewport,
 } from '@/ac-components/components/ui/toast';
-import { useToast } from '@/app/hooks/use-toast';
+import { useToast } from '@/ac-components/hooks/use-toast';
 
 export function Toaster() {
   const { toasts } = useToast();
