@@ -12,6 +12,7 @@ import { useNavigate } from '@modern-js/runtime/router';
 import { Settings } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
+import { HabitCalendar } from './CalendarMode';
 
 export default function Home() {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -77,6 +78,12 @@ export default function Home() {
         <DailyHabitList
           habits={habits}
           currentDate={currentDate}
+          onToggle={handleHabitToggle}
+        />
+        <HabitCalendar
+          currentDate={currentDate}
+          habits={habits}
+          onDateSelect={date => setCurrentDate(date)}
           onToggle={handleHabitToggle}
         />
       </div>
