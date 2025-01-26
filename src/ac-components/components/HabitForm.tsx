@@ -1,5 +1,4 @@
 'use client';
-
 import { Button } from '@/ac-components/components/ui/button';
 import { Checkbox } from '@/ac-components/components/ui/checkbox';
 import {
@@ -18,18 +17,21 @@ import {
   SelectValue,
 } from '@/ac-components/components/ui/select';
 import { Textarea } from '@/ac-components/components/ui/textarea';
-import { Edit3, PlusCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
-
 import { formatDate } from '@/ac-components/lib/date-utils';
 import { generateHabitId } from '@/ac-components/lib/habits';
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit, HabitFrequency } from '@/ac-components/types/habits';
+import { Edit3, PlusCircle } from 'lucide-react';
+import { memo, useCallback, useEffect, useReducer, useState } from 'react';
 import { PluginMarketplace } from './plugins/PluginMarketplace';
-// import { pluginManager } from '@/lib/plugins';
-// import { PluginMarketplace } from './plugins/PluginMarketplace';
 
-const daysOfWeek = [
+type DailyRecurrence = 'unique' | 'recurring';
+type HabitAction =
+  | { type: 'SET_FIELD'; field: keyof Habit; value: any }
+  | { type: 'RESET'; currentDate: string }
+  | { type: 'SET_DAILY_TYPE'; dailyType: DailyRecurrence };
+
+const DAYS_OF_WEEK = [
   { label: 'Sunday', value: 0 },
   { label: 'Monday', value: 1 },
   { label: 'Tuesday', value: 2 },
@@ -39,205 +41,282 @@ const daysOfWeek = [
   { label: 'Saturday', value: 6 },
 ] as const;
 
-interface HabitFormProps {
+type HabitFormProps = {
   habit?: Habit | null;
   currentDate: Date;
   onSave: (updatedHabit: Habit) => void;
-}
+};
 
-export function HabitForm({ habit, currentDate, onSave }: HabitFormProps) {
-  const [open, setOpen] = useState(false);
+const habitReducer = (state: Habit, action: HabitAction): Habit => {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return { ...state, [action.field]: action.value };
+    case 'RESET':
+      return getInitialState(undefined, action.currentDate);
+    case 'SET_DAILY_TYPE':
+      return {
+        ...state,
+        endDate: action.dailyType === 'unique' ? state.startDate : undefined,
+        frequency: 'daily',
+      };
+    default:
+      return state;
+  }
+};
 
-  const [habitState, setHabitState] = useState<Habit>({
-    id: habit?.id ?? generateHabitId(),
-    title: habit?.title ?? '',
-    description: habit?.description ?? '',
-    frequency: habit?.frequency ?? 'daily',
-    startDate: habit?.startDate ?? formatDate(currentDate),
-    endDate: habit?.endDate,
-    daysOfWeek: habit?.daysOfWeek ?? [],
-    specificDayOfMonth: habit?.specificDayOfMonth ?? null,
-    repeatMonthly: habit?.repeatMonthly ?? false,
-    completedDates: habit?.completedDates ?? [],
-    hidden: habit?.hidden ?? false,
-    plugins: habit?.plugins ?? [],
-  });
+const getInitialState = (
+  habit?: Habit | null,
+  currentDate?: string,
+): Habit => ({
+  id: habit?.id ?? generateHabitId(),
+  title: habit?.title ?? '',
+  description: habit?.description ?? '',
+  frequency: habit?.frequency ?? 'daily',
+  startDate: habit?.startDate ?? currentDate!,
+  endDate: habit?.endDate,
+  daysOfWeek: habit?.daysOfWeek ?? [],
+  specificDayOfMonth: habit?.specificDayOfMonth ?? null,
+  repeatMonthly: habit?.repeatMonthly ?? false,
+  completedDates: habit?.completedDates ?? [],
+  hidden: habit?.hidden ?? false,
+  plugins: habit?.plugins ?? [],
+});
+
+const DailyTypeSelector = memo(
+  ({
+    dailyType,
+    onTypeChange,
+  }: {
+    dailyType: DailyRecurrence;
+    onTypeChange: (type: DailyRecurrence) => void;
+  }) => (
+    <div className="grid grid-cols-2 gap-2 mb-4">
+      <Button
+        variant={dailyType === 'unique' ? 'default' : 'outline'}
+        onClick={() => onTypeChange('unique')}
+        type="button"
+      >
+        Single Day
+      </Button>
+      <Button
+        variant={dailyType === 'recurring' ? 'default' : 'outline'}
+        onClick={() => onTypeChange('recurring')}
+        type="button"
+      >
+        Recurring
+      </Button>
+    </div>
+  ),
+);
+
+const WeeklyConfig = memo(
+  ({
+    daysOfWeek,
+    onDaysChange,
+  }: {
+    daysOfWeek: number[];
+    onDaysChange: (days: number[]) => void;
+  }) => (
+    <div className="space-y-4">
+      <label className="text-sm font-medium">Select Days</label>
+      <div className="flex flex-wrap gap-3">
+        {DAYS_OF_WEEK.map(day => (
+          <label key={day.value} className="flex items-center gap-2">
+            <Checkbox
+              checked={daysOfWeek.includes(day.value)}
+              onCheckedChange={checked =>
+                onDaysChange(
+                  checked
+                    ? [...daysOfWeek, day.value]
+                    : daysOfWeek.filter(d => d !== day.value),
+                )
+              }
+            />
+            <span className="text-sm">{day.label}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  ),
+);
+
+const MonthlyConfig = memo(
+  ({
+    dayOfMonth,
+    repeatMonthly,
+    onDayChange,
+    onRepeatChange,
+  }: {
+    dayOfMonth: number | null;
+    repeatMonthly?: boolean;
+    onDayChange: (day: number | null) => void;
+    onRepeatChange: (repeat: boolean) => void;
+  }) => (
+    <div className="space-y-4">
+      <div className="grid gap-2">
+        <label className="text-sm font-medium">Day of Month</label>
+        <Input
+          type="number"
+          value={dayOfMonth ?? ''}
+          onChange={e =>
+            onDayChange(e.target.value ? parseInt(e.target.value) : null)
+          }
+          min="1"
+          max="31"
+        />
+      </div>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          checked={repeatMonthly}
+          onCheckedChange={checked => onRepeatChange(!!checked)}
+        />
+        <span className="text-sm">Repeat Monthly</span>
+      </label>
+    </div>
+  ),
+);
+
+const useHabitState = (habit?: Habit | null, currentDate?: Date) => {
+  const initialDate = formatDate(currentDate!);
+  const [state, dispatch] = useReducer(
+    habitReducer,
+    getInitialState(habit, initialDate),
+  );
+  const dailyType = state.endDate ? 'unique' : 'recurring';
 
   useEffect(() => {
     if (habit) {
-      setHabitState({
-        id: habit.id,
-        title: habit.title,
-        description: habit.description ?? '',
-        frequency: habit.frequency ?? 'daily',
-        startDate: habit.startDate,
-        endDate: habit.endDate,
-        daysOfWeek: habit.daysOfWeek ?? [],
-        specificDayOfMonth: habit.specificDayOfMonth ?? null,
-        repeatMonthly: habit.repeatMonthly ?? false,
-        completedDates: habit.completedDates ?? [],
-        hidden: habit.hidden ?? false,
-        plugins: habit.plugins ?? [],
-      });
+      dispatch({ type: 'SET_FIELD', field: 'id', value: habit.id });
     }
   }, [habit]);
 
-  const updateHabitField = (field: keyof Habit, value: any) => {
-    setHabitState(prev => ({ ...prev, [field]: value }));
-  };
+  const setDailyType = useCallback((type: DailyRecurrence) => {
+    dispatch({ type: 'SET_DAILY_TYPE', dailyType: type });
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const setField = useCallback((field: keyof Habit, value: any) => {
+    dispatch({ type: 'SET_FIELD', field, value });
+  }, []);
 
-    await pluginManager.executeHook('onHabitCreate', habitState);
-    onSave(habitState);
+  const reset = useCallback((currentDate: string) => {
+    dispatch({ type: 'RESET', currentDate });
+  }, []);
 
-    if (!habit) {
-      setHabitState({
-        id: generateHabitId(),
-        title: '',
-        description: '',
-        frequency: 'daily',
-        startDate: formatDate(currentDate),
-        endDate: undefined,
-        daysOfWeek: [],
-        specificDayOfMonth: null,
-        repeatMonthly: false,
-        completedDates: [],
-        hidden: false,
-        plugins: [],
-      });
-    }
+  return { state, dailyType, setDailyType, setField, reset };
+};
 
-    setOpen(false);
-  };
+export const HabitForm = ({ habit, currentDate, onSave }: HabitFormProps) => {
+  const [open, setOpen] = useState(false);
+  const { state, dailyType, setDailyType, setField, reset } = useHabitState(
+    habit,
+    currentDate,
+  );
+  const currentDateStr = formatDate(currentDate);
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      try {
+        await pluginManager.executeHook('onHabitCreate', state);
+        onSave(state);
+        setOpen(false);
+        if (!habit) reset(currentDateStr);
+      } catch (error) {
+        console.error('Habit save failed:', error);
+      }
+    },
+    [state, onSave, habit, reset, currentDateStr],
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">
-          {habit ? (
-            <>
-              <Edit3 className="mr-2 h-4 w-4" />
-              Edit Habit
-            </>
-          ) : (
-            <>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Create New Habit
-            </>
-          )}
+        <Button
+          className="w-full"
+          aria-label={habit ? 'Edit habit' : 'Create new habit'}
+        >
+          {habit ? <Edit3 className="mr-2" /> : <PlusCircle className="mr-2" />}
+          {habit ? 'Edit Habit' : 'New Habit'}
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{habit ? 'Edit Habit' : 'Create New Habit'}</DialogTitle>
+          <DialogTitle className="text-xl">
+            {habit ? 'Edit Habit' : 'Create Habit'}
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <Input
-            placeholder="Habit title"
-            value={habitState.title}
-            onChange={e => updateHabitField('title', e.target.value)}
-            required
-          />
+        <form onSubmit={handleSubmit} className="grid gap-4">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Habit Name</label>
+            <Input
+              value={state.title}
+              onChange={e => setField('title', e.target.value)}
+              required
+              autoFocus
+            />
+          </div>
 
-          <Textarea
-            placeholder="Description (optional)"
-            value={habitState.description}
-            onChange={e => updateHabitField('description', e.target.value)}
-            rows={3}
-          />
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Description</label>
+            <Textarea
+              value={state.description}
+              onChange={e => setField('description', e.target.value)}
+              rows={2}
+            />
+          </div>
 
-          <Select
-            value={habitState.frequency}
-            onValueChange={(value: HabitFrequency) =>
-              updateHabitField('frequency', value)
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select frequency" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="daily">Daily</SelectItem>
-              <SelectItem value="weekly">Weekly</SelectItem>
-              <SelectItem value="monthly">Monthly</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Frequency</label>
+            <Select
+              value={state.frequency}
+              onValueChange={v => setField('frequency', v as HabitFrequency)}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          {habitState.frequency === 'weekly' && (
-            <div className="space-y-4">
-              <label className="text-sm font-medium">
-                Select Days of the Week
-              </label>
-              <div className="flex gap-2 flex-wrap mt-2">
-                {daysOfWeek.map(day => (
-                  <label
-                    key={day.value}
-                    className="flex items-center space-x-2"
-                  >
-                    <Checkbox
-                      checked={habitState?.daysOfWeek?.includes(day.value)}
-                      onCheckedChange={() =>
-                        updateHabitField(
-                          'daysOfWeek',
-                          habitState?.daysOfWeek?.includes(day.value)
-                            ? habitState?.daysOfWeek.filter(
-                                d => d !== day.value,
-                              )
-                            : [
-                                ...(habitState.daysOfWeek as number[]),
-                                day.value,
-                              ],
-                        )
-                      }
-                    />
-                    <span>{day.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+          {state.frequency === 'daily' && (
+            <DailyTypeSelector
+              dailyType={dailyType as DailyRecurrence}
+              onTypeChange={setDailyType}
+            />
           )}
 
-          {habitState.frequency === 'monthly' && (
-            <div className="space-y-4">
-              <Input
-                type="number"
-                placeholder="Day of the month"
-                value={habitState.specificDayOfMonth || ''}
-                onChange={e =>
-                  updateHabitField(
-                    'specificDayOfMonth',
-                    e.target.value ? Number.parseInt(e.target.value) : null,
-                  )
-                }
-              />
-              <label className="flex items-center space-x-2">
-                <Checkbox
-                  checked={habitState.repeatMonthly}
-                  onCheckedChange={checked =>
-                    updateHabitField('repeatMonthly', checked === true)
-                  }
-                />
-                <span>Repeat Monthly</span>
-              </label>
-            </div>
+          {state.frequency === 'weekly' && (
+            <WeeklyConfig
+              daysOfWeek={state?.daysOfWeek!}
+              onDaysChange={days => setField('daysOfWeek', days)}
+            />
+          )}
+
+          {state.frequency === 'monthly' && (
+            <MonthlyConfig
+              dayOfMonth={state.specificDayOfMonth!}
+              repeatMonthly={state.repeatMonthly}
+              onDayChange={day => setField('specificDayOfMonth', day)}
+              onRepeatChange={repeat => setField('repeatMonthly', repeat)}
+            />
           )}
 
           <PluginMarketplace
-            habit={habitState}
-            onHabitUpdate={updatedHabit => {
-              setHabitState(updatedHabit);
-              updateHabitField('plugins', updatedHabit.plugins || []);
-            }}
+            habit={state}
+            onHabitUpdate={updated => setField('plugins', updated.plugins)}
           />
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full mt-4">
             {habit ? 'Save Changes' : 'Create Habit'}
           </Button>
         </form>
       </DialogContent>
     </Dialog>
   );
-}
+};
