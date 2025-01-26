@@ -17,13 +17,15 @@ import { HabitCalendar } from './CalendarMode';
 export default function Home() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [calendarMode, setCalendarMode] = useState(
-    JSON.parse(localStorage.getItem('calendarMode')! ?? false),
-  );
+  const [calendarMode, setCalendarMode] = useState(false);
   const router = useNavigate();
 
   useEffect(() => {
     setHabits(getHabitsFromStorage());
+  }, []);
+
+  useEffect(() => {
+    setCalendarMode(JSON.parse(localStorage.getItem('calendarMode')! ?? false));
   }, []);
 
   const handleHabitCreate = (newHabit: Habit) => {
