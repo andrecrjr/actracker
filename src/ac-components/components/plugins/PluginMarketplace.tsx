@@ -17,7 +17,7 @@ import {
 import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit } from '@/ac-components/types/habits';
-import { Store } from 'lucide-react';
+import { PlugIcon, Store } from 'lucide-react';
 import { useState } from 'react';
 import { PluginCard } from './PluginCard';
 import { PluginSettings } from './PluginSettings';
@@ -101,8 +101,8 @@ export function PluginMarketplace({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full mt-4">
-          <Store className="mr-2 h-4 w-4" />
+        <Button variant="outline" className="w-full sm:mt-4">
+          <PlugIcon className="mr-2 h-4 w-4" />
           Manage Plugins
         </Button>
       </DialogTrigger>

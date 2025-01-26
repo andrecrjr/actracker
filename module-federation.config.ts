@@ -14,6 +14,7 @@ export default createModuleFederationConfig({
     './Components': './src/ac-components/components/ui',
     './types': './src/ac-components/types',
     './hooks': './src/ac-components/hooks',
+    './utils': './src/ac-components/lib/utils',
   },
   manifest: {
     filePath: 'static',

@@ -101,3 +101,5 @@ export function getWeekDays(date: Date): Date[] {
   }
   return days;
 }
+
+export * from './date-utils';
