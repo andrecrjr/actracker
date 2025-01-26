@@ -84,17 +84,14 @@ export default function Home() {
             <Settings className="h-4 w-4" />
           </Button>
         </div>
-
+        <div className="mb-4">
+          <HabitForm onSave={handleHabitCreate} currentDate={currentDate} />
+        </div>
         <section className={`contents ${calendarMode ? 'hidden' : ''}`}>
           <DayNavigation
             currentDate={currentDate}
             onDateChange={setCurrentDate}
           />
-
-          <div className="mb-8">
-            <HabitForm onSave={handleHabitCreate} currentDate={currentDate} />
-          </div>
-
           <DailyHabitList
             habits={habits}
             currentDate={currentDate}
