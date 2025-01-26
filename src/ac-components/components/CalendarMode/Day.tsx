@@ -51,7 +51,7 @@ export const DayCell = ({
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
-    <Tooltip.Root delayDuration={100}>
+    <Tooltip.Root delayDuration={50}>
       <Tooltip.Trigger asChild>
         <button
           onClick={onSelect}

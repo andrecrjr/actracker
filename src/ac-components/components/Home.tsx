@@ -9,7 +9,7 @@ import {
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit } from '@/ac-components/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
-import { Settings } from 'lucide-react';
+import { Calendar, Settings } from 'lucide-react';
 
 import { useEffect, useState } from 'react';
 import { HabitCalendar } from './CalendarMode';
@@ -17,6 +17,9 @@ import { HabitCalendar } from './CalendarMode';
 export default function Home() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [calendarMode, setCalendarMode] = useState(
+    JSON.parse(localStorage.getItem('calendarMode')! ?? false),
+  );
   const router = useNavigate();
 
   useEffect(() => {
@@ -60,32 +63,50 @@ export default function Home() {
           <Button
             variant="outline"
             size="icon"
+            className="ml-auto"
+            onClick={() => {
+              setCalendarMode(!calendarMode);
+              localStorage.setItem(
+                'calendarMode',
+                JSON.stringify(!calendarMode),
+              );
+            }}
+          >
+            <Calendar className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
             onClick={() => router('/habits')}
           >
             <Settings className="h-4 w-4" />
           </Button>
         </div>
 
-        <DayNavigation
-          currentDate={currentDate}
-          onDateChange={setCurrentDate}
-        />
+        <section className={`contents ${calendarMode ? 'hidden' : ''}`}>
+          <DayNavigation
+            currentDate={currentDate}
+            onDateChange={setCurrentDate}
+          />
 
-        <div className="mb-8">
-          <HabitForm onSave={handleHabitCreate} currentDate={currentDate} />
-        </div>
+          <div className="mb-8">
+            <HabitForm onSave={handleHabitCreate} currentDate={currentDate} />
+          </div>
 
-        <DailyHabitList
-          habits={habits}
-          currentDate={currentDate}
-          onToggle={handleHabitToggle}
-        />
-        <HabitCalendar
-          currentDate={currentDate}
-          habits={habits}
-          onDateSelect={date => setCurrentDate(date)}
-          onToggle={handleHabitToggle}
-        />
+          <DailyHabitList
+            habits={habits}
+            currentDate={currentDate}
+            onToggle={handleHabitToggle}
+          />
+        </section>
+        <section className={`contents ${!calendarMode ? 'hidden' : ''}`}>
+          <HabitCalendar
+            currentDate={currentDate}
+            habits={habits}
+            onDateSelect={date => setCurrentDate(date)}
+            onToggle={handleHabitToggle}
+          />
+        </section>
       </div>
     </div>
   );
