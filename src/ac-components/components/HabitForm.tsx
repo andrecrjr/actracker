@@ -29,7 +29,8 @@ type DailyRecurrence = 'unique' | 'recurring';
 type HabitAction =
   | { type: 'SET_FIELD'; field: keyof Habit; value: any }
   | { type: 'RESET'; currentDate: string }
-  | { type: 'SET_DAILY_TYPE'; dailyType: DailyRecurrence };
+  | { type: 'SET_DAILY_TYPE'; dailyType: DailyRecurrence }
+  | { type: 'UPDATE_ALL'; value: Habit };
 
 const DAYS_OF_WEEK = [
   { label: 'Sunday', value: 0 },
@@ -59,6 +60,8 @@ const habitReducer = (state: Habit, action: HabitAction): Habit => {
         endDate: action.dailyType === 'unique' ? state.startDate : undefined,
         frequency: 'daily',
       };
+    case 'UPDATE_ALL':
+      return action.value;
     default:
       return state;
   }
@@ -195,22 +198,26 @@ const useHabitState = (habit?: Habit | null, currentDate?: Date) => {
   }, []);
 
   const setField = useCallback((field: keyof Habit, value: any) => {
+    console.log('no set field', value);
     dispatch({ type: 'SET_FIELD', field, value });
+  }, []);
+
+  const setAllField = useCallback((value: Habit) => {
+    console.log('no set field', value);
+    dispatch({ type: 'UPDATE_ALL', value });
   }, []);
 
   const reset = useCallback((currentDate: string) => {
     dispatch({ type: 'RESET', currentDate });
   }, []);
 
-  return { state, dailyType, setDailyType, setField, reset };
+  return { state, dailyType, setDailyType, setField, reset, setAllField };
 };
 
 export const HabitForm = ({ habit, currentDate, onSave }: HabitFormProps) => {
   const [open, setOpen] = useState(false);
-  const { state, dailyType, setDailyType, setField, reset } = useHabitState(
-    habit,
-    currentDate,
-  );
+  const { state, dailyType, setDailyType, setField, reset, setAllField } =
+    useHabitState(habit, currentDate);
   const currentDateStr = formatDate(currentDate);
 
   const handleSubmit = useCallback(
@@ -309,7 +316,9 @@ export const HabitForm = ({ habit, currentDate, onSave }: HabitFormProps) => {
 
           <PluginMarketplace
             habit={state}
-            onHabitUpdate={updated => setField('plugins', updated.plugins)}
+            onHabitUpdate={updated => {
+              setAllField(updated);
+            }}
           />
 
           <Button type="submit" className="w-full mt-4">

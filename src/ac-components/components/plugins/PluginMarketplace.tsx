@@ -149,7 +149,6 @@ export function PluginMarketplace({
                       plugin={plugin}
                       settings={getPluginSettings(plugin.id)}
                       onSettingsChange={newHabit => {
-                        console.log(newHabit);
                         handleSettingsChange(plugin.id, newHabit as Habit);
                       }}
                       habit={habit}
