@@ -46,6 +46,7 @@ type HabitFormProps = {
   habit?: Habit | null;
   currentDate: Date;
   onSave: (updatedHabit: Habit) => void;
+  buttonClass?: string;
 };
 
 const habitReducer = (state: Habit, action: HabitAction): Habit => {
@@ -198,7 +199,6 @@ const useHabitState = (habit?: Habit | null, currentDate?: Date) => {
   }, []);
 
   const setField = useCallback((field: keyof Habit, value: any) => {
-    console.log('no set field', value);
     dispatch({ type: 'SET_FIELD', field, value });
   }, []);
 
@@ -214,7 +214,12 @@ const useHabitState = (habit?: Habit | null, currentDate?: Date) => {
   return { state, dailyType, setDailyType, setField, reset, setAllField };
 };
 
-export const HabitForm = ({ habit, currentDate, onSave }: HabitFormProps) => {
+export const HabitForm = ({
+  habit,
+  currentDate,
+  onSave,
+  buttonClass,
+}: HabitFormProps) => {
   const [open, setOpen] = useState(false);
   const { state, dailyType, setDailyType, setField, reset, setAllField } =
     useHabitState(habit, currentDate);
@@ -239,11 +244,10 @@ export const HabitForm = ({ habit, currentDate, onSave }: HabitFormProps) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className="w-full"
+          className={`w-auto mx-auto ${buttonClass}`}
           aria-label={habit ? 'Edit habit' : 'Create new habit'}
         >
-          {habit ? <Edit3 className="mr-2" /> : <PlusCircle className="mr-2" />}
-          {habit ? 'Edit Habit' : 'New Habit'}
+          {habit ? <Edit3 /> : <PlusCircle />}
         </Button>
       </DialogTrigger>
 

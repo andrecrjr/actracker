@@ -26,7 +26,7 @@ import {
 } from '@/ac-components/lib/habits';
 import type { Habit } from '@/ac-components/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
-import { Archive, ArrowLeft, Box } from 'lucide-react';
+import { Archive, ArchiveIcon, ArrowLeft, Box } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function HabitsPage() {
@@ -80,20 +80,15 @@ export default function HabitsPage() {
             onClick={() => router('/app/habits/archived')}
             className="text-muted-foreground"
           >
-            <Box className="h-4 w-4 mr-2" />
+            <ArchiveIcon className="h-4 w-4" />
             Archived
           </Button>
         </div>
-
-        {/*
-          Aqui podemos ter um botão (ou o componente que
-          você já tem) para *criar* um novo hábito.
-        */}
         <HabitForm
           currentDate={new Date()}
           onSave={newHabit => handleHabitCreate(newHabit)}
+          buttonClass="w-full"
         />
-
         <div className="space-y-4 mt-4">
           {habits.map(habit => (
             <Card key={habit.id} className="habit-card">
@@ -113,6 +108,13 @@ export default function HabitsPage() {
                     </Badge>
                   </div>
                 </div>
+                <div className="flex items-center gap-2">
+                  <HabitForm
+                    habit={habit}
+                    currentDate={new Date()}
+                    onSave={updatedHabit => handleHabitUpdate(updatedHabit)}
+                  />
+                </div>
 
                 <div className="flex items-center gap-2">
                   {/* Botão para Arquivar */}
@@ -126,11 +128,6 @@ export default function HabitsPage() {
                   </Button>
                 </div>
               </CardHeader>
-              <HabitForm
-                habit={habit}
-                currentDate={new Date()}
-                onSave={updatedHabit => handleHabitUpdate(updatedHabit)}
-              />
             </Card>
           ))}
 
