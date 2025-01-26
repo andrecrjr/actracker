@@ -6,7 +6,15 @@ import { cn } from '@/ac-components/lib/utils';
 import { getMonthWeeks, getWeekDays } from '@/ac-components/lib/utils';
 import type { Habit } from '@/ac-components/types/habits';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { ChevronLeft, ChevronRight, Flame, Trophy, X } from 'lucide-react';
+import {
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Circle,
+  Flame,
+  Trophy,
+  X,
+} from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../ui';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
@@ -178,13 +186,16 @@ const HabitDayItem = ({
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium">{habit.title}</span>
         {onToggle && (
-          <Button
-            variant={habit.completed ? 'default' : 'outline'}
-            size="sm"
+          <button
             onClick={() => onToggle(habit.id, dateStr)}
+            className="focus:outline-none transform transition-transform hover:scale-110"
           >
-            {habit.completed ? 'Completed' : 'Mark Complete'}
-          </Button>
+            {habit.completed ? (
+              <CheckCircle2 className="h-6 w-6 text-primary" />
+            ) : (
+              <Circle className="h-6 w-6 text-muted-foreground/50" />
+            )}
+          </button>
         )}
       </div>
 
