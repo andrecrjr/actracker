@@ -92,7 +92,7 @@ function HabitReorderButton({
         </>
       ) : (
         <>
-          <PencilIcon className="h-4 w-4 mr-2" /> Reorder
+          <PencilIcon className="h-4 w-4" />
         </>
       )}
     </Button>
