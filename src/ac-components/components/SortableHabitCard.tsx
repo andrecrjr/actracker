@@ -5,13 +5,10 @@ import { isHabitActiveForDate } from '@/ac-components/lib/streak-utils';
 import type { Habit } from '@/ac-components/types/habits';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, PencilIcon } from 'lucide-react';
-import { saveHabitsToStorage } from '../lib/habits';
+import { GripVertical } from 'lucide-react';
 import { updateHabitPartial } from '../lib/utils';
 import { HabitCard } from './HabitCard';
 import { HabitForm } from './HabitForm';
-import { PluginMarketplace } from './plugins/PluginMarketplace';
-import { Button } from './ui';
 
 interface SortableHabitCardProps {
   habit: Habit;
