@@ -15,7 +15,8 @@ import {
 } from '@/ac-components/components/ui/tabs';
 import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
 import { pluginManager } from '@/ac-components/lib/plugins';
-import type { Habit } from '@/ac-components/types/habits';
+import { HabitPlugin } from '@/ac-components/types';
+import type { Habit, PluginHabit } from '@/ac-components/types/habits';
 import { PlugIcon, Store } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -33,29 +34,26 @@ export function PluginManagement({
 }: PluginManagementProps) {
   const [activeTab, setActiveTab] = useState<string>(activeTabStatus);
   const form = useFormContext(); // Access react-hook-form context
-  const { getCurrentHabitById } = useHabitStore();
   if (!form.control) {
     throw new Error('Not loaded control');
   }
-  console.log(form.getValues('plugins'));
+  const pluginForm: PluginHabit[] = form.getValues('plugins');
   const availablePlugins = pluginManager.getAllPlugins();
-  console.log(availablePlugins);
+  console.log('pluginForm', pluginForm);
 
   const isPluginEnabled = (pluginId: string) => {
-    return habit?.plugins?.some(p => p.id === pluginId && p.enabled) ?? false;
+    console.log(pluginId);
+    return pluginForm?.some(p => p.id === pluginId && p.enabled) ?? false;
   };
 
   const getPluginSettings = (pluginId: string) => {
-    return habit?.plugins?.find(p => p.id === pluginId)?.settings ?? {};
+    return pluginForm?.find(p => p.id === pluginId)?.settings ?? {};
   };
 
   const handlePluginToggle = (pluginId: string, enabled: boolean) => {
     const plugin = pluginManager.getPlugin(pluginId);
     if (!plugin) return;
-
-    const updatedPlugins = form.formState.defaultValues?.plugins
-      ? [...form.formState.defaultValues?.plugins]
-      : [];
+    const updatedPlugins = pluginForm ? [...pluginForm] : [];
     const pluginIndex = updatedPlugins.findIndex(p => p.id === pluginId);
 
     if (pluginIndex === -1 && enabled) {
@@ -72,6 +70,7 @@ export function PluginManagement({
         enabled,
       };
     }
+
     // Trigger form update for plugins
     form.setValue(`plugins`, updatedPlugins);
   };
@@ -111,7 +110,10 @@ export function PluginManagement({
             className="space-y-4 max-h-[400px] overflow-y-auto"
           >
             {availablePlugins
-              .filter(plugin => isPluginEnabled(plugin.id))
+              .filter(plugin => {
+                console.log(isPluginEnabled(plugin.id), plugin.id);
+                return isPluginEnabled(plugin.id);
+              })
               .map(plugin => (
                 <div key={plugin.id} className="space-y-4">
                   <PluginCard
@@ -120,20 +122,15 @@ export function PluginManagement({
                     onToggle={enabled => handlePluginToggle(plugin.id, enabled)}
                   />
                   {plugin.settings && (
-                    <Controller
-                      control={form.control}
-                      name={`plugins.${plugin.id}`}
-                      render={({ field }) => (
-                        <PluginSettings
-                          plugin={plugin}
-                          settings={getPluginSettings(plugin.id)}
-                          onSettingsChange={newSettings => {
-                            // Update the form state with new settings
-                            field.onChange(newSettings);
-                          }}
-                          habit={habit}
-                        />
-                      )}
+                    <PluginSettings
+                      plugin={plugin}
+                      settings={getPluginSettings(plugin.id)}
+                      onSettingsChange={newSettings => {
+                        // Update the form state with new settings
+                        console.log('settings', newSettings);
+                        // form.setValue(`plugins`, newSettings);
+                      }}
+                      habit={habit}
                     />
                   )}
                 </div>

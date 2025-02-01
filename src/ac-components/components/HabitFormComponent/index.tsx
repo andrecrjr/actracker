@@ -70,40 +70,35 @@ export const HabitForm = ({
       daysOfWeek: habit?.daysOfWeek || [],
       specificDayOfMonth: habit?.specificDayOfMonth || undefined,
       repeatMonthly: habit?.repeatMonthly || false,
-      plugins: [{}],
-      pluginData: [],
+      plugins: habit?.plugins || undefined,
+      pluginData: habit?.pluginData || [],
       archived: false,
       hidden: false,
-      archiveDate: null,
       completedDates: [],
     },
   });
 
-  // Watch for changes in the form and persist them to local storage
+  // Watch for changes in the form and persist them to sync with local storage
   useEffect(() => {
-    // Fetch the current habits from local storage
     const habits = getHabitsFromStorage();
 
-    // Watch for changes in the form values
     const subscription = form.watch(formValues => {
-      // Find the index of the habit being updated (if it exists)
+      if (!formValues?.id) {
+        return;
+      }
       const habitIndex = habits.findIndex(habit => habit.id === formValues.id);
 
       if (habitIndex !== -1) {
-        // Replace the existing habit with the updated one
         habits[habitIndex] = formValues as Habit;
       } else {
-        // Add the new habit if it doesn't exist
         habits.push(formValues as Habit);
       }
 
-      // Save the updated habits back to local storage
       saveHabitsToStorage(habits);
     });
 
-    // Cleanup the subscription when the component unmounts
     return () => subscription.unsubscribe();
-  }, [form]); // Depend on `form` instead of `form.watch`
+  }, [form]);
 
   const onSubmit = async (data: HabitFormData) => {
     try {
