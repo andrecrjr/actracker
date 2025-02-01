@@ -23,11 +23,11 @@ import { PluginCard } from './PluginCard';
 import { PluginSettings } from './PluginSettings';
 
 interface PluginMarketplaceProps {
-  habit?: Habit;
+  habit: Habit;
   onHabitUpdate: (updatedHabit: Habit) => void;
 }
 
-export function PluginMarketplace({
+export function PluginManagement({
   habit,
   onHabitUpdate,
 }: PluginMarketplaceProps) {
@@ -108,7 +108,7 @@ export function PluginMarketplace({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Plugin Marketplace</DialogTitle>
+          <DialogTitle>Plugin Management</DialogTitle>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>

@@ -23,7 +23,7 @@ import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit, HabitFrequency } from '@/ac-components/types/habits';
 import { Edit3, PlusCircle } from 'lucide-react';
 import { memo, useCallback, useEffect, useReducer, useState } from 'react';
-import { PluginMarketplace } from './plugins/PluginMarketplace';
+import { PluginManagement } from './plugins/PluginManagement';
 
 type DailyRecurrence = 'unique' | 'recurring';
 type HabitAction =
@@ -318,7 +318,7 @@ export const HabitForm = ({
             />
           )}
 
-          <PluginMarketplace
+          <PluginManagement
             habit={state}
             onHabitUpdate={updated => {
               setAllField(updated);
