@@ -5,14 +5,16 @@ import { Label } from '@/ac-components/components/ui/label';
 import { Switch } from '@/ac-components/components/ui/switch';
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { HabitPlugin } from '@/ac-components/lib/plugins/types';
+import { Habit } from '@/ac-components/types';
 import type React from 'react';
 import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface PluginSettingsProps {
   plugin: HabitPlugin;
   settings: Record<string, any>;
   onSettingsChange: (data: any) => void;
-  habit?: any; // Pass the current habit if needed for RenderHabitForm
+  habit?: Habit; // Pass the current habit if needed for RenderHabitForm
 }
 
 export function PluginSettings({
@@ -21,7 +23,8 @@ export function PluginSettings({
   onSettingsChange,
   habit,
 }: PluginSettingsProps) {
-  console.log(plugin);
+  const form = useFormContext(); // Access react-hook-form context
+  const currentHabit = form.getValues() as Habit;
   const [pluginForm, setPluginForm] = useState<React.ReactNode>(null);
   const [loading, setLoading] = useState(true);
 
@@ -35,9 +38,10 @@ export function PluginSettings({
         if (plugin.RenderHabitForm) {
           const form = (await pluginManager.executeHook(
             'RenderHabitForm',
-            habit,
+            currentHabit,
             handleSettingChange,
           )) as React.ReactNode;
+          console.log('comps', form);
           setPluginForm(form);
         } else {
           setPluginForm(null); // No custom form provided
@@ -51,9 +55,9 @@ export function PluginSettings({
         setLoading(false);
       }
     };
-
+    console.log(settings);
     fetchPluginForm();
-  }, [plugin, habit]);
+  }, [plugin]);
 
   if (loading) {
     return <div>Loading plugin settings...</div>;

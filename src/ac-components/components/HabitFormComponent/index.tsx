@@ -328,12 +328,7 @@ export const HabitForm = ({
                   <FormItem>
                     <FormLabel>Plugins</FormLabel>
                     <FormControl>
-                      <PluginManagement
-                        habit={habit || undefined}
-                        onHabitUpdate={(updatedHabit: Habit) => {
-                          // form.setValue('plugins', updatedHabit.plugins);
-                        }}
-                      />
+                      <PluginManagement habit={habit || undefined} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

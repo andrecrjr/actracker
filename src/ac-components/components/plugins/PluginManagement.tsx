@@ -26,11 +26,13 @@ import { PluginSettings } from './PluginSettings';
 interface PluginManagementProps {
   habit?: Habit;
   activeTabStatus?: 'available' | 'enabled';
+  pluginUpdate?: (updatedHabit: Habit) => VoidFunction;
 }
 
 export function PluginManagement({
   habit,
   activeTabStatus = 'available',
+  pluginUpdate,
 }: PluginManagementProps) {
   const [activeTab, setActiveTab] = useState<string>(activeTabStatus);
   const form = useFormContext(); // Access react-hook-form context
@@ -39,10 +41,8 @@ export function PluginManagement({
   }
   const pluginForm: PluginHabit[] = form.getValues('plugins');
   const availablePlugins = pluginManager.getAllPlugins();
-  console.log('pluginForm', pluginForm);
 
   const isPluginEnabled = (pluginId: string) => {
-    console.log(pluginId);
     return pluginForm?.some(p => p.id === pluginId && p.enabled) ?? false;
   };
 
@@ -110,10 +110,7 @@ export function PluginManagement({
             className="space-y-4 max-h-[400px] overflow-y-auto"
           >
             {availablePlugins
-              .filter(plugin => {
-                console.log(isPluginEnabled(plugin.id), plugin.id);
-                return isPluginEnabled(plugin.id);
-              })
+              .filter(plugin => isPluginEnabled(plugin.id))
               .map(plugin => (
                 <div key={plugin.id} className="space-y-4">
                   <PluginCard
@@ -121,18 +118,22 @@ export function PluginManagement({
                     isEnabled={true}
                     onToggle={enabled => handlePluginToggle(plugin.id, enabled)}
                   />
-                  {plugin.settings && (
+                  {(plugin.settings && (
                     <PluginSettings
                       plugin={plugin}
                       settings={getPluginSettings(plugin.id)}
-                      onSettingsChange={newSettings => {
+                      onSettingsChange={(updatedHabitSettings: Habit) => {
                         // Update the form state with new settings
-                        console.log('settings', newSettings);
+                        console.log('settings', updatedHabitSettings);
+                        form.setValue(`plugins`, updatedHabitSettings.plugins);
+                        form.setValue(
+                          `pluginData`,
+                          updatedHabitSettings.pluginData,
+                        );
                         // form.setValue(`plugins`, newSettings);
                       }}
-                      habit={habit}
                     />
-                  )}
+                  )) || <p>No Settings Found</p>}
                 </div>
               ))}
           </TabsContent>

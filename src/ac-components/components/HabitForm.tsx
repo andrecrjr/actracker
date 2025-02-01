@@ -318,12 +318,7 @@ export const HabitForm = ({
             />
           )}
 
-          <PluginManagement
-            habit={state}
-            onHabitUpdate={updated => {
-              setAllField(updated);
-            }}
-          />
+          <PluginManagement habit={state} />
 
           <Button type="submit" className="w-full mt-4">
             {habit ? 'Save Changes' : 'Create Habit'}
