@@ -24,15 +24,11 @@ import { PluginCard } from './PluginCard';
 import { PluginSettings } from './PluginSettings';
 
 interface PluginManagementProps {
-  habit?: Habit;
   activeTabStatus?: 'available' | 'enabled';
-  pluginUpdate?: (updatedHabit: Habit) => VoidFunction;
 }
 
 export function PluginManagement({
-  habit,
   activeTabStatus = 'available',
-  pluginUpdate,
 }: PluginManagementProps) {
   const [activeTab, setActiveTab] = useState<string>(activeTabStatus);
   const form = useFormContext(); // Access react-hook-form context
@@ -123,14 +119,11 @@ export function PluginManagement({
                       plugin={plugin}
                       settings={getPluginSettings(plugin.id)}
                       onSettingsChange={(updatedHabitSettings: Habit) => {
-                        // Update the form state with new settings
-                        console.log('settings', updatedHabitSettings);
                         form.setValue(`plugins`, updatedHabitSettings.plugins);
                         form.setValue(
                           `pluginData`,
                           updatedHabitSettings.pluginData,
                         );
-                        // form.setValue(`plugins`, newSettings);
                       }}
                     />
                   )) || <p>No Settings Found</p>}

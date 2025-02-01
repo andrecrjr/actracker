@@ -19,9 +19,7 @@ interface PluginSettingsProps {
 
 export function PluginSettings({
   plugin,
-  settings,
   onSettingsChange,
-  habit,
 }: PluginSettingsProps) {
   const form = useFormContext(); // Access react-hook-form context
   const currentHabit = form.getValues() as Habit;
@@ -55,7 +53,7 @@ export function PluginSettings({
         setLoading(false);
       }
     };
-    console.log(settings);
+    console.log(currentHabit, plugin.id);
     fetchPluginForm();
   }, [plugin]);
 

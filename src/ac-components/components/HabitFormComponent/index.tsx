@@ -328,7 +328,7 @@ export const HabitForm = ({
                   <FormItem>
                     <FormLabel>Plugins</FormLabel>
                     <FormControl>
-                      <PluginManagement habit={habit || undefined} />
+                      <PluginManagement />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

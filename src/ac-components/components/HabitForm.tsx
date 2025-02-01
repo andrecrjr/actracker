@@ -317,9 +317,7 @@ export const HabitForm = ({
               onRepeatChange={repeat => setField('repeatMonthly', repeat)}
             />
           )}
-
-          <PluginManagement habit={state} />
-
+          <PluginManagement />
           <Button type="submit" className="w-full mt-4">
             {habit ? 'Save Changes' : 'Create Habit'}
           </Button>
