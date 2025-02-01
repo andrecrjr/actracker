@@ -1,5 +1,6 @@
 'use client';
 
+import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import { formatDate } from '@/ac-components/lib/date-utils';
 import { isHabitActiveForDate } from '@/ac-components/lib/streak-utils';
 import type { Habit } from '@/ac-components/types/habits';
@@ -8,7 +9,6 @@ import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 import { updateHabitPartial } from '../lib/utils';
 import { HabitCard } from './HabitCard';
-import { HabitForm } from './HabitForm';
 
 interface SortableHabitCardProps {
   habit: Habit;

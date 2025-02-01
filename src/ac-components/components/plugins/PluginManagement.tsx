@@ -25,13 +25,15 @@ import { PluginSettings } from './PluginSettings';
 interface PluginMarketplaceProps {
   habit: Habit;
   onHabitUpdate: (updatedHabit: Habit) => void;
+  activeTabStatus?: 'available' | 'enabled';
 }
 
 export function PluginManagement({
   habit,
   onHabitUpdate,
+  activeTabStatus = 'available',
 }: PluginMarketplaceProps) {
-  const [activeTab, setActiveTab] = useState('available');
+  const [activeTab, setActiveTab] = useState<string>(activeTabStatus);
   const { getCurrentHabitById } = useHabitStore();
   const availablePlugins = pluginManager.getAllPlugins();
 
@@ -135,6 +137,7 @@ export function PluginManagement({
             value="enabled"
             className="space-y-4 max-h-[400px] overflow-y-auto"
           >
+            <Button variant={'default'}>Save Plugin Config</Button>
             {availablePlugins
               .filter(plugin => isPluginEnabled(plugin.id))
               .map(plugin => (
