@@ -1,6 +1,6 @@
 import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
-import { HabitForm } from '@/ac-components/components/HabitForm';
+import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import {
   getHabitsFromStorage,
   saveHabitsToStorage,

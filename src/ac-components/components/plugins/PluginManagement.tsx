@@ -1,5 +1,4 @@
 'use client';
-
 import { Button } from '@/ac-components/components/ui/button';
 import {
   Dialog,
@@ -19,23 +18,28 @@ import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit } from '@/ac-components/types/habits';
 import { PlugIcon, Store } from 'lucide-react';
 import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { PluginCard } from './PluginCard';
 import { PluginSettings } from './PluginSettings';
 
-interface PluginMarketplaceProps {
-  habit: Habit;
-  onHabitUpdate: (updatedHabit: Habit) => void;
+interface PluginManagementProps {
+  habit?: Habit;
   activeTabStatus?: 'available' | 'enabled';
 }
 
 export function PluginManagement({
   habit,
-  onHabitUpdate,
   activeTabStatus = 'available',
-}: PluginMarketplaceProps) {
+}: PluginManagementProps) {
   const [activeTab, setActiveTab] = useState<string>(activeTabStatus);
+  const form = useFormContext(); // Access react-hook-form context
   const { getCurrentHabitById } = useHabitStore();
+  if (!form.control) {
+    throw new Error('Not loaded control');
+  }
+  console.log(form.getValues('plugins'));
   const availablePlugins = pluginManager.getAllPlugins();
+  console.log(availablePlugins);
 
   const isPluginEnabled = (pluginId: string) => {
     return habit?.plugins?.some(p => p.id === pluginId && p.enabled) ?? false;
@@ -49,7 +53,9 @@ export function PluginManagement({
     const plugin = pluginManager.getPlugin(pluginId);
     if (!plugin) return;
 
-    const updatedPlugins = habit?.plugins ? [...habit.plugins] : [];
+    const updatedPlugins = form.formState.defaultValues?.plugins
+      ? [...form.formState.defaultValues?.plugins]
+      : [];
     const pluginIndex = updatedPlugins.findIndex(p => p.id === pluginId);
 
     if (pluginIndex === -1 && enabled) {
@@ -66,38 +72,8 @@ export function PluginManagement({
         enabled,
       };
     }
-
-    if (habit) {
-      onHabitUpdate({
-        ...habit,
-        plugins: updatedPlugins,
-      });
-    }
-  };
-
-  const handleSettingsChange = (pluginId: string, habit: Habit) => {
-    console.log('new hab', habit);
-    const updatedHabit =
-      getCurrentHabitById(habit?.id || '') || (habit as Habit);
-    const updatedPlugins = updatedHabit?.plugins
-      ? [...updatedHabit.plugins]
-      : [];
-    const pluginIndex = updatedPlugins.findIndex(p => p.id === pluginId);
-
-    if (pluginIndex !== -1) {
-      // Update settings for the specified plugin
-      updatedPlugins[pluginIndex] = {
-        ...updatedPlugins[pluginIndex],
-        ...habit,
-      };
-
-      if (habit) {
-        onHabitUpdate({
-          ...updatedHabit,
-          ...habit,
-        });
-      }
-    }
+    // Trigger form update for plugins
+    form.setValue(`plugins`, updatedPlugins);
   };
 
   return (
@@ -112,13 +88,11 @@ export function PluginManagement({
         <DialogHeader>
           <DialogTitle>Plugin Management</DialogTitle>
         </DialogHeader>
-
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="available">Available</TabsTrigger>
             <TabsTrigger value="enabled">Enabled</TabsTrigger>
           </TabsList>
-
           <TabsContent
             value="available"
             className="space-y-4 max-h-[400px] overflow-y-auto"
@@ -132,12 +106,10 @@ export function PluginManagement({
               />
             ))}
           </TabsContent>
-
           <TabsContent
             value="enabled"
             className="space-y-4 max-h-[400px] overflow-y-auto"
           >
-            <Button variant={'default'}>Save Plugin Config</Button>
             {availablePlugins
               .filter(plugin => isPluginEnabled(plugin.id))
               .map(plugin => (
@@ -148,13 +120,20 @@ export function PluginManagement({
                     onToggle={enabled => handlePluginToggle(plugin.id, enabled)}
                   />
                   {plugin.settings && (
-                    <PluginSettings
-                      plugin={plugin}
-                      settings={getPluginSettings(plugin.id)}
-                      onSettingsChange={newHabit => {
-                        handleSettingsChange(plugin.id, newHabit as Habit);
-                      }}
-                      habit={habit}
+                    <Controller
+                      control={form.control}
+                      name={`plugins.${plugin.id}`}
+                      render={({ field }) => (
+                        <PluginSettings
+                          plugin={plugin}
+                          settings={getPluginSettings(plugin.id)}
+                          onSettingsChange={newSettings => {
+                            // Update the form state with new settings
+                            field.onChange(newSettings);
+                          }}
+                          habit={habit}
+                        />
+                      )}
                     />
                   )}
                 </div>

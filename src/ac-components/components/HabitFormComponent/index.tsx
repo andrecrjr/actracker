@@ -24,13 +24,18 @@ import {
   SelectValue,
 } from '@/ac-components/components/ui/select';
 import { Textarea } from '@/ac-components/components/ui/textarea';
+import { HabitFormContextProvider } from '@/ac-components/hooks/useHabitFormContext';
 import { formatDate } from '@/ac-components/lib/date-utils';
-import { generateHabitId } from '@/ac-components/lib/habits';
+import {
+  generateHabitId,
+  getHabitsFromStorage,
+  saveHabitsToStorage,
+} from '@/ac-components/lib/habits';
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { Habit, HabitFrequency } from '@/ac-components/types/habits';
 import { Edit3, PlusCircle } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { PluginManagement } from '../plugins/PluginManagement';
 
 type HabitFormData = Omit<
@@ -56,6 +61,7 @@ export const HabitForm = ({
 
   const form = useForm<Habit>({
     defaultValues: {
+      id: habit?.id || generateHabitId(),
       title: habit?.title || '',
       description: habit?.description || '',
       frequency: habit?.frequency || 'daily',
@@ -64,12 +70,40 @@ export const HabitForm = ({
       daysOfWeek: habit?.daysOfWeek || [],
       specificDayOfMonth: habit?.specificDayOfMonth || undefined,
       repeatMonthly: habit?.repeatMonthly || false,
-      plugins: [],
+      plugins: [{}],
       pluginData: [],
+      archived: false,
+      hidden: false,
+      archiveDate: null,
+      completedDates: [],
     },
   });
 
-  const { control, handleSubmit, watch, setValue } = form;
+  // Watch for changes in the form and persist them to local storage
+  useEffect(() => {
+    // Fetch the current habits from local storage
+    const habits = getHabitsFromStorage();
+
+    // Watch for changes in the form values
+    const subscription = form.watch(formValues => {
+      // Find the index of the habit being updated (if it exists)
+      const habitIndex = habits.findIndex(habit => habit.id === formValues.id);
+
+      if (habitIndex !== -1) {
+        // Replace the existing habit with the updated one
+        habits[habitIndex] = formValues as Habit;
+      } else {
+        // Add the new habit if it doesn't exist
+        habits.push(formValues as Habit);
+      }
+
+      // Save the updated habits back to local storage
+      saveHabitsToStorage(habits);
+    });
+
+    // Cleanup the subscription when the component unmounts
+    return () => subscription.unsubscribe();
+  }, [form]); // Depend on `form` instead of `form.watch`
 
   const onSubmit = async (data: HabitFormData) => {
     try {
@@ -105,27 +139,31 @@ export const HabitForm = ({
     }
   };
 
-  const frequency = watch('frequency');
+  useEffect(() => {
+    console.log('form', form);
+  }, []);
+
+  const frequency = form.watch('frequency');
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          className={`w-auto mx-auto ${buttonClass}`}
-          aria-label={habit ? 'Edit habit' : 'Create new habit'}
-        >
-          {habit ? <Edit3 /> : <PlusCircle />}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{habit ? 'Edit Habit' : 'Create Habit'}</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+    <FormProvider {...form}>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            className={`w-auto mx-auto ${buttonClass}`}
+            aria-label={habit ? 'Edit habit' : 'Create new habit'}
+          >
+            {habit ? <Edit3 /> : <PlusCircle />}
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{habit ? 'Edit Habit' : 'Create Habit'}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
             {/* Title */}
             <FormField
-              control={control}
+              control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -140,7 +178,7 @@ export const HabitForm = ({
 
             {/* Description */}
             <FormField
-              control={control}
+              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -159,14 +197,14 @@ export const HabitForm = ({
 
             {/* Frequency */}
             <FormField
-              control={control}
+              control={form.control}
               name="frequency"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Frequency</FormLabel>
                   <Select
                     onValueChange={value =>
-                      setValue('frequency', value as HabitFrequency)
+                      form.setValue('frequency', value as HabitFrequency)
                     }
                     value={field.value}
                   >
@@ -189,7 +227,7 @@ export const HabitForm = ({
             {/* Weekly Configuration */}
             {frequency === 'weekly' && (
               <FormField
-                control={control}
+                control={form.control}
                 name="daysOfWeek"
                 render={({ field }) => (
                   <FormItem>
@@ -211,7 +249,7 @@ export const HabitForm = ({
                                   ? [...(field.value || []), day] // Add the day if checked
                                   : field.value?.filter(d => d !== day); // Remove the day if unchecked
 
-                                setValue('daysOfWeek', updatedDays, {
+                                form.setValue('daysOfWeek', updatedDays, {
                                   shouldValidate: true,
                                 });
                               }}
@@ -243,7 +281,7 @@ export const HabitForm = ({
             {frequency === 'monthly' && (
               <>
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="specificDayOfMonth"
                   render={({ field }) => (
                     <FormItem>
@@ -263,7 +301,7 @@ export const HabitForm = ({
                   )}
                 />
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="repeatMonthly"
                   render={({ field }) => (
                     <FormItem>
@@ -273,7 +311,7 @@ export const HabitForm = ({
                             type="checkbox"
                             checked={field.value}
                             onChange={e =>
-                              setValue('repeatMonthly', e.target.checked)
+                              form.setValue('repeatMonthly', e.target.checked)
                             }
                           />
                           <span>Repeat Monthly</span>
@@ -286,19 +324,19 @@ export const HabitForm = ({
               </>
             )}
 
-            {/* Plugin Marketplace */}
-            {habit && (
+            {/* Plugin Management */}
+            {
               <FormField
-                control={control}
+                control={form.control}
                 name="plugins"
                 render={() => (
                   <FormItem>
                     <FormLabel>Plugins</FormLabel>
                     <FormControl>
                       <PluginManagement
-                        habit={habit}
-                        onHabitUpdate={updatedHabit => {
-                          setValue('plugins', updatedHabit.plugins);
+                        habit={habit || undefined}
+                        onHabitUpdate={(updatedHabit: Habit) => {
+                          // form.setValue('plugins', updatedHabit.plugins);
                         }}
                       />
                     </FormControl>
@@ -306,15 +344,15 @@ export const HabitForm = ({
                   </FormItem>
                 )}
               />
-            )}
+            }
 
             {/* Submit Button */}
             <Button type="submit" className="w-full mt-4">
               {habit ? 'Save Changes' : 'Create Habit'}
             </Button>
           </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </FormProvider>
   );
 };

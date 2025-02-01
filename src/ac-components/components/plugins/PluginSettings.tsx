@@ -1,12 +1,9 @@
-'use client';
-
 import { Input } from '@/ac-components/components/ui/input';
 import { Label } from '@/ac-components/components/ui/label';
 import { Switch } from '@/ac-components/components/ui/switch';
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { HabitPlugin } from '@/ac-components/lib/plugins/types';
-import type React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PluginSettingsProps {
   plugin: HabitPlugin;
@@ -24,8 +21,14 @@ export function PluginSettings({
   const [pluginForm, setPluginForm] = useState<React.ReactNode>(null);
   const [loading, setLoading] = useState(true);
 
-  const handleSettingChange = (data: any) => {
-    onSettingsChange({ ...habit, ...data });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+    const { name, value } = e.target;
+    const updatedSettings = { ...settings, [name]: value };
+    onSettingsChange({
+      ...habit,
+      pluginData: { [plugin.id]: updatedSettings },
+    });
   };
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export function PluginSettings({
           const form = (await pluginManager.executeHook(
             'RenderHabitForm',
             habit,
-            handleSettingChange,
+            handleInputChange,
           )) as React.ReactNode;
           setPluginForm(form);
         } else {
@@ -50,7 +53,6 @@ export function PluginSettings({
         setLoading(false);
       }
     };
-
     fetchPluginForm();
   }, [plugin, habit]);
 
@@ -61,7 +63,16 @@ export function PluginSettings({
   return (
     <div className="space-y-4">
       {/* Render the custom form if available */}
-      {pluginForm}
+      {pluginForm || (
+        <>
+          {Object.entries(settings).map(([key, value]) => (
+            <div key={key} className="space-y-2">
+              <Label>{key}</Label>
+              <Input name={key} value={value} onChange={handleInputChange} />
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 }
