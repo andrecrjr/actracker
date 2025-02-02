@@ -1,6 +1,6 @@
 'use client';
 
-import { HabitForm } from '@/ac-components/components/HabitForm';
+import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -66,10 +66,10 @@ export default function HabitsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="container mx-auto px-4 py-4 max-w-2xl">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => router('/app')}>
+            <Button variant="ghost" size="icon" onClick={() => router('/')}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <h1 className="text-3xl font-bold">Manage Habits</h1>
@@ -77,7 +77,7 @@ export default function HabitsPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => router('/app/habits/archived')}
+            onClick={() => router('/habits/archived')}
             className="text-muted-foreground"
           >
             <ArchiveIcon className="h-4 w-4" />

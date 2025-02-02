@@ -1,6 +1,6 @@
 import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
-import { HabitForm } from '@/ac-components/components/HabitForm';
+import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import {
   getHabitsFromStorage,
   saveHabitsToStorage,
@@ -53,17 +53,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
-      <div className="container mx-auto px-2 py-8 max-w-2xl flex-1">
-        <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 text-center mb-4">
+      <div className="container mx-auto px-2 py-4 max-w-3xl flex-1">
+        <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 text-left mb-2">
           AC Tracker
         </h1>
-
-        {isHabitFormOpen && (
-          <div className="mb-4">
-            <HabitForm onSave={handleHabitCreate} currentDate={currentDate} />
-          </div>
-        )}
-
         {!calendarMode ? (
           <>
             <DayNavigation

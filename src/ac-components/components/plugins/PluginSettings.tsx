@@ -5,54 +5,46 @@ import { Label } from '@/ac-components/components/ui/label';
 import { Switch } from '@/ac-components/components/ui/switch';
 import { pluginManager } from '@/ac-components/lib/plugins';
 import type { HabitPlugin } from '@/ac-components/lib/plugins/types';
+import { Habit } from '@/ac-components/types';
 import type React from 'react';
 import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface PluginSettingsProps {
-  plugin: HabitPlugin;
-  settings: Record<string, any>;
   onSettingsChange: (data: any) => void;
-  habit?: any; // Pass the current habit if needed for RenderHabitForm
+  habit?: Habit; // Pass the current habit if needed for RenderHabitForm
 }
 
-export function PluginSettings({
-  plugin,
-  settings,
-  onSettingsChange,
-  habit,
-}: PluginSettingsProps) {
+export function PluginSettings({ onSettingsChange }: PluginSettingsProps) {
+  const form = useFormContext(); // Access react-hook-form context
+  const currentHabit = form.getValues() as Habit;
   const [pluginForm, setPluginForm] = useState<React.ReactNode>(null);
   const [loading, setLoading] = useState(true);
 
   const handleSettingChange = (data: any) => {
-    onSettingsChange({ ...habit, ...data });
+    onSettingsChange(data);
   };
 
   useEffect(() => {
     const fetchPluginForm = async () => {
       try {
-        if (plugin.RenderHabitForm) {
-          const form = (await pluginManager.executeHook(
-            'RenderHabitForm',
-            habit,
-            handleSettingChange,
-          )) as React.ReactNode;
-          setPluginForm(form);
-        } else {
-          setPluginForm(null); // No custom form provided
-        }
+        const form = (await pluginManager.executeHook(
+          'RenderHabitForm',
+          currentHabit,
+          handleSettingChange,
+        )) as React.ReactNode[];
+        setPluginForm(form);
       } catch (error) {
         console.error(
-          `Error executing RenderHabitForm for plugin ${plugin.id}:`,
+          `Error executing RenderHabitForm for plugin ${error}:`,
           error,
         );
       } finally {
         setLoading(false);
       }
     };
-
     fetchPluginForm();
-  }, [plugin, habit]);
+  }, []);
 
   if (loading) {
     return <div>Loading plugin settings...</div>;
@@ -60,7 +52,7 @@ export function PluginSettings({
 
   return (
     <div className="space-y-4">
-      {/* Render the custom form if available */}
+      {/* Render the custom settings form if available */}
       {pluginForm}
     </div>
   );
