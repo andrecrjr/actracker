@@ -76,7 +76,7 @@ export function PluginManagement({
           Manage Plugins
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[80%]">
         <DialogHeader>
           <DialogTitle>Plugin Management</DialogTitle>
         </DialogHeader>

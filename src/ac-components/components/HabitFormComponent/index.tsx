@@ -151,7 +151,7 @@ export const HabitForm = ({
             {habit ? <Edit3 /> : <PlusCircle />}
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-md">
+        <DialogContent className="sm:max-w-[70%]">
           <DialogHeader>
             <DialogTitle>{habit ? 'Edit Habit' : 'Create Habit'}</DialogTitle>
           </DialogHeader>
