@@ -103,17 +103,17 @@ export function PluginManagement({
             className="space-y-4 max-h-[400px] overflow-y-auto"
           >
             <div className="space-y-4">
-              {
-                <PluginSettings
-                  onSettingsChange={(updatedHabitSettings: Habit) => {
-                    form.setValue(`plugins`, updatedHabitSettings.plugins);
-                    form.setValue(
-                      `pluginData`,
-                      updatedHabitSettings.pluginData,
-                    );
-                  }}
-                />
-              }
+              <PluginSettings
+                onSettingsChange={(updatedHabitSettings: Habit) => {
+                  Object.keys(updatedHabitSettings).map((formField: string) => {
+                    formField !== 'id' &&
+                      form.setValue(
+                        formField,
+                        updatedHabitSettings[formField as keyof Habit],
+                      );
+                  });
+                }}
+              />
             </div>
           </TabsContent>
         </Tabs>

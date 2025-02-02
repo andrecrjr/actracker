@@ -30,12 +30,12 @@ export function DayNavigation({
   };
 
   return (
-    <div className="flex items-center justify-between mb-6">
+    <div className="flex items-center justify-between">
       <Button variant="outline" size="icon" onClick={goToPreviousDay}>
         <ChevronLeft className="h-4 w-4" />
       </Button>
       <div className="flex flex-col items-center">
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-sm md:text-xl font-semibold">
           {formatDisplayDate(currentDate)}
         </h2>
         <Button variant="link" onClick={goToToday} className="text-sm">
