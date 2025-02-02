@@ -46,29 +46,26 @@ export function PluginManagement({
     return pluginForm?.find(p => p.id === pluginId)?.settings ?? {};
   };
 
-  const handlePluginToggle = (pluginId: string, enabled: boolean) => {
-    const plugin = pluginManager.getPlugin(pluginId);
+  let handlePluginToggle = (pluginId: string, enabled: boolean) => {
+    let plugin = pluginManager.getPlugin(pluginId);
     if (!plugin) return;
-    const updatedPlugins = pluginForm ? [...pluginForm] : [];
-    const pluginIndex = updatedPlugins.findIndex(p => p.id === pluginId);
+
+    let updatedPlugins = pluginForm ? [...pluginForm] : [];
+    let pluginIndex = updatedPlugins.findIndex(p => p.id === pluginId);
 
     if (pluginIndex === -1 && enabled) {
-      // Enable the plugin if it doesn't already exist
+      // Add the plugin if it's not already in the list
       updatedPlugins.push({
         id: pluginId,
         enabled: true,
-        settings: plugin.settings || {}, // Use default settings
+        settings: plugin.settings || {},
       });
     } else if (pluginIndex !== -1) {
-      // Update the plugin's `enabled` state
-      updatedPlugins[pluginIndex] = {
-        ...updatedPlugins[pluginIndex],
-        enabled,
-      };
+      // Update the plugin's enabled status
+      updatedPlugins[pluginIndex] = { ...updatedPlugins[pluginIndex], enabled };
     }
 
-    // Trigger form update for plugins
-    form.setValue(`plugins`, updatedPlugins);
+    form.setValue('plugins', updatedPlugins);
   };
 
   return (
@@ -105,30 +102,19 @@ export function PluginManagement({
             value="enabled"
             className="space-y-4 max-h-[400px] overflow-y-auto"
           >
-            {availablePlugins
-              .filter(plugin => isPluginEnabled(plugin.id))
-              .map(plugin => (
-                <div key={plugin.id} className="space-y-4">
-                  <PluginCard
-                    plugin={plugin}
-                    isEnabled={true}
-                    onToggle={enabled => handlePluginToggle(plugin.id, enabled)}
-                  />
-                  {(plugin.settings && (
-                    <PluginSettings
-                      plugin={plugin}
-                      settings={getPluginSettings(plugin.id)}
-                      onSettingsChange={(updatedHabitSettings: Habit) => {
-                        form.setValue(`plugins`, updatedHabitSettings.plugins);
-                        form.setValue(
-                          `pluginData`,
-                          updatedHabitSettings.pluginData,
-                        );
-                      }}
-                    />
-                  )) || <p>No Settings Found</p>}
-                </div>
-              ))}
+            <div className="space-y-4">
+              {
+                <PluginSettings
+                  onSettingsChange={(updatedHabitSettings: Habit) => {
+                    form.setValue(`plugins`, updatedHabitSettings.plugins);
+                    form.setValue(
+                      `pluginData`,
+                      updatedHabitSettings.pluginData,
+                    );
+                  }}
+                />
+              }
+            </div>
           </TabsContent>
         </Tabs>
       </DialogContent>

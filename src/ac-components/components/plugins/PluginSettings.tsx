@@ -11,16 +11,11 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface PluginSettingsProps {
-  plugin: HabitPlugin;
-  settings: Record<string, any>;
   onSettingsChange: (data: any) => void;
   habit?: Habit; // Pass the current habit if needed for RenderHabitForm
 }
 
-export function PluginSettings({
-  plugin,
-  onSettingsChange,
-}: PluginSettingsProps) {
+export function PluginSettings({ onSettingsChange }: PluginSettingsProps) {
   const form = useFormContext(); // Access react-hook-form context
   const currentHabit = form.getValues() as Habit;
   const [pluginForm, setPluginForm] = useState<React.ReactNode>(null);
@@ -33,29 +28,23 @@ export function PluginSettings({
   useEffect(() => {
     const fetchPluginForm = async () => {
       try {
-        if (plugin.RenderHabitForm) {
-          const form = (await pluginManager.executeHook(
-            'RenderHabitForm',
-            currentHabit,
-            handleSettingChange,
-          )) as React.ReactNode;
-          console.log('comps', form);
-          setPluginForm(form);
-        } else {
-          setPluginForm(null); // No custom form provided
-        }
+        const form = (await pluginManager.executeHook(
+          'RenderHabitForm',
+          currentHabit,
+          handleSettingChange,
+        )) as React.ReactNode[];
+        setPluginForm(form);
       } catch (error) {
         console.error(
-          `Error executing RenderHabitForm for plugin ${plugin.id}:`,
+          `Error executing RenderHabitForm for plugin ${error}:`,
           error,
         );
       } finally {
         setLoading(false);
       }
     };
-    console.log(currentHabit, plugin.id);
     fetchPluginForm();
-  }, [plugin]);
+  }, []);
 
   if (loading) {
     return <div>Loading plugin settings...</div>;
@@ -63,7 +52,7 @@ export function PluginSettings({
 
   return (
     <div className="space-y-4">
-      {/* Render the custom form if available */}
+      {/* Render the custom settings form if available */}
       {pluginForm}
     </div>
   );

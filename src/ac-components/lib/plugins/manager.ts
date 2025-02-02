@@ -123,6 +123,12 @@ export const pluginManager = new HabitPluginManager();
     module: './MenstrualCycle',
   });
 
+  await pluginManager.registerRemotePlugin({
+    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
+    scope: 'corePlugin',
+    module: './WakatimePlugin',
+  });
+
   // TEST your own plugin
   // await pluginManager.registerRemotePlugin({
   //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
