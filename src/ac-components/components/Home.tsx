@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
-      <div className="container mx-auto px-2 py-4 max-w-3xl flex-1">
+      <div className="container mx-auto px-2 py-4 pb-16 max-w-3xl flex-1">
         <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 text-left mb-2">
           AC Tracker
         </h1>
@@ -88,7 +88,7 @@ export default function Home() {
           }}
         >
           <HomeIcon className="h-6 w-6" />
-          <span className="text-xs">Home</span>
+          <span className="text-xs">Daily</span>
         </button>
         <button
           className="flex flex-col items-center text-gray-600"

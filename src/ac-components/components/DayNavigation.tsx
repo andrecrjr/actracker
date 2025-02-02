@@ -35,7 +35,7 @@ export function DayNavigation({
         <ChevronLeft className="h-4 w-4" />
       </Button>
       <div className="flex flex-col items-center">
-        <h2 className="text-sm md:text-xl font-semibold">
+        <h2 className="text-[1.1rem] md:text-xl font-semibold">
           {formatDisplayDate(currentDate)}
         </h2>
         <Button variant="link" onClick={goToToday} className="text-sm">
