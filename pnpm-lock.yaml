@@ -119,6 +119,9 @@ importers:
       '@types/jsonwebtoken':
         specifier: ^9.0.8
         version: 9.0.8
+      axios:
+        specifier: ^1.7.9
+        version: 1.7.9
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

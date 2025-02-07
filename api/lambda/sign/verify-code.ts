@@ -7,11 +7,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { email, code } = JSON.parse(req.body);
-  console.log(code);
+  const { email, code } = req.body;
 
   const user = await User.findOne({ email });
-  console.log(user);
+
   if (!user || user.verificationCode !== String(code)) {
     return res.status(400).json({ message: 'Código de verificação inválido' });
   }

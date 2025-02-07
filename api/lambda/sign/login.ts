@@ -17,16 +17,14 @@ export const get = async () => {
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const data = JSON.parse(req.body);
   try {
-    const { email } = data;
+    const { email } = req.body;
     console.log(email);
-    // Gera um código de verificação de 6 dígitos
+
     const verificationCode = crypto.randomInt(100000, 999999).toString();
-    const codeExpiration = new Date(Date.now() + 60 * 60 * 60 * 1000); // 15 minutos
+    const codeExpiration = new Date(Date.now() + 60 * 60 * 60 * 1000);
 
     let user = await User.findOne({ email });
-    console.log(verificationCode);
 
     if (user) {
       user.verificationCode = verificationCode;
@@ -38,6 +36,7 @@ export const post = async () => {
         codeExpiration,
       });
     }
+    console.log(user);
 
     await user.save();
     //await sendVerificationCode(email, verificationCode);

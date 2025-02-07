@@ -1,3 +1,5 @@
+import { useNavigate } from '@modern-js/runtime/router';
+import axios from 'axios';
 import { useState } from 'react';
 
 export default function PasswordlessLogin() {
@@ -5,6 +7,7 @@ export default function PasswordlessLogin() {
   const [step, setStep] = useState<'email' | 'verify'>('email');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigation = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,19 +20,12 @@ export default function PasswordlessLogin() {
     setError('');
     try {
       if (step === 'email') {
-        await fetch('/api/sign/login', {
-          method: 'POST',
-          body: JSON.stringify({ email: formData.email }),
-        });
+        await axios.post('/api/sign/login', { email: formData.email });
         setStep('verify');
       } else {
-        const response = (await fetch('/api/sign/verify-code', {
-          method: 'POST',
-          body: JSON.stringify(formData),
-        })) as Response;
-        const { data } = await response.json();
-        document.cookie = `token=${data.token}; path=/; max-age=${365 * 24 * 60 * 60}`;
-        window.location.href = '/app';
+        const response = await axios.post('/api/sign/verify-code', formData);
+        document.cookie = `token=${response.data.token}; path=/; max-age=${365 * 24 * 60 * 60}`;
+        navigation('/');
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Algo deu errado');

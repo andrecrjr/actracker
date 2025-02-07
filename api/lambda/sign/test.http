@@ -2,3 +2,9 @@ POST http://localhost:8080/api/sign/login
 Content-Type: application/json
 
 {"email":"andre-carlos@lalala.com"}
+
+### Verify code
+POST http://localhost:8080/api/sign/verify-code
+Content-Type: application/json
+
+{"email":"andre-carlos@lalala.com", "code": "799416"}

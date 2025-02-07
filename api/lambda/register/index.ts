@@ -7,10 +7,11 @@ import { User, connectDB } from '../../models';
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { email } = req.body;
+  const { email } = JSON.parse(req.body);
 
   const verificationCode = crypto.randomInt(100000, 999999).toString();
   const codeExpiration = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos
+  console.log(verificationCode);
 
   let user = await User.findOne({ email });
   if (user) {
