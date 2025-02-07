@@ -7,10 +7,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { email, verificationCode } = req.body;
+  const { email, code } = JSON.parse(req.body);
+  console.log(code);
 
   const user = await User.findOne({ email });
-  if (!user || user.verificationCode !== verificationCode) {
+  console.log(user);
+  if (!user || user.verificationCode !== String(code)) {
     return res.status(400).json({ message: 'Código de verificação inválido' });
   }
 
@@ -33,5 +35,5 @@ export const post = async () => {
     maxAge: 365 * 24 * 60 * 60 * 1000, // 1 ano em milissegundos
   });
 
-  res.status(200).json({ message: 'Autenticação bem-sucedida' });
+  return res.status(200).json({ message: 'Autenticação bem-sucedida', token });
 };

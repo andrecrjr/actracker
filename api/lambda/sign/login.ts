@@ -17,26 +17,33 @@ export const get = async () => {
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { email } = req.body;
-  // Gera um código de verificação de 6 dígitos
-  const verificationCode = crypto.randomInt(100000, 999999).toString();
-  const codeExpiration = new Date(Date.now() + 60 * 60 * 60 * 1000); // 15 minutos
+  const data = JSON.parse(req.body);
+  try {
+    const { email } = data;
+    console.log(email);
+    // Gera um código de verificação de 6 dígitos
+    const verificationCode = crypto.randomInt(100000, 999999).toString();
+    const codeExpiration = new Date(Date.now() + 60 * 60 * 60 * 1000); // 15 minutos
 
-  let user = await User.findOne({ email });
+    let user = await User.findOne({ email });
+    console.log(verificationCode);
 
-  if (user) {
-    user.verificationCode = verificationCode;
-    user.codeExpiration = codeExpiration;
-  } else {
-    user = new User({
-      email,
-      verificationCode,
-      codeExpiration,
-    });
+    if (user) {
+      user.verificationCode = verificationCode;
+      user.codeExpiration = codeExpiration;
+    } else {
+      user = new User({
+        email,
+        verificationCode,
+        codeExpiration,
+      });
+    }
+
+    await user.save();
+    //await sendVerificationCode(email, verificationCode);
+
+    return res.json({ message: true, codeExpiration }).status(200);
+  } catch (error) {
+    return res.json({ success: false }).status(403);
   }
-
-  await user.save();
-  //await sendVerificationCode(email, verificationCode);
-
-  return res.json({ message: true, codeExpiration }).status(200);
 };
