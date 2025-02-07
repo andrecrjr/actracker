@@ -7,11 +7,12 @@ import Habit from '../../models/Habit';
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { userId, habits } = req.body;
+  const { habits } = JSON.parse(req.body);
+  const { userId } = req.query;
 
   try {
     // Remove existing habits for the user
-    await Habit.deleteMany({ userId });
+    // await Habit.deleteMany({ userId });
 
     // Insert new habits
     const habitDocuments = habits.map((habit: IHabit) => ({
@@ -19,6 +20,7 @@ export const post = async () => {
       habitId: habit.id,
       habitData: habit,
     }));
+    // updatemany
     await Habit.insertMany(habitDocuments);
 
     res.status(200).json({ success: true, message: 'Habits synchronized.' });

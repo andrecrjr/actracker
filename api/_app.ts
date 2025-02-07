@@ -15,7 +15,7 @@ export default hook(({ addMiddleware }) => {
       }
       try {
         const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
-        (req as any).userId = decoded.userId;
+        (req as any).query.userId = decoded.userId;
         next();
       } catch (error) {
         res.status(401).json({ message: 'Token inválido ou expirado' });

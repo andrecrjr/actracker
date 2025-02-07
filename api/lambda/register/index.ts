@@ -1,8 +1,9 @@
 import crypto from 'crypto';
-import { sendEmail } from '@/ac-components/utils/backend-utils';
+
+import { User, connectDB } from '@api/models';
+import { sendEmail } from '@api/utils/resend';
 // api/lambda/register.ts
 import { useContext } from '@modern-js/runtime/express';
-import { User, connectDB } from '../../models';
 
 export const post = async () => {
   const { req, res } = useContext();
@@ -23,7 +24,7 @@ export const post = async () => {
   await user.save();
   const htmlContent = `<p>Seu código de verificação é: <strong>${verificationCode}</strong></p>`;
 
-  // await sendEmail(email, 'ACTracker Sign In Code', htmlContent); // Envia o e-mail com o código
+  await sendEmail(email, 'ACTracker Sign In Code', htmlContent); // Envia o e-mail com o código
 
   res.status(200).json({ message: 'Código de verificação enviado' });
 };

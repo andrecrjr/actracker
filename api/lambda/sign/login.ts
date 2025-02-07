@@ -1,6 +1,6 @@
 import crypto from 'crypto';
+import { User, connectDB } from '@api/models';
 import { useContext } from '@modern-js/runtime/express';
-import { User, connectDB } from '../../models';
 
 export const get = async () => {
   const { req, res } = useContext();

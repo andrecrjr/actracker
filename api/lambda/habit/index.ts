@@ -38,7 +38,8 @@ export const get = async () => {
     const habits = await Habit.find({
       userId: new mongoose.Types.ObjectId(userId as string),
     });
-    res.status(200).json({ success: true, habits });
+    console.log(userId, habits);
+    res.status(200).json({ success: true, habits, user: userId });
   } catch (error) {
     res
       .status(500)
