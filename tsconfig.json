@@ -7,7 +7,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@shared/*": ["./shared/*"],
-      "*": ["./@mf-types/*"]
+      "*": ["./@mf-types/*"],
+      "@api/*": ["./api/lambda/*"]
     }
   },
   "include": [
@@ -15,7 +16,8 @@
     "shared",
     "config",
     "modern.config.ts",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "api"
   ],
   "exclude": ["**/node_modules"]
 }

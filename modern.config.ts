@@ -1,5 +1,7 @@
 import { appTools, defineConfig } from '@modern-js/app-tools';
+import { bffPlugin } from '@modern-js/plugin-bff';
 
+import { expressPlugin } from '@modern-js/plugin-express';
 import { tailwindcssPlugin } from '@modern-js/plugin-tailwindcss';
 import moduleFederationPlugin from '@module-federation/modern-js';
 
@@ -28,5 +30,7 @@ export default defineConfig({
       ssr: false,
     }),
     tailwindcssPlugin(),
+    expressPlugin(),
+    bffPlugin(),
   ],
 });
