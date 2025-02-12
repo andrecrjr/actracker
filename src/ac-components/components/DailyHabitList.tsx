@@ -21,10 +21,11 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CheckIcon, PencilIcon } from 'lucide-react';
+import { CheckIcon, FolderSync, PencilIcon } from 'lucide-react';
 import React, { useEffect, useMemo, useState, ReactNode } from 'react';
 import { HabitCard } from './HabitCard';
 import { SortableHabitCard } from './SortableHabitCard';
+import { SyncButton } from './SyncSave/SyncButton';
 import { Button } from './ui/button';
 
 type DailyHabitListProps = {
@@ -167,6 +168,7 @@ export function DailyHabitList({
 
       {orderedHabits.length > 0 && (
         <div className="flex justify-end">
+          <SyncButton isEditMode={isEditMode} />
           <HabitReorderButton
             isEditMode={isEditMode}
             toggleEditMode={toggleEditMode}
