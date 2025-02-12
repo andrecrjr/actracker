@@ -1,52 +1,63 @@
-import { useNavigate } from '@modern-js/runtime/router';
+import { useFetcher, useNavigate, useSubmit } from '@modern-js/runtime/router';
 import axios from 'axios';
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function PasswordlessLogin() {
-  const [formData, setFormData] = useState({ email: '', code: '' });
+  const fetcher = useFetcher();
   const [step, setStep] = useState<'email' | 'verify'>('email');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigation = useNavigate();
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const nav = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  console.log(formData);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      if (step === 'email') {
-        await axios.post('/api/sign/login', { email: formData.email });
-        setStep('verify');
-      } else {
-        const response = await axios.post('/api/sign/verify-code', formData);
-        document.cookie = `token=${response.data.token}; path=/; max-age=${365 * 24 * 60 * 60}`;
-        navigation('/');
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Algo deu errado');
-    } finally {
-      setLoading(false);
+    if (e.target.name === 'email') {
+      setEmail(e.target.value);
+    } else {
+      setCode(e.target.value);
     }
   };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const authFormData = new FormData();
+
+    if (step === 'email' && email) {
+      authFormData.append('email', email);
+      authFormData.append('intent', 'send-code');
+      fetcher.submit(authFormData, { method: 'POST' });
+      setStep('verify');
+    } else {
+      authFormData.append('email', email);
+      authFormData.append('code', code);
+      authFormData.append('intent', 'validate-code');
+      fetcher.submit(authFormData, { method: 'POST' });
+    }
+  };
+
+  useEffect(() => {
+    if (fetcher.data?.error) {
+      setError(fetcher.data.error);
+    }
+    if (fetcher.data?.success) {
+      nav('/');
+    }
+  }, [fetcher]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-semibold text-center">
-          {step === 'email' ? 'Entrar' : 'Verificar Código'}
+          {step === 'email' ? 'Sign in' : 'Verify Code in your e-mail'}
         </h2>
         {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleFormSubmit} className="space-y-4">
           {step === 'email' ? (
             <input
               type="email"
               name="email"
-              value={formData.email}
+              value={email}
               onChange={handleChange}
               placeholder="Digite seu e-mail"
               className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -56,11 +67,12 @@ export default function PasswordlessLogin() {
             <input
               type="text"
               name="code"
-              value={formData.code}
+              value={code}
               onChange={handleChange}
               placeholder="Digite o código"
               className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              maxLength={6}
             />
           )}
           <button
@@ -71,8 +83,8 @@ export default function PasswordlessLogin() {
             {loading
               ? 'Carregando...'
               : step === 'email'
-                ? 'Enviar Código'
-                : 'Verificar'}
+                ? 'Send Code'
+                : 'Verify'}
           </button>
         </form>
       </div>

@@ -37,3 +37,14 @@ export async function loadRemoteModule(
   console.log(Module);
   return Module.default;
 }
+
+export const cookieUtils = (cookieHeader: string) => {
+  return cookieHeader.split(';').reduce(
+    (acc, cookie) => {
+      const [name, ...rest] = cookie.trim().split('=');
+      acc[name] = rest.join('=');
+      return acc;
+    },
+    {} as { [key: string]: string },
+  );
+};
