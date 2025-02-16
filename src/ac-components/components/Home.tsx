@@ -1,12 +1,6 @@
 import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
-import {
-  getHabitsFromStorage,
-  saveHabitsToStorage,
-} from '@/ac-components/lib/habits';
-import { pluginManager } from '@/ac-components/lib/plugins';
-import type { Habit } from '@/ac-components/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
 import { Calendar, Home as HomeIcon, PlusCircle, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
