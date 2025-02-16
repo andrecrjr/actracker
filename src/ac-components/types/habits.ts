@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type HabitFrequency = 'daily' | 'weekly' | 'monthly';
 
 export interface Habit {
@@ -22,4 +24,18 @@ export interface PluginHabit {
   id: string;
   enabled: boolean;
   settings?: Record<string, any>;
+}
+
+export interface HabitContextType {
+  habits: Habit[];
+  createHabit: (newHabit: Habit) => Promise<void>;
+  updateHabit: (updatedHabit: Habit) => Promise<void>;
+  partialUpdateHabit: (
+    habitId: string,
+    updates: Partial<Habit>,
+  ) => Promise<void>;
+  archiveHabit: (habitId: string) => Promise<void>;
+  getHabitById: (habitId: string) => Habit | null;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  handleHabitToggle: (habitId: string, date: string) => Promise<void>;
 }

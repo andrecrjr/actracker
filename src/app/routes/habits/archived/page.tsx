@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/ac-components/components/ui/card';
+import { useHabits } from '@/ac-components/hooks';
 import {
   getArchivedHabits,
   getHabitsFromStorage,
@@ -19,7 +20,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function ArchivedHabitsPage() {
-  const [habits, setHabits] = useState<Habit[]>([]);
+  const { habits, setHabits } = useHabits();
   const router = useNavigate();
 
   useEffect(() => {

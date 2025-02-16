@@ -1,3 +1,3 @@
 export * from './use-mobile';
-export * from './useHabitStore';
+export * from './useHabitContext';
 export * from './use-toast';

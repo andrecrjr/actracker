@@ -63,7 +63,8 @@ export const updateHabitPartial = (
       : habit,
   );
   saveHabitsToStorage(updatedHabits);
-  return getActiveHabits(updatedHabits);
+  const activeHabits = getActiveHabits(updatedHabits);
+  return activeHabits;
 };
 
 // Date calculation utilities

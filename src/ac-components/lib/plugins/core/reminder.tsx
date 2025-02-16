@@ -1,7 +1,6 @@
 import { DateTimePickerForm } from '@/ac-components/components/ui/date-time-picker-form';
-import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
 import type { Habit } from '@/ac-components/types/habits';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { HabitPlugin } from '../types';
 
 export const reminderPlugin: HabitPlugin = {

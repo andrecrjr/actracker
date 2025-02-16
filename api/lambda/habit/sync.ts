@@ -7,21 +7,23 @@ import Habit from '../../models/Habit';
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { habits } = JSON.parse(req.body);
+  const { habits } = req.body;
   const { userId } = req.query;
 
   try {
-    // Remove existing habits for the user
-    // await Habit.deleteMany({ userId });
-
-    // Insert new habits
-    const habitDocuments = habits.map((habit: IHabit) => ({
-      userId,
-      habitId: habit.id,
-      habitData: habit,
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'User ID is required.' });
+    }
+    const bulkOps = habits.map((habit: IHabit) => ({
+      updateOne: {
+        filter: { userId, habitId: habit.id },
+        update: { $set: { userId, habitData: habit, habitId: habit.id } },
+        upsert: true,
+      },
     }));
-    // updatemany
-    await Habit.insertMany(habitDocuments);
+    await Habit.bulkWrite(bulkOps);
 
     res.status(200).json({ success: true, message: 'Habits synchronized.' });
   } catch (error) {

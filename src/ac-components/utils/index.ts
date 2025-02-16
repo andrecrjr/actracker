@@ -48,3 +48,5 @@ export const cookieUtils = (cookieHeader: string) => {
     {} as { [key: string]: string },
   );
 };
+
+export const token = cookieUtils('token');

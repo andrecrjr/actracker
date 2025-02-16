@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from '@/ac-components/components/ui/select';
 import { Textarea } from '@/ac-components/components/ui/textarea';
+import { useHabits } from '@/ac-components/hooks';
 import { HabitFormContextProvider } from '@/ac-components/hooks/useHabitFormContext';
 import { formatDate } from '@/ac-components/lib/date-utils';
 import {
@@ -32,6 +33,7 @@ import {
   saveHabitsToStorage,
 } from '@/ac-components/lib/habits';
 import { pluginManager } from '@/ac-components/lib/plugins';
+import { saveOrUpdateUniqueHabitToCloud } from '@/ac-components/service';
 import type { Habit, HabitFrequency } from '@/ac-components/types/habits';
 import { Edit3, PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -58,6 +60,7 @@ export const HabitForm = ({
 }: HabitFormProps) => {
   const defaultDate = formatDate(currentDate);
   const [open, setOpen] = useState(false);
+  const { habits } = useHabits();
 
   const form = useForm<Habit>({
     defaultValues: {
@@ -80,25 +83,25 @@ export const HabitForm = ({
 
   // Watch for changes in the form and persist them to sync with local storage
   useEffect(() => {
-    const habits = getHabitsFromStorage();
-
     const subscription = form.watch(formValues => {
       if (!formValues?.id) {
         return;
       }
-      const habitIndex = habits.findIndex(habit => habit.id === formValues.id);
+      const habitIndex = habits.findIndex(
+        (habit: Habit) => habit.id === formValues.id,
+      );
 
       if (habitIndex !== -1) {
         habits[habitIndex] = formValues as Habit;
       } else {
         habits.push(formValues as Habit);
       }
-
+      const currHabit = habits[habitIndex];
       saveHabitsToStorage(habits);
     });
 
     return () => subscription.unsubscribe();
-  }, [form]);
+  }, [form, habits]);
 
   const onSubmit = async (data: HabitFormData) => {
     try {
@@ -133,10 +136,6 @@ export const HabitForm = ({
       console.error('Error saving habit:', error);
     }
   };
-
-  useEffect(() => {
-    console.log('form', form);
-  }, []);
 
   const frequency = form.watch('frequency');
 

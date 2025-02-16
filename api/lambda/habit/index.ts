@@ -7,12 +7,13 @@ import { Habit, connectDB } from '../../models';
 export const post = async () => {
   const { req, res } = useContext();
   await connectDB();
-  const { userId, habitId, habitData } = req.body;
+  const { habitData } = req.body;
+  const { userId } = req.query;
 
   try {
     const newHabit = new Habit({
-      userId: new mongoose.Types.ObjectId(userId),
-      habitId,
+      userId: userId,
+      habitId: habitData.id,
       habitData,
     });
     await newHabit.save();
@@ -28,7 +29,6 @@ export const post = async () => {
   }
 };
 
-// Ler hábitos de um usuário
 export const get = async () => {
   const { req, res } = useContext();
   await connectDB();
@@ -38,12 +38,14 @@ export const get = async () => {
     const habits = await Habit.find({
       userId: new mongoose.Types.ObjectId(userId as string),
     });
-    console.log(userId, habits);
-    res.status(200).json({ success: true, habits, user: userId });
+
+    res
+      .status(200)
+      .json({ success: true, habits: habits.map(habit => habit.habitData) });
   } catch (error) {
     res
       .status(500)
-      .json({ success: false, message: 'Erro ao buscar os hábitos.', error });
+      .json({ success: false, message: 'Error not found Habits.', error });
   }
 };
 

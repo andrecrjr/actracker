@@ -2,6 +2,7 @@ import {
   getHabitsFromStorage,
   saveHabitsToStorage,
 } from '@/ac-components/lib/habits';
+import axiosInstance from '@/ac-components/utils/axios';
 import { FolderSyncIcon } from 'lucide-react';
 import React from 'react';
 import { Button } from '../ui';
@@ -16,7 +17,9 @@ export const SyncButton: React.FC<{ isEditMode?: boolean }> = ({
       className="text-muted-foreground"
       onClick={async () => {
         const allHabitTracked = getHabitsFromStorage();
-        console.log(allHabitTracked);
+        await axiosInstance.post('/habit/sync', {
+          habits: allHabitTracked,
+        });
       }}
     >
       <FolderSyncIcon className="h-4 w-4" />

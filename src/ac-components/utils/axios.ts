@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: '/api',
+  withCredentials: true,
 });
 
 // Adiciona o interceptor para incluir o token automaticamente nos requests

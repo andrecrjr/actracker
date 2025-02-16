@@ -13,13 +13,11 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/ac-components/components/ui/tabs';
-import { useHabitStore } from '@/ac-components/hooks/useHabitStore';
 import { pluginManager } from '@/ac-components/lib/plugins';
-import { HabitPlugin } from '@/ac-components/types';
 import type { Habit, PluginHabit } from '@/ac-components/types/habits';
-import { PlugIcon, Store } from 'lucide-react';
+import { PlugIcon } from 'lucide-react';
 import { useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { PluginCard } from './PluginCard';
 import { PluginSettings } from './PluginSettings';
 

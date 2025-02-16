@@ -10,46 +10,20 @@ import type { Habit } from '@/ac-components/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
 import { Calendar, Home as HomeIcon, PlusCircle, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useHabits } from '../hooks';
 import { HabitCalendar } from './CalendarMode';
 
 export default function Home() {
-  const [habits, setHabits] = useState<Habit[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarMode, setCalendarMode] = useState(false);
   const [isHabitFormOpen, setIsHabitFormOpen] = useState(false);
+  const { habits, createHabit, handleHabitToggle } = useHabits();
   const router = useNavigate();
-
-  useEffect(() => {
-    setHabits(getHabitsFromStorage());
-  }, []);
+  console.log(habits);
 
   useEffect(() => {
     setCalendarMode(JSON.parse(localStorage.getItem('calendarMode')! ?? false));
   }, []);
-
-  const handleHabitCreate = (newHabit: Habit) => {
-    const updatedHabits = [...habits, newHabit];
-    setHabits(updatedHabits);
-    saveHabitsToStorage(updatedHabits);
-    setIsHabitFormOpen(false);
-  };
-
-  const handleHabitToggle = async (habitId: string, date: string) => {
-    const updatedHabits = habits.map(habit => {
-      if (habit.id === habitId) {
-        const completedDates = habit.completedDates.includes(date)
-          ? habit.completedDates.filter(d => d !== date)
-          : [...habit.completedDates, date];
-        if (!habit.completedDates.includes(date)) {
-          pluginManager.executeHook('onHabitComplete', habit, date);
-        }
-        return { ...habit, completedDates };
-      }
-      return habit;
-    });
-    setHabits(updatedHabits);
-    saveHabitsToStorage(updatedHabits);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
@@ -74,7 +48,7 @@ export default function Home() {
             currentDate={currentDate}
             habits={habits}
             onDateSelect={date => setCurrentDate(date)}
-            onToggle={handleHabitToggle}
+            // onToggle={handleHabitToggle}
           />
         )}
       </div>
@@ -108,7 +82,7 @@ export default function Home() {
         </button>
 
         <button className="flex flex-col items-center text-gray-600">
-          <HabitForm onSave={handleHabitCreate} currentDate={currentDate} />
+          <HabitForm onSave={createHabit} currentDate={currentDate} />
         </button>
       </footer>
     </div>

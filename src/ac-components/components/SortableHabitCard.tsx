@@ -7,7 +7,8 @@ import type { Habit } from '@/ac-components/types/habits';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { updateHabitPartial } from '../lib/utils';
+
+import { useHabits } from '../hooks';
 import { HabitCard } from './HabitCard';
 
 interface SortableHabitCardProps {
@@ -33,6 +34,7 @@ export function SortableHabitCard({
     transition,
     isDragging,
   } = useSortable({ id: habit.id });
+  const { partialUpdateHabit } = useHabits();
 
   if (!isActive || habit.hidden) {
     return null;
@@ -74,8 +76,9 @@ export function SortableHabitCard({
               habit={habit}
               currentDate={new Date()}
               onSave={data => {
-                updateHabitPartial(habit.id, data);
-                window.location.reload();
+                partialUpdateHabit(habit.id, data);
+                // console.log(data);
+                // window.location.reload();
               }}
             />
           </section>
