@@ -1,4 +1,4 @@
-import { useHabitStore } from '@/ac-components/hooks/useHabitContext';
+import { useHabits } from '@/ac-components/hooks/useHabitContext';
 import type { Habit } from '@/ac-components/types/habits';
 import type React from 'react';
 import { useEffect, useState } from 'react';
@@ -29,8 +29,8 @@ const NotesPluginComponent = ({
   plugin,
   date,
 }: { noteHabit: Habit; date: Date; plugin: HabitPlugin }) => {
-  const { handleHabitPartialUpdate, getCurrentHabitById } = useHabitStore();
-  const habit = getCurrentHabitById(noteHabit.id) as Habit;
+  const { partialUpdateHabit, getHabitById } = useHabits();
+  const habit = getHabitById(noteHabit.id) as Habit;
   const currentDate = date.toISOString().split('T')[0];
   const [updateNote, setNote] = useState('');
 
@@ -61,7 +61,7 @@ const NotesPluginComponent = ({
       },
     ];
 
-    handleHabitPartialUpdate(habit.id, {
+    partialUpdateHabit(habit.id, {
       pluginData: {
         ...habit.pluginData,
         [plugin.id]: updatedPluginData,

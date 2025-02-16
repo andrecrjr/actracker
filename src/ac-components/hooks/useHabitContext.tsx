@@ -10,7 +10,7 @@ import React, {
   useEffect,
   useState,
   ReactNode,
-  startTransition,
+  useTransition,
 } from 'react';
 import { pluginManager } from '../lib/plugins';
 import {
@@ -29,6 +29,7 @@ export const HabitProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
+  const [isPendingHabit, startTransition] = useTransition();
 
   // Inicializa os hábitos ao montar o componente
   useEffect(() => {
@@ -37,8 +38,8 @@ export const HabitProvider: React.FC<{ children: ReactNode }> = ({
         const cloudHabits = await getAllHabitsFromCloud();
         startTransition(() => {
           setHabits(cloudHabits);
+          saveHabitsToStorage(cloudHabits);
         });
-        saveHabitsToStorage(cloudHabits);
       } catch (error) {
         const localHabits = getHabitsFromStorage();
         startTransition(() => {
