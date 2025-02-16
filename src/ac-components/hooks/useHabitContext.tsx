@@ -10,6 +10,7 @@ import React, {
   useEffect,
   useState,
   ReactNode,
+  startTransition,
 } from 'react';
 import { pluginManager } from '../lib/plugins';
 import {
@@ -34,11 +35,15 @@ export const HabitProvider: React.FC<{ children: ReactNode }> = ({
     const initializeHabits = async () => {
       try {
         const cloudHabits = await getAllHabitsFromCloud();
-        setHabits(cloudHabits);
+        startTransition(() => {
+          setHabits(cloudHabits);
+        });
         saveHabitsToStorage(cloudHabits);
       } catch (error) {
         const localHabits = getHabitsFromStorage();
-        setHabits(localHabits);
+        startTransition(() => {
+          setHabits(localHabits);
+        });
       }
     };
 

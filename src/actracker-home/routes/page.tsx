@@ -1,4 +1,4 @@
-import ACTrackerLanding from '@/ac-components/LandingPage';
+import ACTrackerLanding from '@/ac-components/Pages/LandingPage';
 import { Helmet } from '@modern-js/runtime/head';
 
 const Index = () => (

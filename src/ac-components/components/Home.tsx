@@ -3,7 +3,7 @@ import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import { useNavigate } from '@modern-js/runtime/router';
 import { Calendar, Home as HomeIcon, PlusCircle, Settings } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useHabits } from '../hooks';
 import { HabitCalendar } from './CalendarMode';
 
@@ -40,7 +40,7 @@ export default function Home() {
             currentDate={currentDate}
             habits={habits}
             onDateSelect={date => setCurrentDate(date)}
-            // onToggle={handleHabitToggle}
+            onToggle={handleHabitToggle}
           />
         )}
       </div>
@@ -73,9 +73,9 @@ export default function Home() {
           <span className="text-xs">Settings</span>
         </button>
 
-        <button className="flex flex-col items-center text-gray-600">
+        <section className="flex flex-col items-center text-gray-600">
           <HabitForm onSave={createHabit} currentDate={currentDate} />
-        </button>
+        </section>
       </footer>
     </div>
   );
