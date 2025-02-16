@@ -16,10 +16,8 @@ import { HabitCalendar } from './CalendarMode';
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarMode, setCalendarMode] = useState(false);
-  const [isHabitFormOpen, setIsHabitFormOpen] = useState(false);
   const { habits, createHabit, handleHabitToggle } = useHabits();
   const router = useNavigate();
-  console.log(habits);
 
   useEffect(() => {
     setCalendarMode(JSON.parse(localStorage.getItem('calendarMode')! ?? false));
