@@ -10,7 +10,7 @@ import React, {
   useEffect,
   useState,
   ReactNode,
-  useTransition,
+  startTransition,
 } from 'react';
 import { pluginManager } from '../lib/plugins';
 import {
@@ -29,7 +29,6 @@ export const HabitProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
-  const [isPendingHabit, startTransition] = useTransition();
 
   // Inicializa os hábitos ao montar o componente
   useEffect(() => {
