@@ -6,7 +6,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 export default hook(({ addMiddleware }) => {
   addMiddleware((req: Request, res: Response, next: NextFunction): void => {
-    const publicRoutes = ['/api/sign/login', '/api/sign/verify-code'];
+    const publicRoutes = [
+      '/api/sign/login',
+      '/api/sign/verify-code',
+      '/api/auth',
+    ];
     if (!publicRoutes.includes(req.url)) {
       const token =
         req.cookies?.token || req.headers.authorization?.split(' ')[1];

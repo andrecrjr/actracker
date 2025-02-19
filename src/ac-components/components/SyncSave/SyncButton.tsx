@@ -1,3 +1,4 @@
+import { useAuth } from '@/ac-components/hooks/useAuth';
 import {
   getHabitsFromStorage,
   saveHabitsToStorage,
@@ -10,19 +11,23 @@ import { Button } from '../ui';
 export const SyncButton: React.FC<{ isEditMode?: boolean }> = ({
   isEditMode,
 }) => {
-  return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className="text-muted-foreground"
-      onClick={async () => {
-        const allHabitTracked = getHabitsFromStorage();
-        await axiosInstance.post('/habit/sync', {
-          habits: allHabitTracked,
-        });
-      }}
-    >
-      <FolderSyncIcon className="h-4 w-4" />
-    </Button>
-  );
+  const data = useAuth();
+  if (data.isAuthenticated)
+    return (
+      <Button
+        variant="ghost"
+        size="sm"
+        className="text-muted-foreground"
+        onClick={async () => {
+          const allHabitTracked = getHabitsFromStorage();
+          await axiosInstance.post('/habit/sync', {
+            habits: allHabitTracked,
+          });
+        }}
+      >
+        <FolderSyncIcon className="h-4 w-4" />
+      </Button>
+    );
+
+  return;
 };

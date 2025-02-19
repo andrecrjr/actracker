@@ -41,7 +41,8 @@ export default function PasswordlessLogin() {
       setError(fetcher.data.error);
     }
     if (fetcher.data?.success) {
-      nav('/');
+      // need to do that because we put cookies into user side
+      window.location.href = '/app';
     }
   }, [fetcher]);
 

@@ -42,7 +42,6 @@ export function DayNavigation({
       <div className="flex flex-col items-center">
         <h2 className="text-[1.1rem] md:text-xl font-semibold">
           {clientDate ?? '...'}{' '}
-          {/* Só exibe após o useEffect rodar no cliente */}
         </h2>
         <Button variant="link" onClick={goToToday} className="text-sm">
           Today

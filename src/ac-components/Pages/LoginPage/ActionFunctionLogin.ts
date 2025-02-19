@@ -67,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
       `token=${token}; HttpOnly; Path=/; Max-Age=${365 * 24 * 60 * 60}`,
     );
 
-    return json({ success: true }, { headers });
+    return json({ success: true, token }, { headers });
   } else {
     return { error: 'Dados inválidos' };
   }
