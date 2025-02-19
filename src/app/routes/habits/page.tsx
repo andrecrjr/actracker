@@ -1,5 +1,6 @@
 'use client';
 
+import SignOut from '@/ac-components/components/Buttons/SignOut';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import {
   AlertDialog,
@@ -72,23 +73,21 @@ export default function HabitsPage() {
             <Button variant="ghost" size="icon" onClick={() => router('/')}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-3xl font-bold">Manage Habits</h1>
+            <h1 className="text-3xl font-bold">Settings</h1>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router('/habits/archived')}
-            className="text-muted-foreground"
-          >
-            <ArchiveIcon className="h-4 w-4" />
-            Archived
-          </Button>
+          <section className="flex gap-2">
+            <SignOut />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router('/habits/archived')}
+              className="text-muted-foreground"
+            >
+              <ArchiveIcon className="h-4 w-4" />
+              Archived
+            </Button>
+          </section>
         </div>
-        <HabitForm
-          currentDate={new Date()}
-          onSave={newHabit => handleHabitCreate(newHabit)}
-          buttonClass="w-full"
-        />
         <div className="space-y-4 mt-4">
           {habits.map(habit => (
             <Card key={habit.id} className="habit-card">

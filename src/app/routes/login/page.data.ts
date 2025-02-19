@@ -1,4 +1,4 @@
 export {
   action,
   loader,
-} from '@/ac-components/Pages/LoginPage/ActionFunctionLogin';
+} from '@/ac-components/Pages/Authentication/LoginPage/ActionFunctionLogin';

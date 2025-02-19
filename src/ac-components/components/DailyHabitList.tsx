@@ -23,9 +23,9 @@ import {
 } from '@dnd-kit/sortable';
 import { CheckIcon, FolderSync, PencilIcon } from 'lucide-react';
 import React, { useEffect, useMemo, useState, ReactNode } from 'react';
+import { SyncButton } from './Buttons/SyncSave/SyncButton';
 import { HabitCard } from './HabitCard';
 import { SortableHabitCard } from './SortableHabitCard';
-import { SyncButton } from './SyncSave/SyncButton';
 import { Button } from './ui/button';
 
 type DailyHabitListProps = {

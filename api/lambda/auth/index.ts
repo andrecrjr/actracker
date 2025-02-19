@@ -1,3 +1,4 @@
+import { User } from '@api/models';
 import { useContext } from '@modern-js/runtime/express';
 import { Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -8,11 +9,11 @@ export const get = async (): Promise<{
   isAuthenticated: boolean;
   message?: string;
   userId?: string;
+  email?: string;
 }> => {
   const { req, res } = useContext();
   console.log('estou aqui');
   const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
-  console.log('cuques', req.cookies.token);
   if (!token) {
     return {
       message: 'Autenthentication Needed',
@@ -23,8 +24,16 @@ export const get = async (): Promise<{
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
     const userDataId = decoded.userId;
-    console.log('entrei fi', userDataId);
-    return { isAuthenticated: true };
+    if (!userDataId) {
+      return {
+        message: 'Autenthentication Needed',
+        isAuthenticated: false,
+        userId: '',
+      };
+    }
+    const data = await User.findById(userDataId);
+
+    return { isAuthenticated: true, email: data?.email };
   } catch (error) {
     return { message: 'Token inválido ou expirado', isAuthenticated: false };
   }
