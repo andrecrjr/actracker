@@ -1,7 +1,6 @@
-'use client';
-
 import { formatDisplayDate } from '@/ac-components/lib/date-utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 
 interface DayNavigationProps {
@@ -13,6 +12,12 @@ export function DayNavigation({
   currentDate,
   onDateChange,
 }: DayNavigationProps) {
+  const [clientDate, setClientDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    setClientDate(formatDisplayDate(currentDate));
+  }, [currentDate]);
+
   const goToPreviousDay = () => {
     const newDate = new Date(currentDate);
     newDate.setDate(currentDate.getDate() - 1);
@@ -36,7 +41,8 @@ export function DayNavigation({
       </Button>
       <div className="flex flex-col items-center">
         <h2 className="text-[1.1rem] md:text-xl font-semibold">
-          {formatDisplayDate(currentDate)}
+          {clientDate ?? '...'}{' '}
+          {/* Só exibe após o useEffect rodar no cliente */}
         </h2>
         <Button variant="link" onClick={goToToday} className="text-sm">
           Today
