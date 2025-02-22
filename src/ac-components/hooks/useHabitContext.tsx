@@ -20,15 +20,15 @@ import {
 } from '../service';
 import { Habit, HabitContextType } from '../types/habits';
 import { token } from '../utils';
+import { useAuth } from './useAuth';
 
-// Cria o contexto com um valor padrão nulo
-const HabitContext = createContext<HabitContextType | null>(null);
+export const HabitContext = createContext<HabitContextType | null>(null);
 
-// Provedor do contexto
 export const HabitProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [habits, setHabits] = useState<Habit[]>([]);
+  const [habits, setHabits] = useState<Habit[]>(getHabitsFromStorage());
+  const { isAuthenticated } = useAuth();
 
   // Inicializa os hábitos ao montar o componente
   useEffect(() => {
@@ -77,29 +77,32 @@ export const HabitProvider: React.FC<{ children: ReactNode }> = ({
     habitId: string,
     updates: Partial<Habit>,
   ) => {
-    setHabits(prevHabits => {
-      const updatedHabits = prevHabits.map(h =>
-        h.id === habitId
-          ? {
-              ...h,
-              ...updates,
-              pluginData: {
-                ...h.pluginData,
-                ...(updates.pluginData || {}),
-              },
-            }
-          : h,
-      );
-      saveHabitsToStorage(updatedHabits);
-      return updatedHabits;
-    });
+    const updatedHabits = habits.map(h =>
+      h.id === habitId
+        ? {
+            ...h,
+            ...updates,
+            pluginData: {
+              ...h.pluginData,
+              ...(updates.pluginData || {}),
+            },
+          }
+        : h,
+    );
 
-    if (token) {
-      const updatedHabit = habits.find(h => h.id === habitId);
-      if (updatedHabit) {
-        await updateHabitDataToCloud(updatedHabit);
+    const updatedHabit = updatedHabits.find(h => h.id === habitId);
+
+    setHabits(updatedHabits);
+    saveHabitsToStorage(updatedHabits);
+
+    try {
+      console.log(isAuthenticated);
+      if (isAuthenticated && updatedHabit) {
+        setTimeout(async () => {
+          await updateHabitDataToCloud(updatedHabit);
+        }, 600);
       }
-    }
+    } catch (error) {}
   };
 
   // Função para arquivar um hábito

@@ -33,6 +33,7 @@ export const UserAuthenticationProvider = ({
     const userData = await auth();
     startTransition(() => {
       setUserData(userData);
+      localStorage.setItem('userAuthenticated', JSON.stringify(userData));
     });
   }, []);
 

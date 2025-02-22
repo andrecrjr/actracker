@@ -2,15 +2,15 @@ import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import { useNavigate } from '@modern-js/runtime/router';
-import { Calendar, Home as HomeIcon, PlusCircle, Settings } from 'lucide-react';
-import { Suspense, useEffect, useState } from 'react';
-import { useHabits } from '../hooks';
+import { Calendar, Home as HomeIcon, Settings } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useHabitStore, useHabits } from '../hooks';
 import { HabitCalendar } from './CalendarMode';
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarMode, setCalendarMode] = useState(false);
-  const { habits, createHabit, handleHabitToggle } = useHabits();
+  const { habits, createHabit, handleHabitToggle } = useHabitStore();
   const router = useNavigate();
 
   useEffect(() => {

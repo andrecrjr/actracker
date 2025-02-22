@@ -8,6 +8,7 @@ export default createModuleFederationConfig({
   shared: {
     react: { singleton: true },
     'react-dom': { singleton: true },
+    zustand: { singleton: true },
     ...deps,
   },
   exposes: {
@@ -15,6 +16,7 @@ export default createModuleFederationConfig({
     './types': './src/ac-components/types',
     './hooks': './src/ac-components/hooks',
     './utils': './src/ac-components/lib/utils',
+    './contexts': './src/ac-components/contexts',
   },
   manifest: {
     filePath: 'static',

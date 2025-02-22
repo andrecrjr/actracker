@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from '@/ac-components/components/ui/select';
 import { Textarea } from '@/ac-components/components/ui/textarea';
-import { useHabits } from '@/ac-components/hooks';
+import { useHabitStore } from '@/ac-components/hooks';
 import { formatDate } from '@/ac-components/lib/date-utils';
 import {
   generateHabitId,
@@ -59,7 +59,7 @@ export const HabitForm = ({
 }: HabitFormProps) => {
   const defaultDate = formatDate(currentDate);
   const [open, setOpen] = useState(false);
-  const { habits } = useHabits();
+  const { habits } = useHabitStore();
 
   const form = useForm<Habit>({
     defaultValues: {
@@ -81,26 +81,26 @@ export const HabitForm = ({
   });
 
   // Watch for changes in the form and persist them to sync with local storage
-  useEffect(() => {
-    const subscription = form.watch(formValues => {
-      if (!formValues?.id) {
-        return;
-      }
-      const habitIndex = habits.findIndex(
-        (habit: Habit) => habit.id === formValues.id,
-      );
+  // useEffect(() => {
+  //   const subscription = form.watch(formValues => {
+  //     if (!formValues?.id) {
+  //       return;
+  //     }
+  //     const habitIndex = habits.findIndex(
+  //       (habit: Habit) => habit.id === formValues.id,
+  //     );
 
-      if (habitIndex !== -1) {
-        habits[habitIndex] = formValues as Habit;
-      } else {
-        habits.push(formValues as Habit);
-      }
-      const currHabit = habits[habitIndex];
-      saveHabitsToStorage(habits);
-    });
+  //     if (habitIndex !== -1) {
+  //       habits[habitIndex] = formValues as Habit;
+  //     } else {
+  //       habits.push(formValues as Habit);
+  //     }
+  //     //const currHabit = habits[habitIndex];
+  //     // saveHabitsToStorage(habits);
+  //   });
 
-    return () => subscription.unsubscribe();
-  }, [form, habits]);
+  //   return () => subscription.unsubscribe();
+  // }, [form, habits]);
 
   const onSubmit = async (data: HabitFormData) => {
     try {
@@ -114,6 +114,7 @@ export const HabitForm = ({
       await pluginManager.executeHook('onHabitCreate', updatedHabit);
 
       // Save the habit
+      console.log(updatedHabit);
       onSave(updatedHabit);
 
       // Reset the form if creating a new habit
@@ -286,7 +287,8 @@ export const HabitForm = ({
                           min="1"
                           max="31"
                           placeholder="Enter day of month"
-                          value={field.value?.toString() || ''}
+                          value={field.value || ''}
+                          onChange={e => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
                       <FormMessage />

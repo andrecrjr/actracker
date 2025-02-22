@@ -8,7 +8,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 
-import { useHabits } from '../hooks';
+import { useHabitStore, useHabits } from '../hooks';
 import { HabitCard } from './HabitCard';
 
 interface SortableHabitCardProps {
@@ -34,7 +34,7 @@ export function SortableHabitCard({
     transition,
     isDragging,
   } = useSortable({ id: habit.id });
-  const { partialUpdateHabit } = useHabits();
+  const { partialUpdateHabit } = useHabitStore();
 
   if (!isActive || habit.hidden) {
     return null;
