@@ -68,6 +68,7 @@ export function HabitCard({ habit, currentDate, onToggle }: HabitCardProps) {
               {habit.description}
             </p>
           )}
+
           {pluginContent.length > 0 &&
             pluginContent.map((content, index) => (
               <div key={content?.key || index} className="w-full pt-2">
@@ -78,6 +79,11 @@ export function HabitCard({ habit, currentDate, onToggle }: HabitCardProps) {
             <Badge variant="outline" className="bg-primary/5">
               {habit.frequency}
             </Badge>
+            {habit.archived && (
+              <Badge variant="outline" className="bg-primary/5">
+                Archived at {habit.archiveDate}
+              </Badge>
+            )}
           </div>
         </div>
 

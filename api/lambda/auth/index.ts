@@ -12,7 +12,6 @@ export const get = async (): Promise<{
   email?: string;
 }> => {
   const { req, res } = useContext();
-  console.log('estou aqui');
   const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
   if (!token) {
     return {
