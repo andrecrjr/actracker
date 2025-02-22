@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/ac-components/components/ui/card';
-import { useHabits } from '@/ac-components/hooks';
+import { useHabitStore, useHabits } from '@/ac-components/hooks';
 import {
   getArchivedHabits,
   getHabitsFromStorage,
@@ -20,13 +20,15 @@ import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function ArchivedHabitsPage() {
-  const { habits, setHabits } = useHabits();
+  const { habits, setHabits } = useHabitStore();
   const router = useNavigate();
 
-  useEffect(() => {
-    const allHabits = getHabitsFromStorage();
-    setHabits(getArchivedHabits(allHabits));
-  }, []);
+  // useEffect(() => {
+  //   const allHabits = getHabitsFromStorage();
+  //   setHabits(getArchivedHabits(allHabits));
+  // }, []);
+
+  console.log('HABITOS', habits);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
@@ -39,7 +41,7 @@ export default function ArchivedHabitsPage() {
         </div>
 
         <div className="space-y-4">
-          {habits.map(habit => (
+          {getArchivedHabits(habits).map(habit => (
             <Card key={habit.id} className="habit-card">
               <CardHeader className="flex flex-row items-center justify-between space-y-0">
                 <div className="flex-1">

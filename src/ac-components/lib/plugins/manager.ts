@@ -96,16 +96,11 @@ class HabitPluginManager implements PluginManager {
 
 export const pluginManager = new HabitPluginManager();
 
-//
-// pluginManager.registerPlugin(reminderPlugin);
-//pluginManager.registerPlugin(notesPlugin);
-// pluginManager.registerPlugin(dateRangePlugin);
 (async () => {
   //environment to your own plugin or 3051
   const remoteCorePublicPlugins =
     process.env.REACT_APP_PLUGINS_STATIC_URL ?? 'http://localhost:3051';
 
-  //dateRangePlugin
   await pluginManager.registerRemotePlugin({
     remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
     scope: 'corePlugin',
@@ -117,17 +112,11 @@ export const pluginManager = new HabitPluginManager();
     module: './NotePlugin',
   });
 
-  // await pluginManager.registerRemotePlugin({
-  //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
-  //   scope: 'corePlugin',
-  //   module: './MenstrualCycle',
-  // });
-
-  // await pluginManager.registerRemotePlugin({
-  //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
-  //   scope: 'corePlugin',
-  //   module: './WakatimePlugin',
-  // });
+  await pluginManager.registerRemotePlugin({
+    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
+    scope: 'corePlugin',
+    module: './MenstrualCycle',
+  });
 
   // TEST your own plugin
   // await pluginManager.registerRemotePlugin({

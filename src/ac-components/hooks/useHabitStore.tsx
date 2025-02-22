@@ -26,14 +26,11 @@ type HabitStoreState = {
   setHabits: (newHabits: Habit[]) => void;
 };
 
-console.log('>>>>>>>>> loading');
-
 export const useHabitStore = create<HabitStoreState>()(
   persist(
     (set, get) => ({
       habits: [],
 
-      // Inicializa os hábitos carregando da nuvem ou do localStorage
       initializeHabits: async () => {
         try {
           const cloudHabits = await getAllHabitsFromCloud();
@@ -43,13 +40,11 @@ export const useHabitStore = create<HabitStoreState>()(
         }
       },
 
-      // Cria um novo hábito e salva na nuvem
       createHabit: async (newHabit: Habit) => {
         set(state => ({ habits: [...state.habits, newHabit] }));
         await saveOrUpdateUniqueHabitToCloud(newHabit);
       },
 
-      // Atualiza um hábito existente
       updateHabit: async (updatedHabit: Habit) => {
         set(state => ({
           habits: state.habits.map(h =>
@@ -59,7 +54,6 @@ export const useHabitStore = create<HabitStoreState>()(
         await saveOrUpdateUniqueHabitToCloud(updatedHabit);
       },
 
-      // Atualiza parcialmente um hábito (exemplo: plugin data)
       partialUpdateHabit: async (habitId: string, updates: Partial<Habit>) => {
         set(state => ({
           habits: state.habits.map(h =>
@@ -82,11 +76,11 @@ export const useHabitStore = create<HabitStoreState>()(
         }
       },
 
-      // Arquiva um hábito
       archiveHabit: async (habitId: string) => {
         set(state => {
           const updatedHabits = archiveHabitUtil(state.habits, habitId);
-          return { habits: getActiveHabits(updatedHabits) };
+          console.log(updatedHabits);
+          return { habits: updatedHabits };
         });
 
         const habitToArchive = get().habits.find(h => h.id === habitId);
@@ -95,7 +89,6 @@ export const useHabitStore = create<HabitStoreState>()(
         }
       },
 
-      // Obtém um hábito pelo ID
       getHabitById: (habitId: string) => {
         return get().habits.find(h => h.id === habitId) || null;
       },
@@ -120,14 +113,13 @@ export const useHabitStore = create<HabitStoreState>()(
         }));
       },
 
-      // Define uma lista inteira de hábitos (útil para reset ou sincronização)
       setHabits: (newHabits: Habit[]) => {
         set({ habits: newHabits });
       },
     }),
     {
-      name: 'habits', // Nome da chave no localStorage
-      storage: createJSONStorage(() => localStorage), // Usa localStorage como armazenamento
+      name: 'habits',
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

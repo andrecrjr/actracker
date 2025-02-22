@@ -1,5 +1,3 @@
-'use client';
-
 import SignOut from '@/ac-components/components/Buttons/SignOut';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import {
@@ -19,51 +17,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/ac-components/components/ui/card';
-import {
-  archiveHabit,
-  getActiveHabits,
-  getHabitsFromStorage,
-  saveHabitsToStorage,
-} from '@/ac-components/lib/habits';
+import { useHabitStore } from '@/ac-components/hooks';
+import { getActiveHabits } from '@/ac-components/lib/habits';
 import type { Habit } from '@/ac-components/types/habits';
 import { useNavigate } from '@modern-js/runtime/router';
 import { Archive, ArchiveIcon, ArrowLeft, Box } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function HabitsPage() {
-  const [habits, setHabits] = useState<Habit[]>([]);
+  const { habits, updateHabit, archiveHabit } = useHabitStore();
   const [habitToArchive, setHabitToArchive] = useState<Habit | null>(null);
-  const [habitToEdit, setHabitToEdit] = useState<Habit | null>(null);
   const router = useNavigate();
-
-  useEffect(() => {
-    const allHabits = getHabitsFromStorage();
-    setHabits(getActiveHabits(allHabits));
-  }, []);
-
-  const handleArchiveHabit = (habit: Habit) => {
-    const allHabits = getHabitsFromStorage();
-    const updatedHabits = archiveHabit(allHabits, habit.id);
-    saveHabitsToStorage(updatedHabits);
-    setHabits(getActiveHabits(updatedHabits));
-    setHabitToArchive(null);
-  };
-
-  const handleHabitCreate = (newHabit: Habit) => {
-    const updatedHabits = [...habits, newHabit];
-    setHabits(updatedHabits);
-    saveHabitsToStorage(updatedHabits);
-  };
-
-  const handleHabitUpdate = (updatedHabit: Habit) => {
-    const updatedHabits = habits.map(h =>
-      h.id === updatedHabit.id ? updatedHabit : h,
-    );
-    setHabits(updatedHabits);
-    saveHabitsToStorage(updatedHabits);
-    // Fechamos o modal
-    setHabitToEdit(null);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
@@ -89,7 +53,7 @@ export default function HabitsPage() {
           </section>
         </div>
         <div className="space-y-4 mt-4">
-          {habits.map(habit => (
+          {getActiveHabits(habits).map(habit => (
             <Card key={habit.id} className="habit-card">
               <CardHeader className="flex flex-row items-center justify-between space-y-0">
                 <div className="flex-1">
@@ -111,17 +75,16 @@ export default function HabitsPage() {
                   <HabitForm
                     habit={habit}
                     currentDate={new Date()}
-                    onSave={updatedHabit => handleHabitUpdate(updatedHabit)}
+                    onSave={updatedHabit => updateHabit(updatedHabit)}
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {/* Botão para Arquivar */}
                   <Button
                     variant="ghost"
                     size="icon"
                     className="text-muted-foreground hover:text-muted-foreground/90"
-                    onClick={() => setHabitToArchive(habit)}
+                    onClick={() => archiveHabit(habit.id)}
                   >
                     <Archive className="h-4 w-4" />
                   </Button>
@@ -154,9 +117,7 @@ export default function HabitsPage() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() =>
-                habitToArchive && handleArchiveHabit(habitToArchive)
-              }
+              onClick={() => habitToArchive && archiveHabit(habitToArchive.id)}
             >
               Archive
             </AlertDialogAction>
