@@ -79,7 +79,6 @@ export const useHabitStore = create<HabitStoreState>()(
       archiveHabit: async (habitId: string) => {
         set(state => {
           const updatedHabits = archiveHabitUtil(state.habits, habitId);
-          console.log(updatedHabits);
           return { habits: updatedHabits };
         });
 

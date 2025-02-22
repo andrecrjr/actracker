@@ -77,8 +77,6 @@ export function SortableHabitCard({
               currentDate={new Date()}
               onSave={data => {
                 partialUpdateHabit(habit.id, data);
-                // console.log(data);
-                // window.location.reload();
               }}
             />
           </section>

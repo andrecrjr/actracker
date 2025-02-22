@@ -62,9 +62,6 @@ export function calculateStreak(
 /**
  * Verifica se o hábito está ativo na data passada.
  */
-/**
- * Verifica se o hábito está ativo na data passada.
- */
 export function isHabitActiveForDate(habit: Habit, date: string): boolean {
   const [year, month, day] = date.split('-').map(Number);
   const currentDate = new Date(year, month - 1, day);
@@ -80,8 +77,6 @@ export function isHabitActiveForDate(habit: Habit, date: string): boolean {
   if (habit.archived && habit.archiveDate && date > habit.archiveDate)
     return false;
 
-  console.log(habit.frequency);
-
   switch (habit.frequency) {
     case 'daily':
       return true;
@@ -93,11 +88,6 @@ export function isHabitActiveForDate(habit: Habit, date: string): boolean {
     case 'monthly':
       // Para monthly, retornamos true se o dia do mês bater com o specificDayOfMonth
       // (ou seja, esse é o "dia do mês" em que se repete).
-      console.log(
-        habit.specificDayOfMonth,
-        dayOfMonth,
-        dayOfMonth == habit.specificDayOfMonth,
-      );
       if (!habit.specificDayOfMonth) return false;
       return dayOfMonth === habit.specificDayOfMonth;
 

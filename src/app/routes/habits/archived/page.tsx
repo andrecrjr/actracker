@@ -20,15 +20,8 @@ import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function ArchivedHabitsPage() {
-  const { habits, setHabits } = useHabitStore();
+  const { habits } = useHabitStore();
   const router = useNavigate();
-
-  // useEffect(() => {
-  //   const allHabits = getHabitsFromStorage();
-  //   setHabits(getArchivedHabits(allHabits));
-  // }, []);
-
-  console.log('HABITOS', habits);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">

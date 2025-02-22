@@ -114,7 +114,6 @@ export const HabitForm = ({
       await pluginManager.executeHook('onHabitCreate', updatedHabit);
 
       // Save the habit
-      console.log(updatedHabit);
       onSave(updatedHabit);
 
       // Reset the form if creating a new habit
