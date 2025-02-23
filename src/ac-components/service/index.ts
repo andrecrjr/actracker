@@ -5,9 +5,6 @@ import axiosInstance from '../utils/axios';
 
 export const getAllHabitsFromCloud = async (): Promise<Habit[]> => {
   try {
-    if (!token) {
-      return getHabitsFromStorage();
-    }
     const response = await axiosInstance.get<{ habits: Habit[] }>('/habit');
     return response.data.habits;
   } catch (error) {
@@ -17,9 +14,6 @@ export const getAllHabitsFromCloud = async (): Promise<Habit[]> => {
 
 export const saveOrUpdateUniqueHabitToCloud = async (newHabit: Habit) => {
   try {
-    if (!token) {
-      return;
-    }
     await axiosInstance.post('/habit', {
       habitData: newHabit,
     });
@@ -31,9 +25,6 @@ export const saveOrUpdateUniqueHabitToCloud = async (newHabit: Habit) => {
 
 export const updateHabitDataToCloud = async (habitData: Habit) => {
   try {
-    if (!token) {
-      return false;
-    }
     await axiosInstance.put('/habit', {
       habitId: habitData.id,
       habitData: habitData,

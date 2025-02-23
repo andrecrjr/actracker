@@ -1,3 +1,4 @@
+import { useHabitStore } from '@/ac-components/hooks';
 import { useAuth } from '@/ac-components/hooks/useAuth';
 import { getHabitsFromStorage } from '@/ac-components/lib/habits';
 import axiosInstance from '@/ac-components/utils/axios';
@@ -7,6 +8,7 @@ import { Button } from '../../ui';
 
 export const SyncButton: React.FC<{ isEditMode?: boolean }> = () => {
   const data = useAuth();
+  const { habits } = useHabitStore();
   if (data.isAuthenticated)
     return (
       <Button
@@ -14,9 +16,8 @@ export const SyncButton: React.FC<{ isEditMode?: boolean }> = () => {
         size="sm"
         className="text-muted-foreground"
         onClick={async () => {
-          const allHabitTracked = getHabitsFromStorage();
           await axiosInstance.post('/habit/sync', {
-            habits: allHabitTracked,
+            habits: habits,
           });
         }}
       >

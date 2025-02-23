@@ -12,9 +12,7 @@ export default function Layout() {
         <title>Personal Tracker App - AC Tracker</title>
       </Helmet>
       <UserAuthenticationProvider>
-        <HabitProvider>
-          <Outlet />
-        </HabitProvider>
+        <Outlet />
       </UserAuthenticationProvider>
     </>
   );

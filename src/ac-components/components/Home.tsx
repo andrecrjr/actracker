@@ -4,14 +4,22 @@ import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import { useNavigate } from '@modern-js/runtime/router';
 import { Calendar, Home as HomeIcon, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useHabitStore, useHabits } from '../hooks';
+import { useAuth, useHabitStore, useHabits } from '../hooks';
 import { HabitCalendar } from './CalendarMode';
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarMode, setCalendarMode] = useState(false);
-  const { habits, createHabit, handleHabitToggle } = useHabitStore();
+  const { habits, createHabit, handleHabitToggle, initializeHabits } =
+    useHabitStore();
+  const { isAuthenticated } = useAuth();
   const router = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      initializeHabits();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setCalendarMode(JSON.parse(localStorage.getItem('calendarMode')! ?? false));

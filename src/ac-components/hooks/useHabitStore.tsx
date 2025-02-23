@@ -8,6 +8,7 @@ import { pluginManager } from '../lib/plugins';
 import {
   getAllHabitsFromCloud,
   saveOrUpdateUniqueHabitToCloud,
+  updateHabitDataToCloud,
 } from '../service';
 import { Habit } from '../types/habits';
 
@@ -84,7 +85,7 @@ export const useHabitStore = create<HabitStoreState>()(
 
         const habitToArchive = get().habits.find(h => h.id === habitId);
         if (habitToArchive) {
-          await saveOrUpdateUniqueHabitToCloud(habitToArchive);
+          await updateHabitDataToCloud(habitToArchive);
         }
       },
 
