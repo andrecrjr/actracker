@@ -4,7 +4,7 @@ import { getHabitsFromStorage } from '@/ac-components/lib/habits';
 import axiosInstance from '@/ac-components/utils/axios';
 import { FolderSyncIcon } from 'lucide-react';
 import React from 'react';
-import { Button } from '../../ui';
+import { Button } from '../ui';
 
 export const SyncButton: React.FC<{ isEditMode?: boolean }> = () => {
   const data = useAuth();
