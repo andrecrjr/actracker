@@ -35,7 +35,7 @@ export const useHabitStore = create<HabitStoreState>()(
       initializeHabits: async () => {
         try {
           const cloudHabits = await getAllHabitsFromCloud();
-          set({ habits: cloudHabits });
+          set({ habits: cloudHabits || [] });
         } catch (error) {
           console.error('Erro ao carregar hábitos da nuvem:', error);
         }
@@ -52,6 +52,7 @@ export const useHabitStore = create<HabitStoreState>()(
             h.id === updatedHabit.id ? updatedHabit : h,
           ),
         }));
+
         await saveOrUpdateUniqueHabitToCloud(updatedHabit);
       },
 

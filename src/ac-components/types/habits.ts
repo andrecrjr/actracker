@@ -18,6 +18,7 @@ export interface Habit {
   hidden?: boolean;
   plugins?: PluginHabit[];
   pluginData?: Record<string, any>; // Serialized plugin content
+  cloudSync?: boolean;
 }
 
 export interface PluginHabit {

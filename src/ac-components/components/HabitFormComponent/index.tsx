@@ -77,30 +77,9 @@ export const HabitForm = ({
       archived: false,
       hidden: false,
       completedDates: [],
+      cloudSync: false,
     },
   });
-
-  // Watch for changes in the form and persist them to sync with local storage
-  // useEffect(() => {
-  //   const subscription = form.watch(formValues => {
-  //     if (!formValues?.id) {
-  //       return;
-  //     }
-  //     const habitIndex = habits.findIndex(
-  //       (habit: Habit) => habit.id === formValues.id,
-  //     );
-
-  //     if (habitIndex !== -1) {
-  //       habits[habitIndex] = formValues as Habit;
-  //     } else {
-  //       habits.push(formValues as Habit);
-  //     }
-  //     //const currHabit = habits[habitIndex];
-  //     // saveHabitsToStorage(habits);
-  //   });
-
-  //   return () => subscription.unsubscribe();
-  // }, [form, habits]);
 
   const onSubmit = async (data: HabitFormData) => {
     try {
@@ -127,6 +106,7 @@ export const HabitForm = ({
           daysOfWeek: [],
           specificDayOfMonth: undefined,
           repeatMonthly: false,
+          cloudSync: false,
         });
       }
 

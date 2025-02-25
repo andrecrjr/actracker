@@ -6,9 +6,10 @@ import axiosInstance from '../utils/axios';
 export const getAllHabitsFromCloud = async (): Promise<Habit[]> => {
   try {
     const response = await axiosInstance.get<{ habits: Habit[] }>('/habit');
+    console.log(response.data.habits);
     return response.data.habits;
   } catch (error) {
-    return getHabitsFromStorage();
+    return [];
   }
 };
 

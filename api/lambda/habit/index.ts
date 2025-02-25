@@ -11,6 +11,7 @@ export const post = async () => {
   const { userId } = req.query;
 
   try {
+    habitData.cloudSync = true;
     const newHabit = new Habit({
       userId: userId,
       habitId: habitData.id,

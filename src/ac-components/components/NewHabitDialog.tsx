@@ -38,6 +38,7 @@ export function NewHabitDialog({ onHabitCreate }: NewHabitDialogProps) {
       frequency,
       startDate: new Date().toISOString().split('T')[0],
       completedDates: [],
+      cloudSync: false,
     };
     onHabitCreate(newHabit);
     setTitle('');

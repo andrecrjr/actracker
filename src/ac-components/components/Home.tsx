@@ -1,11 +1,13 @@
 import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
-import { useNavigate } from '@modern-js/runtime/router';
-import { Calendar, Home as HomeIcon, Settings } from 'lucide-react';
+import { Link, useNavigate } from '@modern-js/runtime/router';
+import { Calendar, Cloud, Home as HomeIcon, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuth, useHabitStore, useHabits } from '../hooks';
+import SignInCloudButton from './Buttons/SignIn';
 import { HabitCalendar } from './CalendarMode';
+import { Button } from './ui';
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -28,9 +30,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
       <div className="container mx-auto px-2 py-4 pb-16 max-w-3xl flex-1">
-        <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 text-left mb-2">
-          AC Tracker
-        </h1>
+        <section className="flex justify-between">
+          <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 text-left mb-2">
+            AC Tracker
+          </h1>
+          <SignInCloudButton />
+        </section>
         {!calendarMode ? (
           <>
             <DayNavigation
@@ -53,7 +58,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* Sticky Footer Menu */}
       <footer className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg flex justify-around py-2">
         <button
           className="flex flex-col items-center text-gray-600"
