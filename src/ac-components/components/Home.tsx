@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useAuth, useHabitStore, useHabits } from '../hooks';
 import SignInCloudButton from './Buttons/SignIn';
 import { HabitCalendar } from './CalendarMode';
-import { Button } from './ui';
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());

@@ -11,11 +11,10 @@ export const post = async () => {
   const { userId } = req.query;
 
   try {
-    habitData.cloudSync = true;
     const newHabit = new Habit({
       userId: userId,
       habitId: habitData.id,
-      habitData,
+      habitData: { ...habitData, cloudSync: true },
     });
     await newHabit.save();
     res.status(201).json({

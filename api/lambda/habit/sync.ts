@@ -19,7 +19,13 @@ export const post = async () => {
     const bulkOps = habits.map((habit: IHabit) => ({
       updateOne: {
         filter: { userId, habitId: habit.id },
-        update: { $set: { userId, habitData: habit, habitId: habit.id } },
+        update: {
+          $set: {
+            userId,
+            habitData: { ...habit, cloudSync: true },
+            habitId: habit.id,
+          },
+        },
         upsert: true,
       },
     }));

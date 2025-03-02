@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { useHabitStore } from '../hooks';
 
 export const UserAuth = createContext<{
   isAuthenticated: boolean;
@@ -28,12 +29,16 @@ export const UserAuthenticationProvider = ({
   children,
 }: { children: ReactElement }) => {
   const [data, setUserData] = useState({ isAuthenticated: false });
+  const { setHabits } = useHabitStore();
 
   const authentication = useCallback(async () => {
     const userData = await auth();
     startTransition(() => {
       setUserData(userData);
       localStorage.setItem('userAuthenticated', JSON.stringify(userData));
+      if (!userData.isAuthenticated) {
+        setHabits([]);
+      }
     });
   }, []);
 
