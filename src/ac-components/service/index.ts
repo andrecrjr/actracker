@@ -38,13 +38,10 @@ export const updateHabitDataToCloud = async (habitData: Habit) => {
 
 export const saveSyncCloud = async (habitData: Habit[]) => {
   try {
-    if (!token) {
-      return;
-    }
-    await axiosInstance.post('/habit/sync', {
-      habits: habitData,
+    const data = await axiosInstance.post('/habit/sync', {
+      habits: habitData.filter(item => !item.cloudSync),
     });
-    return true;
+    return data;
   } catch (error) {
     return;
   }

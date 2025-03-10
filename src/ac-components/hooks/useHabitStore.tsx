@@ -26,6 +26,7 @@ type HabitStoreState = {
   getHabitById: (habitId: string) => Habit | null;
   handleHabitToggle: (habitId: string, date: string) => Promise<void>;
   setHabits: (newHabits: Habit[]) => void;
+  syncHabits: () => void;
 };
 
 export const useHabitStore = create<HabitStoreState>()(
@@ -137,9 +138,13 @@ export const useHabitStore = create<HabitStoreState>()(
           }),
         }));
       },
-
       setHabits: (newHabits: Habit[]) => {
         set({ habits: newHabits });
+      },
+      syncHabits: () => {
+        set(state => ({
+          habits: state.habits.map(h => ({ ...h, cloudSync: true })),
+        }));
       },
     }),
     {
