@@ -29,16 +29,13 @@ export const UserAuthenticationProvider = ({
   children,
 }: { children: ReactElement }) => {
   const [data, setUserData] = useState({ isAuthenticated: false });
-  const { setHabits } = useHabitStore();
+  const { setHabits, habits } = useHabitStore();
 
   const authentication = useCallback(async () => {
     const userData = await auth();
     startTransition(() => {
       setUserData(userData);
       localStorage.setItem('userAuthenticated', JSON.stringify(userData));
-      if (!userData.isAuthenticated) {
-        setHabits([]);
-      }
     });
   }, []);
 

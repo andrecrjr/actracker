@@ -20,7 +20,7 @@ export const saveOrUpdateUniqueHabitToCloud = async (newHabit: Habit) => {
     });
     return true;
   } catch (error) {
-    return;
+    throw new Error('Not signed');
   }
 };
 

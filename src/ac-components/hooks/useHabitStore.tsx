@@ -36,17 +36,30 @@ export const useHabitStore = create<HabitStoreState>()(
       initializeHabits: async () => {
         try {
           const cloudHabits = await getAllHabitsFromCloud();
+          const allHabitsTogether = [
+            ...cloudHabits,
+            ...get().habits.filter(h => !h.cloudSync),
+          ];
           startTransition(() => {
-            set({ habits: cloudHabits || get().habits });
+            set({ habits: allHabitsTogether });
           });
         } catch (error) {
-          console.error('Erro ao carregar hábitos da nuvem:', error);
+          console.log('Erro ao carregar hábitos da nuvem:', error);
         }
       },
 
       createHabit: async (newHabit: Habit) => {
         set(state => ({ habits: [...state.habits, newHabit] }));
-        await saveOrUpdateUniqueHabitToCloud(newHabit);
+        try {
+          await saveOrUpdateUniqueHabitToCloud(newHabit);
+          set(state => ({
+            habits: state.habits.map(h =>
+              h.id === newHabit.id ? { ...newHabit, cloudSync: true } : h,
+            ),
+          }));
+        } catch (error) {
+          console.log('User is not logged');
+        }
       },
 
       updateHabit: async (updatedHabit: Habit) => {
@@ -55,8 +68,16 @@ export const useHabitStore = create<HabitStoreState>()(
             h.id === updatedHabit.id ? updatedHabit : h,
           ),
         }));
-
-        await saveOrUpdateUniqueHabitToCloud(updatedHabit);
+        try {
+          await saveOrUpdateUniqueHabitToCloud(updatedHabit);
+          set(state => ({
+            habits: state.habits.map(h =>
+              h.id === updatedHabit.id
+                ? { ...updatedHabit, cloudSync: true }
+                : h,
+            ),
+          }));
+        } catch (error) {}
       },
 
       partialUpdateHabit: async (habitId: string, updates: Partial<Habit>) => {
