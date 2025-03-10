@@ -2,6 +2,7 @@ import {
   archiveHabit as archiveHabitUtil,
   getActiveHabits,
 } from '@/ac-components/lib/habits';
+import { startTransition } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { pluginManager } from '../lib/plugins';
@@ -35,7 +36,9 @@ export const useHabitStore = create<HabitStoreState>()(
       initializeHabits: async () => {
         try {
           const cloudHabits = await getAllHabitsFromCloud();
-          set({ habits: cloudHabits || get().habits });
+          startTransition(() => {
+            set({ habits: cloudHabits || get().habits });
+          });
         } catch (error) {
           console.error('Erro ao carregar hábitos da nuvem:', error);
         }

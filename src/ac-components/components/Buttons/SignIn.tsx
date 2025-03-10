@@ -8,7 +8,7 @@ import { Button } from '../ui';
 
 const SignInCloudButton: React.FC = () => {
   const data = useAuth();
-  console.log(data);
+
   if (!data.isAuthenticated)
     return (
       <Link to="/login">

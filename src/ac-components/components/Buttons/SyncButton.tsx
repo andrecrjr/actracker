@@ -17,7 +17,7 @@ export const SyncButton: React.FC<{ isEditMode?: boolean }> = () => {
         className="text-muted-foreground"
         onClick={async () => {
           await axiosInstance.post('/habit/sync', {
-            habits: habits,
+            habits: habits.filter(item => !item.cloudSync),
           });
         }}
       >

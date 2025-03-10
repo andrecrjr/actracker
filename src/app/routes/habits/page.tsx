@@ -20,7 +20,7 @@ import {
 import { useHabitStore } from '@/ac-components/hooks';
 import { getActiveHabits } from '@/ac-components/lib/habits';
 import type { Habit } from '@/ac-components/types/habits';
-import { useNavigate } from '@modern-js/runtime/router';
+import { Link, useNavigate } from '@modern-js/runtime/router';
 import { Archive, ArchiveIcon, ArrowLeft, Box } from 'lucide-react';
 import { useState } from 'react';
 
@@ -34,9 +34,11 @@ export default function HabitsPage() {
       <div className="container mx-auto px-4 py-4 max-w-2xl">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => router('/')}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
+            <Link to="/">
+              <Button variant="ghost" size="icon">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
             <h1 className="text-3xl font-bold">Settings</h1>
           </div>
           <section className="flex gap-2">

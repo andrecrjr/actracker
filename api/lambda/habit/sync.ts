@@ -38,3 +38,10 @@ export const post = async () => {
       .json({ success: false, message: 'Synchronization failed.' });
   }
 };
+
+export const del = async () => {
+  const { req, res } = useContext();
+  await connectDB();
+  await Habit.deleteMany();
+  res.status(200).json({ success: true, message: 'All habits deleted' });
+};

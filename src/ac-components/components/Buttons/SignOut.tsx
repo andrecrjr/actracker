@@ -1,5 +1,5 @@
 import { useAuth } from '@/ac-components/hooks/useAuth';
-import { router } from '@modern-js/runtime/router';
+import { Link, router } from '@modern-js/runtime/router';
 import { LogOut } from 'lucide-react';
 import React from 'react';
 import { Button } from '../ui';
@@ -11,15 +11,16 @@ const SignOut: React.FC = () => {
 
   if (data.isAuthenticated)
     return (
-      <Button
-        variant="destructive"
-        size="sm"
-        //   onClick={() => router('/habits/archived')}
-        className="text-muted-foreground text-white"
-      >
-        <LogOut className="h-4 w-4" />
-        Sign Out
-      </Button>
+      <Link to="/logout">
+        <Button
+          variant="destructive"
+          size="sm"
+          className="text-muted-foreground text-white"
+        >
+          <LogOut className="h-4 w-4" />
+          Sign Out
+        </Button>
+      </Link>
     );
 
   return <></>;

@@ -1,0 +1,2 @@
+DELETE http://localhost:8080/api/habit/sync
+Content-Type: application/json

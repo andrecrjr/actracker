@@ -3,7 +3,7 @@ import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
 import { Link, useNavigate } from '@modern-js/runtime/router';
 import { Calendar, Cloud, Home as HomeIcon, Settings } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 import { useAuth, useHabitStore, useHabits } from '../hooks';
 import SignInCloudButton from './Buttons/SignIn';
 import { HabitCalendar } from './CalendarMode';
@@ -18,7 +18,9 @@ export default function Home() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      initializeHabits();
+      startTransition(() => {
+        initializeHabits();
+      });
     }
   }, [isAuthenticated]);
 
