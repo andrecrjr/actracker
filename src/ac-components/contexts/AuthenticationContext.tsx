@@ -29,18 +29,17 @@ export const UserAuthenticationProvider = ({
   children,
 }: { children: ReactElement }) => {
   const [data, setUserData] = useState({ isAuthenticated: false });
-  const { setHabits, habits } = useHabitStore();
 
   const authentication = useCallback(async () => {
     const userData = await auth();
     startTransition(() => {
       setUserData(userData);
-      localStorage.setItem('userAuthenticated', JSON.stringify(userData));
     });
+    localStorage.setItem('userAuthenticated', JSON.stringify(userData));
   }, []);
 
   useEffect(() => {
-    authentication();
+    if (typeof window !== 'undefined') authentication();
   }, []);
   return (
     <UserAuth.Provider value={{ ...data, setUserData }}>
