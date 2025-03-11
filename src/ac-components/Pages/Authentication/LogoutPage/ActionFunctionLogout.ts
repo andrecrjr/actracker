@@ -13,11 +13,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (token) {
     console.log(token);
     const headers = new Headers();
-    headers.append(
+    headers.set(
       'Set-Cookie',
-      `token=deleted; HttpOnly; Path=/; Max-Age=${60}`,
+      `token=deleted; HttpOnly; Path=/; Max-Age=${60}, userAuth=false; Path=/; Max-Age=${60}`,
     );
-    console.log(request);
+
     // return redirect('/', { headers });
     return redirect(
       `${process.env.NODE_ENV ? 'http://' : 'https://'}${request.headers.get('host')}`,

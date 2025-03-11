@@ -1,4 +1,4 @@
-import { Outlet } from '@modern-js/runtime/router';
+import { Outlet, useLoaderData } from '@modern-js/runtime/router';
 import './index.css';
 import { UserAuthenticationProvider } from '@/ac-components/contexts/AuthenticationContext';
 import { HabitProvider } from '@/ac-components/hooks';

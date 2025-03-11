@@ -1,4 +1,5 @@
 import { get as auth } from '@api/lambda/auth';
+import { useLoaderData } from '@modern-js/runtime/router';
 import React, {
   ReactElement,
   createContext,
@@ -7,7 +8,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useHabitStore } from '../hooks';
 
 export const UserAuth = createContext<{
   isAuthenticated: boolean;
@@ -27,7 +27,10 @@ export const UserAuth = createContext<{
 
 export const UserAuthenticationProvider = ({
   children,
-}: { children: ReactElement }) => {
+  userAuth,
+}: { children: ReactElement; userAuth?: boolean }) => {
+  const serverData = useLoaderData() as { userAuth?: boolean };
+
   const [data, setUserData] = useState({ isAuthenticated: false });
 
   const authentication = useCallback(async () => {
@@ -39,7 +42,7 @@ export const UserAuthenticationProvider = ({
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') authentication();
+    if (typeof window !== 'undefined' && serverData.userAuth) authentication();
   }, []);
   return (
     <UserAuth.Provider value={{ ...data, setUserData }}>

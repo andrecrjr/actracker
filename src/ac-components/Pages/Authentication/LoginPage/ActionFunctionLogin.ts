@@ -1,11 +1,9 @@
-import { log } from 'console';
 import { cookieUtils } from '@/ac-components/utils';
 import {
   type ActionFunction,
   type LoaderFunction,
   json,
   redirect,
-  redirectDocument,
 } from '@modern-js/runtime/router';
 
 export const loader: LoaderFunction = async ({ request }) => {
