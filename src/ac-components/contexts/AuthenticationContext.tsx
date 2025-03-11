@@ -27,8 +27,7 @@ export const UserAuth = createContext<{
 
 export const UserAuthenticationProvider = ({
   children,
-  userAuth,
-}: { children: ReactElement; userAuth?: boolean }) => {
+}: { children: ReactElement }) => {
   const serverData = useLoaderData() as { userAuth?: boolean };
 
   const [data, setUserData] = useState({ isAuthenticated: false });
@@ -42,7 +41,8 @@ export const UserAuthenticationProvider = ({
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && serverData.userAuth) authentication();
+    console.log('servidor', serverData.userAuth);
+    if (typeof window !== 'undefined' && serverData?.userAuth) authentication();
   }, []);
   return (
     <UserAuth.Provider value={{ ...data, setUserData }}>
