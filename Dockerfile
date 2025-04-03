@@ -1,5 +1,5 @@
 # Use the official Node.js image with Alpine
-FROM node:23-slim
+FROM node:23-alpine
 
 # Install pnpm globally
 RUN npm install -g pnpm
@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
