@@ -1,8 +1,15 @@
 import { DailyHabitList } from '@/ac-components/components/DailyHabitList';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { HabitForm } from '@/ac-components/components/HabitFormComponent';
+import { Marketplace } from '@/ac-components/components/Marketplace';
 import { Link, useNavigate } from '@modern-js/runtime/router';
-import { Calendar, Cloud, Home as HomeIcon, Settings } from 'lucide-react';
+import {
+  Calendar,
+  Cloud,
+  Home as HomeIcon,
+  Package,
+  Settings,
+} from 'lucide-react';
 import { startTransition, useEffect, useState } from 'react';
 import { useAuth, useHabitStore, useHabits } from '../hooks';
 import SignInCloudButton from './Buttons/SignIn';
@@ -57,6 +64,8 @@ export default function Home() {
             onToggle={handleHabitToggle}
           />
         )}
+
+        <Marketplace />
       </div>
 
       <footer className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg flex justify-around py-2">
@@ -78,6 +87,14 @@ export default function Home() {
           <Calendar className="h-6 w-6" />
           <span className="text-xs">Calendar</span>
         </button>
+        <button
+          className="flex flex-col items-center text-gray-600"
+          onClick={() => router('/marketplace')}
+        >
+          <Package className="h-6 w-6" />
+          <span className="text-xs">Plugins</span>
+        </button>
+
         <button
           className="flex flex-col items-center text-gray-600"
           onClick={() => router('/habits')}
