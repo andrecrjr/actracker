@@ -4,6 +4,12 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
+if (!process.env.JWT_SECRET) {
+  console.warn(
+    'WARNING: JWT_SECRET environment variable is not set. Using fallback secret. This is insecure for production.',
+  );
+}
+
 export default hook(({ addMiddleware }) => {
   addMiddleware((req: Request, res: Response, next: NextFunction): void => {
     const publicRoutes = [

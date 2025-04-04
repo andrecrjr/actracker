@@ -1,15 +1,21 @@
 import { useAuth } from '@/ac-components/hooks';
 import { Link } from '@modern-js/runtime/router';
-import { Cloud } from 'lucide-react';
+import { Cloud, Loader2 } from 'lucide-react';
 import React from 'react';
 import { Button } from '../ui';
 
-// import { Container } from './styles';
-
 const SignInCloudButton: React.FC = () => {
-  const data = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
-  if (!data.isAuthenticated)
+  if (isLoading) {
+    return (
+      <Button variant={'ghost'} disabled>
+        <Loader2 className="h-4 w-4 animate-spin" />
+      </Button>
+    );
+  }
+
+  if (!isAuthenticated) {
     return (
       <Link to="/login">
         <Button variant={'ghost'}>
@@ -17,6 +23,8 @@ const SignInCloudButton: React.FC = () => {
         </Button>
       </Link>
     );
+  }
+
   return null;
 };
 

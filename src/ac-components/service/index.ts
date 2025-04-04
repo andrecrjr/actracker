@@ -20,7 +20,7 @@ export const saveOrUpdateUniqueHabitToCloud = async (newHabit: Habit) => {
     });
     return true;
   } catch (error) {
-    throw new Error('Not signed');
+    return;
   }
 };
 
@@ -32,7 +32,7 @@ export const updateHabitDataToCloud = async (habitData: Habit) => {
     });
     return true;
   } catch (error) {
-    return false;
+    return;
   }
 };
 

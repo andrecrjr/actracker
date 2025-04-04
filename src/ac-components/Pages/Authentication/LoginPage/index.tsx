@@ -7,6 +7,7 @@ export default function PasswordlessLogin() {
   const [step, setStep] = useState<'email' | 'verify'>('email');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const nav = useNavigate();
@@ -21,6 +22,9 @@ export default function PasswordlessLogin() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
     const authFormData = new FormData();
 
     if (step === 'email' && email) {
@@ -37,14 +41,26 @@ export default function PasswordlessLogin() {
   };
 
   useEffect(() => {
-    if (fetcher.data?.error) {
-      setError(fetcher.data.error);
+    if (fetcher.data) {
+      setLoading(false);
+
+      if (fetcher.data.error) {
+        setError(fetcher.data.error);
+      }
+
+      if (fetcher.data.message && step === 'email') {
+        setSuccess('Verification code sent! Please check your email.');
+      }
+
+      if (fetcher.data.success) {
+        setSuccess('Authentication successful! Redirecting...');
+        // need to do that because we put cookies into user side
+        setTimeout(() => {
+          window.location.href = '/app';
+        }, 1500);
+      }
     }
-    if (fetcher.data?.success) {
-      // need to do that because we put cookies into user side
-      window.location.href = '/app';
-    }
-  }, [fetcher]);
+  }, [fetcher.data]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -53,6 +69,7 @@ export default function PasswordlessLogin() {
           {step === 'email' ? 'Sign in' : 'Verify Code in your e-mail'}
         </h2>
         {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+        {success && <p className="mb-4 text-sm text-green-500">{success}</p>}
         <form onSubmit={handleFormSubmit} className="space-y-4">
           {step === 'email' ? (
             <input
@@ -63,6 +80,7 @@ export default function PasswordlessLogin() {
               placeholder="Digite seu e-mail"
               className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={loading}
             />
           ) : (
             <input
@@ -71,6 +89,7 @@ export default function PasswordlessLogin() {
               value={code}
               onChange={handleChange}
               placeholder="Digite o código"
+              disabled={loading}
               className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
               maxLength={6}
