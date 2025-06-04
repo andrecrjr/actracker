@@ -1,4 +1,5 @@
 export * from './habits';
+export * from './plugin';
 export * from '../lib/plugins/types';
 import { Request } from 'express';
 
