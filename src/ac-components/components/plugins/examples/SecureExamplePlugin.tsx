@@ -131,15 +131,7 @@ function SecurePluginContent({
           permissions: sandbox?.metadata.permissions,
         });
       } catch (error) {
-        console.error('Error loading notes:', error);
-        if (error instanceof Error) {
-          setEventLog(prev => [
-            ...prev,
-            `Error loading notes: ${error.message}`,
-          ]);
-        } else {
-          setEventLog(prev => [...prev, 'Error loading notes: Unknown error']);
-        }
+        setEventLog(prev => [...prev, 'Error loading notes: Unknown error']);
       }
     };
 
@@ -181,11 +173,7 @@ function SecurePluginContent({
       setEventLog(prev => [...prev, 'Note saved successfully']);
     } catch (error) {
       console.error('Error saving note:', error);
-      if (error instanceof Error) {
-        setEventLog(prev => [...prev, `Error saving note: ${error.message}`]);
-      } else {
-        setEventLog(prev => [...prev, 'Error saving note: Unknown error']);
-      }
+      setEventLog(prev => [...prev, 'Error saving note: Unknown error']);
     }
   };
 
@@ -195,12 +183,7 @@ function SecurePluginContent({
       setNotes('');
       setEventLog(prev => [...prev, 'All data cleared']);
     } catch (error) {
-      console.error('Error clearing data:', error);
-      if (error instanceof Error) {
-        setEventLog(prev => [...prev, `Error clearing data: ${error.message}`]);
-      } else {
-        setEventLog(prev => [...prev, 'Error clearing data: Unknown error']);
-      }
+      setEventLog(prev => [...prev, 'Error clearing data: Unknown error']);
     }
   };
 

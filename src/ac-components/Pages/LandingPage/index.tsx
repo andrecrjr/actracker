@@ -12,13 +12,13 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-const ACTrackerLanding = () => {
+const DaystackLanding = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-800 text-white">
       <header className="container mx-auto px-6 py-8 flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <Activity size={32} className="text-white" />
-          <h1 className="text-2xl font-bold">ACTracker</h1>
+          <h1 className="text-2xl font-bold">Routini</h1>
         </div>
         <nav>
           <a href={'/app'}>
@@ -35,8 +35,8 @@ const ACTrackerLanding = () => {
             Transform Your Daily Habits
           </h2>
           <p className="text-xl text-white/80 mb-8">
-            ACTracker: A powerful, extensible habit tracking platform that
-            adapts to your unique lifestyle.
+            Routini: A powerful, extensible habit tracking platform that adapts
+            to your unique lifestyle.
           </p>
           <div className="space-y-4">
             {[
@@ -197,10 +197,10 @@ const ACTrackerLanding = () => {
       </section>
 
       <footer className="container mx-auto px-6 py-8 text-center opacity-70">
-        <p>© 2024 ACTracker. All rights reserved.</p>
+        <p>© 2024 Routini. All rights reserved.</p>
       </footer>
     </div>
   );
 };
 
-export default ACTrackerLanding;
+export default DaystackLanding;

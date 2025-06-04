@@ -1,12 +1,12 @@
-import ACTrackerLanding from '@/ac-components/Pages/LandingPage';
+import DaystackLanding from '@/ac-components/Pages/LandingPage';
 import { Helmet } from '@modern-js/runtime/head';
 
 const Index = () => (
   <div className="container-box">
     <Helmet>
-      <title>ACTracker - Your Habits as a service</title>
+      <title>Routini - Plugin Feed for your daily routine</title>
     </Helmet>
-    <ACTrackerLanding />
+    <DaystackLanding />
   </div>
 );
 

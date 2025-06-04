@@ -35,7 +35,9 @@ export default function Home() {
   }, [registerPlugin, getAllPlugins]);
 
   useEffect(() => {
-    setCalendarMode(JSON.parse(localStorage.getItem('calendarMode')! ?? false));
+    setCalendarMode(
+      JSON.parse(localStorage.getItem('calendarMode') ?? 'false'),
+    );
   }, []);
 
   const handleCalendarModeToggle = (mode: boolean) => {
