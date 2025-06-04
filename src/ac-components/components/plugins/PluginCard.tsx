@@ -1,5 +1,6 @@
 'use client';
 
+import { usePluginStore } from '@/ac-components/hooks/usePluginStore';
 import type { IPlugin } from '@/ac-components/types/plugin';
 import { GripVertical, Settings, X } from 'lucide-react';
 import { useState } from 'react';
@@ -27,6 +28,7 @@ export function PluginCard({
   dragHandle,
 }: PluginCardProps) {
   const [showSettings, setShowSettings] = useState(false);
+  const { getSandbox } = usePluginStore();
 
   const handleDeactivate = () => {
     if (onDeactivate) {
@@ -37,11 +39,17 @@ export function PluginCard({
   const renderPluginContent = () => {
     if (plugin.renderContent) {
       try {
-        return plugin.renderContent(currentDate, pluginData);
+        const sandbox = getSandbox(plugin.id);
+        return plugin.renderContent(currentDate, pluginData, sandbox);
       } catch (error) {
         console.error(`Error rendering plugin ${plugin.id}:`, error);
         return (
-          <div className="text-red-500">Error rendering plugin content</div>
+          <div className="text-red-500">
+            Error rendering plugin content
+            {error instanceof Error && (
+              <div className="text-xs mt-1">{error.message}</div>
+            )}
+          </div>
         );
       }
     }
@@ -61,18 +69,29 @@ export function PluginCard({
   const renderSettings = () => {
     if (plugin.renderSettings) {
       try {
-        return plugin.renderSettings();
+        const sandbox = getSandbox(plugin.id);
+        return plugin.renderSettings(sandbox);
       } catch (error) {
         console.error(
           `Error rendering settings for plugin ${plugin.id}:`,
           error,
         );
-        return <div className="text-red-500">Error rendering settings</div>;
+        return (
+          <div className="text-red-500">
+            Error rendering settings
+            {error instanceof Error && (
+              <div className="text-xs mt-1">{error.message}</div>
+            )}
+          </div>
+        );
       }
     }
 
     return <div className="text-muted-foreground">No settings available</div>;
   };
+
+  // Show privacy indicator for untrusted plugins
+  const showPrivacyIndicator = plugin.trusted === false || plugin.remoteConfig;
 
   return (
     <Card
@@ -104,6 +123,16 @@ export function PluginCard({
               {plugin.isActive && (
                 <Badge variant="default" className="text-xs">
                   Active
+                </Badge>
+              )}
+              {showPrivacyIndicator && (
+                <Badge variant="secondary" className="text-xs">
+                  🔒 Isolated
+                </Badge>
+              )}
+              {plugin.remoteConfig && (
+                <Badge variant="destructive" className="text-xs">
+                  Remote
                 </Badge>
               )}
             </div>
@@ -146,7 +175,15 @@ export function PluginCard({
             </Button>
           </div>
         ) : (
-          renderPluginContent()
+          <div>
+            {renderPluginContent()}
+            {showPrivacyIndicator && (
+              <div className="mt-2 text-xs text-muted-foreground border-t pt-2">
+                🔒 This plugin runs in an isolated environment with restricted
+                access to your data.
+              </div>
+            )}
+          </div>
         )}
       </CardContent>
     </Card>

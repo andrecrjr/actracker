@@ -3,6 +3,56 @@ export type PluginPosition = {
   order: number;
 };
 
+// Plugin storage isolation interface
+export interface PluginStorageAPI {
+  get: (key: string) => Promise<any>;
+  set: (key: string, value: any) => Promise<void>;
+  remove: (key: string) => Promise<void>;
+  clear: () => Promise<void>;
+  keys: () => Promise<string[]>;
+}
+
+// Plugin sandbox context for isolated execution
+export interface PluginSandbox {
+  storage: PluginStorageAPI;
+  pluginId: string;
+  metadata: {
+    name: string;
+    version: string;
+    permissions: PluginPermissions;
+  };
+  // Restricted API surface for plugins
+  hostAPI: {
+    updatePluginData: (data: any) => void;
+    getPluginData: () => any;
+    emitEvent: (event: string, data?: any) => void;
+    subscribeToEvent: (
+      event: string,
+      callback: (data?: any) => void,
+    ) => () => void;
+  };
+}
+
+// Plugin permissions system
+export interface PluginPermissions {
+  storage: {
+    maxSize: number; // in bytes
+    allowedKeys?: string[]; // if specified, restrict to these keys only
+  };
+  network: {
+    allowedDomains?: string[]; // if specified, restrict to these domains
+    maxRequests?: number; // per minute
+  };
+  events: {
+    canEmit: string[]; // events this plugin can emit
+    canSubscribe: string[]; // events this plugin can subscribe to
+  };
+  ui: {
+    maxHeight?: number; // maximum height in pixels
+    allowedComponents?: string[]; // allowed UI components
+  };
+}
+
 export interface IPlugin {
   id: string;
   name: string;
@@ -10,6 +60,10 @@ export interface IPlugin {
   version: string;
   icon?: string;
   color?: string;
+
+  // Security and permissions
+  permissions?: PluginPermissions;
+  trusted?: boolean; // whether this plugin is trusted (affects sandbox restrictions)
 
   // Date-based state
   isActive: boolean;
@@ -19,21 +73,27 @@ export interface IPlugin {
   // Position for drag & drop
   position?: PluginPosition;
 
-  // UI rendering
-  renderContent?: (date: Date, data?: any) => React.ReactNode;
-  renderSettings?: () => React.ReactNode;
+  // UI rendering - now receives sandbox context
+  renderContent?: (
+    date: Date,
+    data?: any,
+    sandbox?: PluginSandbox,
+  ) => React.ReactNode;
+  renderSettings?: (sandbox?: PluginSandbox) => React.ReactNode;
 
-  // Lifecycle hooks
-  onDateChange?: (date: Date) => Promise<void> | void;
-  onActivate?: (date: Date) => Promise<void> | void;
-  onDeactivate?: (date: Date) => Promise<void> | void;
-  onDataUpdate?: (data: any) => Promise<void> | void;
+  // Lifecycle hooks - now receive sandbox context
+  onDateChange?: (date: Date, sandbox?: PluginSandbox) => Promise<void> | void;
+  onActivate?: (date: Date, sandbox?: PluginSandbox) => Promise<void> | void;
+  onDeactivate?: (date: Date, sandbox?: PluginSandbox) => Promise<void> | void;
+  onDataUpdate?: (data: any, sandbox?: PluginSandbox) => Promise<void> | void;
 
   // Remote plugin support (for module federation)
   remoteConfig?: {
     remoteUrl: string;
     scope: string;
     module: string;
+    hash?: string; // integrity hash for security
+    csp?: string; // content security policy
   };
 }
 
