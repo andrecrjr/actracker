@@ -1,7 +1,7 @@
 import { get as auth } from '@api/lambda/auth';
 import { useLoaderData } from '@modern-js/runtime/router';
-import React, {
-  ReactElement,
+import {
+  type ReactElement,
   createContext,
   startTransition,
   useCallback,
@@ -19,7 +19,7 @@ interface AuthState {
   error?: string;
 }
 
-interface AuthContextType extends AuthState {
+export interface AuthContextType extends AuthState {
   setUserData: React.Dispatch<React.SetStateAction<AuthState>>;
   refreshAuth: () => Promise<void>;
   logout: () => void;
@@ -54,11 +54,15 @@ export const UserAuthenticationProvider = ({
       const userData = await auth();
 
       startTransition(() => {
-        setUserData(prev => ({
-          ...prev,
-          ...userData,
-          isLoading: false,
-        }));
+        setUserData(
+          prev =>
+            ({
+              ...prev,
+              ...userData,
+              isLoading: false,
+              userId: userData.userId as string | undefined,
+            }) as AuthState,
+        );
       });
 
       // Only store in localStorage if authenticated

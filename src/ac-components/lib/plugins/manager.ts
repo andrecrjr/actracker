@@ -98,26 +98,23 @@ export const pluginManager = new HabitPluginManager();
 
 (async () => {
   //environment to your own plugin or 3051
-  const remoteCorePublicPlugins =
-    process.env.REACT_APP_PLUGINS_STATIC_URL ?? 'http://localhost:3051';
-
-  await pluginManager.registerRemotePlugin({
-    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
-    scope: 'corePlugin',
-    module: './DueDatePlugin',
-  });
-  await pluginManager.registerRemotePlugin({
-    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
-    scope: 'corePlugin',
-    module: './NotePlugin',
-  });
-
-  await pluginManager.registerRemotePlugin({
-    remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
-    scope: 'corePlugin',
-    module: './MenstrualCycle',
-  });
-
+  // const remoteCorePublicPlugins =
+  //   process.env.REACT_APP_PLUGINS_STATIC_URL ?? 'http://localhost:3051';
+  // await pluginManager.registerRemotePlugin({
+  //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
+  //   scope: 'corePlugin',
+  //   module: './DueDatePlugin',
+  // });
+  // await pluginManager.registerRemotePlugin({
+  //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
+  //   scope: 'corePlugin',
+  //   module: './NotePlugin',
+  // });
+  // await pluginManager.registerRemotePlugin({
+  //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,
+  //   scope: 'corePlugin',
+  //   module: './MenstrualCycle',
+  // });
   // TEST your own plugin
   // await pluginManager.registerRemotePlugin({
   //   remoteUrl: `${remoteCorePublicPlugins}/static/remoteEntry.js`,

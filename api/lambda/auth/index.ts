@@ -1,7 +1,7 @@
 import { User } from '@api/models';
 import { useContext } from '@modern-js/runtime/express';
 import { Response } from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
@@ -14,7 +14,7 @@ if (!process.env.JWT_SECRET) {
 export const get = async (): Promise<{
   isAuthenticated: boolean;
   message?: string;
-  userId?: string;
+  userId?: string | unknown;
   email?: string;
 }> => {
   const { req, res } = useContext();
@@ -49,7 +49,7 @@ export const get = async (): Promise<{
     return {
       isAuthenticated: true,
       email: data.email,
-      userId: data._id.toString(),
+      userId: data._id as string,
     };
   } catch (error) {
     return { message: 'Token inválido ou expirado', isAuthenticated: false };
