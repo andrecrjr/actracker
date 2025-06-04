@@ -907,5 +907,4 @@ export const samplePlugins: IPlugin[] = [
   calendarPlugin,
   progressPlugin,
   interactivePlugin,
-  SecureExamplePlugin,
 ];

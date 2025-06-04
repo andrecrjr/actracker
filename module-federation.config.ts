@@ -10,6 +10,7 @@ export default createModuleFederationConfig({
     react: { singleton: true },
     'react-dom': { singleton: true },
     zustand: { singleton: true },
+    zod: { singleton: true },
     ...deps,
   },
   exposes: {
