@@ -1,5 +1,6 @@
 import type { IPlugin, PluginSandbox } from '@/ac-components/types/plugin';
 import { useEffect, useState } from 'react';
+import SecureExamplePlugin from './SecureExamplePlugin';
 
 // Sample Todo Plugin
 export const todoPlugin: IPlugin = {
@@ -906,4 +907,5 @@ export const samplePlugins: IPlugin[] = [
   calendarPlugin,
   progressPlugin,
   interactivePlugin,
+  SecureExamplePlugin,
 ];

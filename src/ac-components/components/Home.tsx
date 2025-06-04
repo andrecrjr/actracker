@@ -13,7 +13,7 @@ import {
 import { startTransition, useEffect, useState } from 'react';
 import { useAuth, usePluginStore } from '../hooks';
 import SignInCloudButton from './Buttons/SignIn';
-import { samplePlugins } from './plugins/samplePlugins';
+import { samplePlugins } from './plugins/examples/samplePlugins';
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());

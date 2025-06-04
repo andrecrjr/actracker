@@ -9,5 +9,5 @@ export { PluginManagement } from './PluginManagement';
 export { PluginSettings } from './PluginSettings';
 
 // Sample Plugins
-export { samplePlugins } from './samplePlugins';
-export * from './samplePlugins';
+export { samplePlugins } from './examples/samplePlugins';
+export * from './examples/samplePlugins';
