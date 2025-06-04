@@ -71,7 +71,7 @@ class SecurePluginLoader {
   private createSandboxedEnvironment(pluginId: string): HTMLIFrameElement {
     const iframe = document.createElement('iframe');
     iframe.id = `plugin-sandbox-${pluginId}`;
-    iframe.sandbox = 'allow-scripts allow-same-origin';
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
     return iframe;
