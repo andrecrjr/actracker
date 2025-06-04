@@ -1,6 +1,6 @@
-import { DailyPluginView } from '@/ac-components/components/DailyPluginView';
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { Marketplace } from '@/ac-components/components/Marketplace';
+import { DailyPluginView } from '@/ac-components/components/plugins/DailyPluginView';
 import { Link, useNavigate } from '@modern-js/runtime/router';
 import {
   Calendar,
@@ -12,8 +12,8 @@ import {
 } from 'lucide-react';
 import { startTransition, useEffect, useState } from 'react';
 import { useAuth, usePluginStore } from '../hooks';
-import { samplePlugins } from '../lib/samplePlugins';
 import SignInCloudButton from './Buttons/SignIn';
+import { samplePlugins } from './plugins/samplePlugins';
 
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());

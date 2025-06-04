@@ -1,25 +1,17 @@
 'use client';
-import { Button } from '@/ac-components/components/ui/button';
+// Temporarily disabled - needs update for new plugin system
+// import { pluginManager } from '@/ac-components/lib/plugins';
+import { PlugIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '../ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/ac-components/components/ui/dialog';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/ac-components/components/ui/tabs';
-import { pluginManager } from '@/ac-components/lib/plugins';
-import type { Habit, PluginHabit } from '@/ac-components/types/habits';
-import { PlugIcon } from 'lucide-react';
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { PluginCard } from './PluginCard';
-import { PluginSettings } from './PluginSettings';
+} from '../ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 interface PluginManagementProps {
   activeTabStatus?: 'available' | 'enabled';
@@ -29,42 +21,9 @@ export function PluginManagement({
   activeTabStatus = 'available',
 }: PluginManagementProps) {
   const [activeTab, setActiveTab] = useState<string>(activeTabStatus);
-  const form = useFormContext(); // Access react-hook-form context
-  if (!form.control) {
-    throw new Error('Not loaded control');
-  }
-  const pluginForm: PluginHabit[] = form.getValues('plugins');
-  const availablePlugins = pluginManager.getAllPlugins();
 
-  const isPluginEnabled = (pluginId: string) => {
-    return pluginForm?.some(p => p.id === pluginId && p.enabled) ?? false;
-  };
-
-  const getPluginSettings = (pluginId: string) => {
-    return pluginForm?.find(p => p.id === pluginId)?.settings ?? {};
-  };
-
-  let handlePluginToggle = (pluginId: string, enabled: boolean) => {
-    let plugin = pluginManager.getPlugin(pluginId);
-    if (!plugin) return;
-
-    let updatedPlugins = pluginForm ? [...pluginForm] : [];
-    let pluginIndex = updatedPlugins.findIndex(p => p.id === pluginId);
-
-    if (pluginIndex === -1 && enabled) {
-      // Add the plugin if it's not already in the list
-      updatedPlugins.push({
-        id: pluginId,
-        enabled: true,
-        settings: plugin.settings || {},
-      });
-    } else if (pluginIndex !== -1) {
-      // Update the plugin's enabled status
-      updatedPlugins[pluginIndex] = { ...updatedPlugins[pluginIndex], enabled };
-    }
-
-    form.setValue('plugins', updatedPlugins);
-  };
+  // TODO: Update this component to work with the new IPlugin system
+  // This component was using the legacy habit plugin system
 
   return (
     <Dialog>
@@ -78,43 +37,10 @@ export function PluginManagement({
         <DialogHeader>
           <DialogTitle>Plugin Management</DialogTitle>
         </DialogHeader>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="available">Available</TabsTrigger>
-            <TabsTrigger value="enabled">Enabled</TabsTrigger>
-          </TabsList>
-          <TabsContent
-            value="available"
-            className="space-y-4 max-h-[400px] overflow-y-auto"
-          >
-            {availablePlugins.map(plugin => (
-              <PluginCard
-                key={plugin.id}
-                plugin={plugin}
-                isEnabled={isPluginEnabled(plugin.id)}
-                onToggle={enabled => handlePluginToggle(plugin.id, enabled)}
-              />
-            ))}
-          </TabsContent>
-          <TabsContent
-            value="enabled"
-            className="space-y-4 max-h-[400px] overflow-y-auto"
-          >
-            <div className="space-y-4">
-              <PluginSettings
-                onSettingsChange={(updatedHabitSettings: Habit) => {
-                  Object.keys(updatedHabitSettings).map((formField: string) => {
-                    formField !== 'id' &&
-                      form.setValue(
-                        formField,
-                        updatedHabitSettings[formField as keyof Habit],
-                      );
-                  });
-                }}
-              />
-            </div>
-          </TabsContent>
-        </Tabs>
+        <div className="p-4 text-center text-muted-foreground">
+          <p>Plugin Management is being updated for the new plugin system.</p>
+          <p>Use the + buttons in the daily view to add plugins for now.</p>
+        </div>
       </DialogContent>
     </Dialog>
   );

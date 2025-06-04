@@ -17,11 +17,11 @@ import {
 } from '@dnd-kit/core';
 import { CheckIcon, PencilIcon } from 'lucide-react';
 import { useState } from 'react';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { PluginCard } from './PluginCard';
 import { PluginStack } from './PluginStack';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 
 interface DailyPluginViewProps {
   currentDate: Date;

@@ -7,8 +7,8 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Plus } from 'lucide-react';
+import { Button } from '../ui/button';
 import { SortablePluginCard } from './SortablePluginCard';
-import { Button } from './ui/button';
 
 interface PluginStackProps {
   stackId: 'left' | 'center' | 'right';
