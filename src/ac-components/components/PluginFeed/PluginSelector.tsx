@@ -39,7 +39,7 @@ export function PluginSelector({
       const plugin = await loadSecureRemotePlugin({
         remoteUrl: 'http://localhost:3051/static/remoteEntry.js',
         scope: 'corePlugin',
-        module: './TodoPlugin',
+        module: './InteractivePlugin',
         permissions: {
           storage: { maxSize: 1024 * 1024 }, // 1MB
           network: { allowedDomains: [] }, // No network access

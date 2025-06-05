@@ -8,4 +8,4 @@ exec:
 	docker exec -it actracker-app-1 sh
 
 build:
-	docker compose up -d && docker exec -it actracker-app-1 sh -c "cd /app && npm run deploy"
+	docker compose down && docker compose up -d && docker exec -it actracker-app-1 sh -c "cd /app && npm run deploy"

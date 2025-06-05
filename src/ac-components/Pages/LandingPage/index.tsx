@@ -51,11 +51,6 @@ const DaystackLanding = () => {
             ))}
           </div>
           <div className="mt-10 flex space-x-4">
-            <a href={'/app'}>
-              <button className="bg-white text-indigo-900 px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors flex items-center">
-                Start Now <ChevronRight className="ml-2" />
-              </button>
-            </a>
             <button className="border border-white/30 px-6 py-3 rounded-full hover:bg-white/10 transition-colors">
               Learn More
             </button>
@@ -197,7 +192,7 @@ const DaystackLanding = () => {
       </section>
 
       <footer className="container mx-auto px-6 py-8 text-center opacity-70">
-        <p>© 2024 Routini. All rights reserved.</p>
+        <p>© AC-JR. All rights reserved.</p>
       </footer>
     </div>
   );
