@@ -1,10 +1,12 @@
+import { ThemeToggle } from '@/ac-components/components/theme-toggle';
+import { LandingThemeProvider } from '@/ac-components/contexts/landing-theme-context';
 import {
   Activity,
   CheckCircle2,
   ChevronRight,
   Cloud,
   Code,
-  Lock,
+  Code2,
   PlugIcon,
   ShieldCheck,
   Smartphone,
@@ -12,190 +14,321 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-const DaystackLanding = () => {
+const RoutiniLandingContent = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-800 text-white">
+    <div className="min-h-screen text-foreground transition-all duration-500">
+      {/* Header */}
       <header className="container mx-auto px-6 py-8 flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <Activity size={32} className="text-white" />
-          <h1 className="text-2xl font-bold">Routini</h1>
+          <Activity
+            size={36}
+            className="text-neutral-gray animate-subtle-pulse drop-shadow-lg"
+          />
+          <h1 className="text-3xl font-extrabold tracking-tight">Routini</h1>
         </div>
-        <nav>
-          <a href={'/app'}>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full transition-colors">
-              Get Started
-            </button>
+        <nav className="flex items-center space-x-6">
+          <a
+            href="#features"
+            className="hover:text-neutral-gray transition-colors duration-300 font-medium"
+          >
+            Features
           </a>
+          <a
+            href="#waitlist"
+            className="hover:text-neutral-gray transition-colors duration-300 font-medium"
+          >
+            Join Waitlist
+          </a>
+          <a
+            href="/app"
+            className="hover:text-neutral-gray transition-colors duration-300 font-medium"
+          >
+            App
+          </a>
+          <ThemeToggle size="md" />
         </nav>
       </header>
 
-      <main className="container mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
-        <section>
-          <h2 className="text-5xl font-extrabold mb-6 leading-tight">
-            Transform Your Daily Habits
+      {/* Hero Section */}
+      <main className="container mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <section className="space-y-6">
+          <h2 className="text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+            <span className="bg-gradient-to-r from-foreground via-neutral-gray to-warm-gray bg-clip-text text-transparent">
+              One Day, One Page:
+            </span>
+            <br />
+            <span className="text-foreground">
+              Your Productivity Revolution
+            </span>
           </h2>
-          <p className="text-xl text-white/80 mb-8">
-            Routini: A powerful, extensible habit tracking platform that adapts
-            to your unique lifestyle.
+          <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
+            Routini simplifies your day with a modular, plugin-based system
+            tailored to your unique needs. Focus on today, effortlessly.
           </p>
           <div className="space-y-4">
             {[
-              { icon: CheckCircle2, text: 'Daily Habit Tracking' },
-              { icon: PlugIcon, text: 'Customizable Plugin System' },
-              { icon: Code, text: 'Develop Your Own Plugins' },
-            ].map(({ icon: Icon, text }, idx) => (
-              <div key={idx} className="flex items-center space-x-3">
-                <Icon className="text-green-400" />
-                <span>{text}</span>
+              {
+                icon: CheckCircle2,
+                text: 'Single Daily View with Vertical Plugins',
+                color: 'text-neutral-gray',
+              },
+              {
+                icon: PlugIcon,
+                text: 'Install Only What You Need Today',
+                color: 'text-warm-gray',
+              },
+              {
+                icon: Code,
+                text: 'Build Plugins with React & Module Federation',
+                color: 'text-neutral-gray',
+              },
+            ].map(({ icon: Icon, text, color }, idx) => (
+              <div key={idx} className="flex items-center space-x-3 group">
+                <Icon
+                  className={`${color} group-hover:scale-110 transition-transform duration-300`}
+                  size={24}
+                />
+                <span className="text-lg group-hover:text-neutral-gray transition-colors duration-300">
+                  {text}
+                </span>
               </div>
             ))}
           </div>
-          <div className="mt-10 flex space-x-4">
-            <button className="border border-white/30 px-6 py-3 rounded-full hover:bg-white/10 transition-colors">
-              Learn More
+          <a href="#waitlist">
+            <button className="mt-8 bg-gradient-to-r from-neutral-gray to-warm-gray text-white px-8 py-3 rounded-full hover:shadow-lg hover:shadow-neutral-gray/25 transition-all duration-300 font-semibold group">
+              Join the Waitlist
+              <ChevronRight
+                className="inline ml-2 group-hover:translate-x-1 transition-transform duration-300"
+                size={20}
+              />
             </button>
-          </div>
+          </a>
         </section>
 
         <section className="relative">
-          <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-lg border border-white/20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/30 to-pink-500/30 opacity-50 blur-2xl"></div>
-
-            <div className="relative z-10 grid grid-cols-3 gap-4">
-              {[
-                { color: 'bg-green-500/50', label: 'Reading' },
-                { color: 'bg-blue-500/50', label: 'Fitness' },
-                { color: 'bg-purple-500/50', label: 'Meditation' },
-                { color: 'bg-yellow-500/50', label: 'Learning' },
-                { color: 'bg-red-500/50', label: 'Coding' },
-                { color: 'bg-teal-500/50', label: 'Nutrition' },
-              ].map(({ color, label }, idx) => (
-                <div
-                  key={idx}
-                  className={`h-16 rounded-lg ${color} flex items-center justify-center`}
-                >
-                  <span className="text-xs text-white opacity-80">{label}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="absolute top-0 right-0 m-4 flex space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            </div>
-          </div>
-
-          <div className="mt-6 grid grid-cols-3 gap-4">
-            {[
-              { icon: Zap, text: 'Quick Tracking', color: 'text-yellow-400' },
-              {
-                icon: ShieldCheck,
-                text: 'Secure Data',
-                color: 'text-green-400',
-              },
-              { icon: Cloud, text: 'Cloud Sync', color: 'text-blue-400' },
-            ].map(({ icon: Icon, text, color }, idx) => (
-              <div
-                key={idx}
-                className="bg-white/10 p-4 rounded-lg flex items-center justify-center flex-col text-center"
-              >
-                <Icon className={`mb-2 ${color}`} size={32} />
-                <span className="text-xs">{text}</span>
+          <div className="glass-effect dark:glass-effect-dark p-8 rounded-2xl relative overflow-hidden shadow-2xl border border-neutral-gray/20 dark:border-neutral-gray/30">
+            <div className="absolute inset-0 bg-gradient-to-tr from-neutral-gray/10 via-warm-gray/5 to-neutral-gray/10 opacity-50 blur-3xl"></div>
+            <div className="relative z-10 space-y-4">
+              <div className="text-sm text-muted-foreground font-medium">
+                Today's Stack
               </div>
-            ))}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  {
+                    color: 'bg-neutral-gray/20 border border-neutral-gray/30',
+                    label: 'Todo',
+                    glow: 'shadow-neutral-gray/20',
+                  },
+                  {
+                    color: 'bg-warm-gray/20 border border-warm-gray/30',
+                    label: 'Weather',
+                    glow: 'shadow-warm-gray/20',
+                  },
+                  {
+                    color: 'bg-neutral-gray/15 border border-neutral-gray/25',
+                    label: 'Journal',
+                    glow: 'shadow-neutral-gray/15',
+                  },
+                  {
+                    color: 'bg-warm-gray/15 border border-warm-gray/25',
+                    label: 'Crypto',
+                    glow: 'shadow-warm-gray/15',
+                  },
+                ].map(({ color, label, glow }, idx) => (
+                  <div
+                    key={idx}
+                    className={`h-12 rounded-lg ${color} flex items-center justify-center text-sm font-medium hover:scale-105 transition-all duration-300 hover:shadow-lg ${glow} backdrop-blur-sm`}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+              <button className="w-full bg-gradient-to-r from-neutral-gray/20 to-warm-gray/20 border border-neutral-gray/30 py-2 rounded-lg hover:from-neutral-gray/30 hover:to-warm-gray/30 transition-all duration-300 text-sm font-medium backdrop-blur-sm">
+                + Add Plugin
+              </button>
+            </div>
+            <div className="absolute top-4 right-4 flex space-x-2">
+              <div className="w-3 h-3 bg-neutral-gray rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-warm-gray rounded-full animate-pulse delay-100"></div>
+              <div className="w-3 h-3 bg-neutral-gray/70 rounded-full animate-pulse delay-200"></div>
+            </div>
           </div>
         </section>
       </main>
 
-      {/* Remaining sections stay the same as previous artifact */}
-      <section className="container mx-auto px-6 py-16 text-center">
-        <h3 className="text-4xl font-bold mb-12">Pricing & Features</h3>
-        <div className="grid md:grid-cols-2 gap-8">
-          {[
-            {
-              title: 'Free Mode',
-              icon: Smartphone,
-              price: '$0',
-              features: [
-                'Single Device Tracking',
-                'Basic Habit Logs',
-                'Limited Plugin Access',
-              ],
-              color: 'border-blue-500',
-            },
-            {
-              title: 'Pro Mode',
-              icon: Cloud,
-              price: '$4.99/mo',
-              features: [
-                'Multi-Platform Sync',
-                'Unlimited Plugins',
-                'Cloud Backup',
-                'Advanced Analytics',
-              ],
-              color: 'border-purple-500',
-            },
-          ].map(({ title, icon: Icon, price, features, color }, idx) => (
-            <div
-              key={idx}
-              className={`bg-white/10 p-8 rounded-2xl border ${color} hover:bg-white/20 transition-colors`}
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h4 className="text-2xl font-semibold flex items-center">
-                  <Icon className="mr-3" /> {title}
-                </h4>
-                <span className="text-3xl font-bold">{price}</span>
-              </div>
-              <ul className="space-y-3">
-                {features.map((feature, featureIdx) => (
-                  <li key={featureIdx} className="flex items-center">
-                    <CheckCircle2 size={18} className="mr-2 text-green-400" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className="mt-6 w-full bg-white text-indigo-900 py-3 rounded-full hover:bg-gray-100">
-                Choose {title}
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="container mx-auto px-6 py-16 text-center">
-        <h3 className="text-4xl font-bold mb-12">Extend Your Tracking</h3>
+      {/* Features Section */}
+      <section
+        id="features"
+        className="container mx-auto px-6 py-16 text-center"
+      >
+        <h3 className="text-4xl font-bold mb-12 bg-gradient-to-r from-foreground to-neutral-gray bg-clip-text text-transparent">
+          Why Routini Stands Out
+        </h3>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
-              title: 'Custom Metrics',
-              description: 'Track anything that matters to you.',
+              icon: Zap,
+              text: 'Instant Plugin Setup',
+              color: 'text-neutral-gray',
+              desc: 'Add or remove plugins daily in seconds.',
+              bgColor: 'from-neutral-gray/10 to-neutral-gray/5',
             },
             {
-              title: 'Plugin Ecosystem',
-              description: 'Build and share community plugins.',
+              icon: Cloud,
+              text: 'Seamless Sync',
+              color: 'text-neutral-gray',
+              desc: 'Access your daily stack anywhere with PWA.',
+              bgColor: 'from-neutral-gray/10 to-warm-gray/5',
             },
             {
-              title: 'Infinite Flexibility',
-              description: 'No limits to your habit tracking.',
+              icon: Code2,
+              text: 'Modular',
+              color: 'text-neutral-gray',
+              desc: 'Build your own plugins with React & Module Federation.',
+              bgColor: 'from-neutral-gray/10 to-warm-gray/5',
             },
-          ].map(({ title, description }, idx) => (
+          ].map(({ icon: Icon, text, color, desc, bgColor }, idx) => (
             <div
               key={idx}
-              className="bg-white/10 p-8 rounded-2xl hover:bg-white/20 transition-colors"
+              className={`glass-effect dark:glass-effect-dark p-6 rounded-xl border border-neutral-gray/20 hover:border-neutral-gray/40 transition-all duration-300 hover:scale-105 bg-gradient-to-br ${bgColor} group`}
             >
-              <h4 className="text-2xl font-semibold mb-4">{title}</h4>
-              <p className="text-white/80">{description}</p>
+              <Icon
+                className={`mb-4 ${color} group-hover:scale-110 transition-transform duration-300 animate-gentle-float`}
+                size={40}
+              />
+              <h4 className="text-xl font-semibold mb-2 group-hover:text-neutral-gray transition-colors duration-300">
+                {text}
+              </h4>
+              <p className="text-muted-foreground">{desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <footer className="container mx-auto px-6 py-8 text-center opacity-70">
-        <p>© AC-JR. All rights reserved.</p>
+      {/* Waitlist Section */}
+      <section
+        id="waitlist"
+        className="container mx-auto px-6 py-16 text-center"
+      >
+        <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-neutral-gray bg-clip-text text-transparent">
+          Join the Routini Waitlist
+        </h3>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+          Be the first to experience the Alpha release of Routini. Sign up now
+          to secure your spot!
+        </p>
+        <div className="max-w-md mx-auto glass-effect dark:glass-effect-dark p-6 rounded-xl border border-neutral-gray/20">
+          <iframe
+            src="https://your-waitlist-service.com/embed"
+            className="w-full h-96 border-0 rounded-lg"
+            title="Routini Waitlist Form"
+          ></iframe>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="container mx-auto px-6 py-16 text-center">
+        <h3 className="text-4xl font-bold mb-12 bg-gradient-to-r from-foreground to-neutral-gray bg-clip-text text-transparent">
+          Simple Pricing, Powerful Features
+        </h3>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {[
+            {
+              title: 'Free Tier',
+              icon: Smartphone,
+              price: '$0',
+              features: [
+                'Core Plugins (Todo, Weather)',
+                'Single-Device Access',
+                'Basic Plugin Marketplace',
+              ],
+              color: 'border-neutral-gray/30',
+              bgGradient: 'from-neutral-gray/5 to-warm-gray/5',
+            },
+            {
+              title: 'Pro Tier',
+              icon: Cloud,
+              price: '$4/mo',
+              features: [
+                'Unlimited Plugins',
+                'Cross-Platform Sync',
+                'Advanced Analytics',
+                'Priority Support',
+              ],
+              color: 'border-warm-gray/30',
+              bgGradient: 'from-warm-gray/5 to-neutral-gray/5',
+              popular: true,
+            },
+          ].map(
+            (
+              {
+                title,
+                icon: Icon,
+                price,
+                features,
+                color,
+                bgGradient,
+                popular,
+              },
+              idx,
+            ) => (
+              <div
+                key={idx}
+                className={`glass-effect dark:glass-effect-dark p-8 rounded-2xl border ${color} hover:border-neutral-gray/50 transition-all duration-300 hover:scale-105 bg-gradient-to-br ${bgGradient} relative group`}
+              >
+                {popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-neutral-gray to-warm-gray text-white px-4 py-1 rounded-full text-sm font-medium">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between mb-6">
+                  <h4 className="text-2xl font-semibold flex items-center group-hover:text-neutral-gray transition-colors duration-300">
+                    <Icon
+                      className="mr-3 group-hover:scale-110 transition-transform duration-300"
+                      size={28}
+                    />{' '}
+                    {title}
+                  </h4>
+                  <span className="text-3xl font-bold bg-gradient-to-r from-neutral-gray to-warm-gray bg-clip-text text-transparent">
+                    {price}
+                  </span>
+                </div>
+                <ul className="space-y-3 text-left">
+                  {features.map((feature, featureIdx) => (
+                    <li key={featureIdx} className="flex items-center">
+                      <CheckCircle2
+                        size={18}
+                        className="mr-2 text-neutral-gray"
+                      />
+                      <span className="text-muted-foreground">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button className="mt-6 w-full bg-gradient-to-r from-neutral-gray to-warm-gray text-white py-3 rounded-full hover:shadow-lg hover:shadow-neutral-gray/25 transition-all duration-300 font-semibold">
+                  Choose {title}
+                </button>
+              </div>
+            ),
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="container mx-auto px-6 py-8 text-center text-muted-foreground border-t border-border/50">
+        <p>© 2025 Routini. All rights reserved.</p>
       </footer>
     </div>
   );
 };
 
-export default DaystackLanding;
+const RoutiniLanding = () => {
+  return (
+    <LandingThemeProvider>
+      <RoutiniLandingContent />
+    </LandingThemeProvider>
+  );
+};
+
+export default RoutiniLanding;

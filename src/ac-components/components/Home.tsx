@@ -1,6 +1,8 @@
 import { DayNavigation } from '@/ac-components/components/DayNavigation';
 import { Marketplace } from '@/ac-components/components/Marketplace';
 import { DailyPluginView } from '@/ac-components/components/plugins/DailyPluginView';
+import { ThemeSettings } from '@/ac-components/components/theme-settings';
+import { ThemeToggle } from '@/ac-components/components/theme-toggle';
 import { Link, useNavigate } from '@modern-js/runtime/router';
 import {
   Calendar,
@@ -9,6 +11,7 @@ import {
   Package,
   Plus,
   Settings,
+  X,
 } from 'lucide-react';
 import { startTransition, useEffect, useState } from 'react';
 import { useAuth, usePluginStore } from '../hooks';
@@ -18,6 +21,7 @@ import { samplePlugins } from './plugins/examples/samplePlugins';
 export default function Home() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarMode, setCalendarMode] = useState(false);
+  const [showThemeSettings, setShowThemeSettings] = useState(false);
   const { isAuthenticated } = useAuth();
   const { registerPlugin, getAllPlugins } = usePluginStore();
   const router = useNavigate();
@@ -52,7 +56,19 @@ export default function Home() {
           <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 text-left">
             Daystack
           </h1>
-          <SignInCloudButton />
+
+          {/* Theme Controls */}
+          <div className="flex items-center space-x-3">
+            <ThemeToggle size="sm" />
+            <button
+              onClick={() => setShowThemeSettings(true)}
+              className="p-2 rounded-lg hover:bg-muted transition-colors"
+              title="Theme Settings"
+            >
+              <Settings size={18} />
+            </button>
+            <SignInCloudButton />
+          </div>
         </section>
 
         {!calendarMode ? (
@@ -74,9 +90,27 @@ export default function Home() {
         <Marketplace />
       </div>
 
-      <footer className="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-lg flex justify-around py-2">
+      {/* Theme Settings Modal */}
+      {showThemeSettings && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-card border border-border rounded-xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Appearance Settings</h2>
+              <button
+                onClick={() => setShowThemeSettings(false)}
+                className="p-1 rounded-lg hover:bg-muted transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <ThemeSettings showTitle={false} />
+          </div>
+        </div>
+      )}
+
+      <footer className="fixed bottom-0 w-full bg-card border-t border-border shadow-lg flex justify-around py-2">
         <button
-          className={`flex flex-col items-center ${!calendarMode ? 'text-primary' : 'text-gray-600'}`}
+          className={`flex flex-col items-center ${!calendarMode ? 'text-primary' : 'text-muted-foreground'}`}
           onClick={() => handleCalendarModeToggle(false)}
         >
           <HomeIcon className="h-6 w-6" />
@@ -84,7 +118,7 @@ export default function Home() {
         </button>
 
         <button
-          className={`flex flex-col items-center ${calendarMode ? 'text-primary' : 'text-gray-600'}`}
+          className={`flex flex-col items-center ${calendarMode ? 'text-primary' : 'text-muted-foreground'}`}
           onClick={() => handleCalendarModeToggle(true)}
         >
           <Calendar className="h-6 w-6" />
@@ -92,7 +126,7 @@ export default function Home() {
         </button>
 
         <button
-          className="flex flex-col items-center text-gray-600"
+          className="flex flex-col items-center text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => router('/marketplace')}
         >
           <Package className="h-6 w-6" />
@@ -100,15 +134,15 @@ export default function Home() {
         </button>
 
         <button
-          className="flex flex-col items-center text-gray-600"
-          onClick={() => router('/habits')}
+          className="flex flex-col items-center text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => setShowThemeSettings(true)}
         >
           <Settings className="h-6 w-6" />
           <span className="text-xs">Settings</span>
         </button>
 
         <button
-          className="flex flex-col items-center text-gray-600"
+          className="flex flex-col items-center text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => {
             // Future: Open plugin management dialog
             console.log('Plugin management coming soon...');
